@@ -44,7 +44,29 @@ namespace DAL
                 try
                 {
                     SqlCommand cmd = new SqlCommand
-                        ("DELETE FROM Usuario WHERE IdUsuario  = @IdUsuario ", con, tran);
+                        ("UPDATE Usuario SET Activo = 0 WHERE IdUsuario = @IdUsuario", con, tran);
+                    cmd.Parameters.AddWithValue("@IdUsuario", idUsuario);
+                    cmd.ExecuteNonQuery();
+                    tran.Commit();
+                    return true;
+                }
+                catch
+                {
+                    tran.Rollback();
+                    return false;
+                }
+            }
+        }
+        public bool Restaurar(int idUsuario)
+        {
+            using (SqlConnection con = clsConexionDAL.GetConnection())
+            {
+                con.Open();
+                SqlTransaction tran = con.BeginTransaction();
+                try
+                {
+                    SqlCommand cmd = new SqlCommand
+                        ("UPDATE Usuario SET Activo = 1 WHERE IdUsuario = @IdUsuario", con, tran);
                     cmd.Parameters.AddWithValue("@IdUsuario", idUsuario);
                     cmd.ExecuteNonQuery();
                     tran.Commit();
@@ -59,13 +81,13 @@ namespace DAL
         }
         public clsUsuarioBE GetByUsername(string NombreUsuario)
         {
-            clsUsuarioBE Usuario = null;    
+            clsUsuarioBE Usuario = null;
 
             using (SqlConnection con = clsConexionDAL.GetConnection())
             {
-                    con.Open();
-                    SqlCommand cmd = new SqlCommand("SELECT * FROM Usuario WHERE NombreUsuario = @NombreUsuario",con);
-                    cmd.Parameters.AddWithValue("@NombreUsuario", NombreUsuario);
+                con.Open();
+                SqlCommand cmd = new SqlCommand("SELECT * FROM Usuario WHERE NombreUsuario = @NombreUsuario AND Activo = 1", con);
+                cmd.Parameters.AddWithValue("@NombreUsuario", NombreUsuario);
                 SqlDataReader dr = cmd.ExecuteReader();
                 if (dr.Read())
                 {
@@ -80,7 +102,22 @@ namespace DAL
             using (SqlConnection con = clsConexionDAL.GetConnection())
             {
                 con.Open();
-                SqlCommand cmd = new SqlCommand("SELECT * FROM Usuario", con);
+                SqlCommand cmd = new SqlCommand("SELECT * FROM Usuario WHERE Activo = 1", con);
+                SqlDataReader dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    lista.Add(Mapear(dr));
+                }
+            }
+            return lista;
+        }
+        public List<clsUsuarioBE> GetEliminados()
+        {
+            List<clsUsuarioBE> lista = new List<clsUsuarioBE>();
+            using (SqlConnection con = clsConexionDAL.GetConnection())
+            {
+                con.Open();
+                SqlCommand cmd = new SqlCommand("SELECT * FROM Usuario WHERE Activo = 0", con);
                 SqlDataReader dr = cmd.ExecuteReader();
                 while (dr.Read())
                 {
@@ -117,7 +154,8 @@ namespace DAL
             {
                 IdUsuario = (int)dr["IdUsuario"],
                 NombreUsuario = dr["NombreUsuario"].ToString(),
-                PasswordHash = dr["PasswordHash"].ToString()
+                PasswordHash = dr["PasswordHash"].ToString(),
+                Activo = (bool)dr["Activo"]
             };
         }
     }

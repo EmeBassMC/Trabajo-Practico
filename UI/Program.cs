@@ -17,7 +17,7 @@ namespace UI
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            BLL.clsDigitoVerificador.RecalcularTodos(); // ← descomentar
+
             bool integridadOk = BLL.clsDigitoVerificador.VerificarIntegridad();
             if (!integridadOk)
             {
@@ -26,7 +26,7 @@ namespace UI
                     "Error de Integridad",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
-                return; // no abre el login
+                return;
             }
             frmLogin login = new frmLogin();
             login.ShowDialog();

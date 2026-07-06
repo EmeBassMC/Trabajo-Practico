@@ -36,12 +36,16 @@
             this.txtClave = new System.Windows.Forms.TextBox();
             this.txtUsuario = new System.Windows.Forms.TextBox();
             this.dgvUsuarios = new System.Windows.Forms.DataGridView();
+            this.chkVerEliminados = new System.Windows.Forms.CheckBox();
+            this.btnRestaurar = new System.Windows.Forms.Button();
             this.grpUsuarios.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvUsuarios)).BeginInit();
             this.SuspendLayout();
             // 
             // grpUsuarios
             // 
+            this.grpUsuarios.Controls.Add(this.btnRestaurar);
+            this.grpUsuarios.Controls.Add(this.chkVerEliminados);
             this.grpUsuarios.Controls.Add(this.btnAlta);
             this.grpUsuarios.Controls.Add(this.btnBaja);
             this.grpUsuarios.Controls.Add(this.label2);
@@ -121,6 +125,27 @@
             this.dgvUsuarios.TabIndex = 7;
             this.dgvUsuarios.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvUsuarios_CellContentClick);
             // 
+            // chkVerEliminados
+            // 
+            this.chkVerEliminados.AutoSize = true;
+            this.chkVerEliminados.Location = new System.Drawing.Point(6, 179);
+            this.chkVerEliminados.Name = "chkVerEliminados";
+            this.chkVerEliminados.Size = new System.Drawing.Size(94, 17);
+            this.chkVerEliminados.TabIndex = 14;
+            this.chkVerEliminados.Text = "Ver eliminados";
+            this.chkVerEliminados.UseVisualStyleBackColor = true;
+            this.chkVerEliminados.CheckedChanged += new System.EventHandler(this.chkVerEliminados_CheckedChanged);
+            // 
+            // btnRestaurar
+            // 
+            this.btnRestaurar.Location = new System.Drawing.Point(15, 202);
+            this.btnRestaurar.Name = "btnRestaurar";
+            this.btnRestaurar.Size = new System.Drawing.Size(75, 23);
+            this.btnRestaurar.TabIndex = 15;
+            this.btnRestaurar.Text = "Restaurar";
+            this.btnRestaurar.UseVisualStyleBackColor = true;
+            this.btnRestaurar.Click += new System.EventHandler(this.btnRestaurar_Click);
+            // 
             // frmUsuario
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -148,5 +173,7 @@
         private System.Windows.Forms.TextBox txtClave;
         private System.Windows.Forms.TextBox txtUsuario;
         private System.Windows.Forms.DataGridView dgvUsuarios;
+        private System.Windows.Forms.Button btnRestaurar;
+        private System.Windows.Forms.CheckBox chkVerEliminados;
     }
 }

@@ -42,7 +42,10 @@ namespace UI
 
         public void cargarGrilla()
         {
-            dataGridView1.DataSource = bllEspecialidad.GetAll();
+            dataGridView1.DataSource = null;
+            dataGridView1.DataSource = chkVerEliminados.Checked ? bllEspecialidad.GetEliminadas() : bllEspecialidad.GetAll();
+            if (dataGridView1.Columns["Activo"] != null)
+                dataGridView1.Columns["Activo"].Visible = false;
         }
         public void bloquearCampos()
         {
@@ -138,6 +141,7 @@ namespace UI
                 habilitarCampos();
                 btnGuardar.Enabled = puedeModificar;   
                 btnEliminar.Enabled = puedeEliminar;
+                button1 .Enabled = chkVerEliminados.Checked && puedeEliminar;
 
             }
         }
@@ -147,6 +151,39 @@ namespace UI
             limpiarCampos();
             bloquearCampos();
             modoEdicion = false;
+        }
+
+        private void chkVerEliminados_CheckedChanged(object sender, EventArgs e)
+        {
+            bool viendoEliminados = chkVerEliminados.Checked;
+
+            txtNombre.Enabled = false;
+            txtNombre.Text = "";
+            btnCancelar.Enabled = false;
+            btnGuardar.Enabled = false;
+            btnEliminar.Enabled = false;
+            btnNuevo.Enabled = !viendoEliminados && puedeAgregar;
+            button1.Enabled = viendoEliminados && puedeEliminar;
+
+            idSeleccionado = 0;
+            modoEdicion = false;
+
+            cargarGrilla();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (idSeleccionado <= 0) return;
+            var g = clsGestorIdioma.GetInstancia();
+            DialogResult confirm = MessageBox.Show(
+                "¿Restaurar esta especialidad?", "Confirmar restauración", MessageBoxButtons.YesNo);
+            if (confirm == DialogResult.Yes)
+            {
+                bllEspecialidad.Restaurar(idSeleccionado);
+                cargarGrilla();
+                bloquearCampos();
+                limpiarCampos();
+            }
         }
 
         private void frmEspecialidad_FormClosed(object sender, FormClosedEventArgs e)

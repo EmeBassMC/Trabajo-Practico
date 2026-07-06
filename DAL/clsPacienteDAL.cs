@@ -96,7 +96,6 @@ namespace DAL
         }
         public bool Delete(int idPaciente)
         {
-            //para borrar el paciente solo vamos a necesitar su ID que es la FK de la tabla, por ende solo lo buscamos por este
             using (SqlConnection con = clsConexionDAL.GetConnection())
             {
                 con.Open();
@@ -104,7 +103,7 @@ namespace DAL
                 try
                 {
                     SqlCommand cmd = new SqlCommand
-                        ("DELETE FROM Paciente WHERE IdPaciente = @IdPaciente", con, tran);
+                        ("UPDATE Paciente SET Activo = 0 WHERE IdPaciente = @IdPaciente", con, tran);
                     cmd.Parameters.AddWithValue("@IdPaciente", idPaciente);
                     cmd.ExecuteNonQuery();
                     tran.Commit();
@@ -116,6 +115,43 @@ namespace DAL
                     return false;
                 }
             }
+        }
+        public bool Restaurar(int idPaciente)
+        {
+            using (SqlConnection con = clsConexionDAL.GetConnection())
+            {
+                con.Open();
+                SqlTransaction tran = con.BeginTransaction();
+                try
+                {
+                    SqlCommand cmd = new SqlCommand
+                        ("UPDATE Paciente SET Activo = 1 WHERE IdPaciente = @IdPaciente", con, tran);
+                    cmd.Parameters.AddWithValue("@IdPaciente", idPaciente);
+                    cmd.ExecuteNonQuery();
+                    tran.Commit();
+                    return true;
+                }
+                catch
+                {
+                    tran.Rollback();
+                    return false;
+                }
+            }
+        }
+        public List<clsPacienteBE> GetEliminados()
+        {
+            List<clsPacienteBE> lista = new List<clsPacienteBE>();
+            using (SqlConnection con = clsConexionDAL.GetConnection())
+            {
+                con.Open();
+                SqlCommand cmd = new SqlCommand("SELECT * FROM Paciente WHERE Activo = 0", con);
+                SqlDataReader dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    lista.Add(Mapear(dr));
+                }
+            }
+            return lista;
         }
         //metodos de solo lectura para mostrar información de la DB, GetById, GetAll, GetByDNI
         public clsPacienteBE GetByID(int IdPaciente)
@@ -142,10 +178,8 @@ namespace DAL
             using (SqlConnection con = clsConexionDAL.GetConnection())
             {
                 con.Open();
-                SqlCommand cmd = new SqlCommand("SELECT * FROM Paciente", con);
+                SqlCommand cmd = new SqlCommand("SELECT * FROM Paciente WHERE Activo = 1", con);
                 SqlDataReader dr = cmd.ExecuteReader();
-
-                //while en el drread para traer toda las filas, a diferencia del if en el anterior aca traemos varios datos.
                 while (dr.Read())
                 {
                     listaPaciente.Add(Mapear(dr));
@@ -176,7 +210,6 @@ namespace DAL
         {
             return new clsPacienteBE
             {
-                // El nombre entre [] tiene que coincidir EXACTO con la columna en SQL
                 IdPersona = (int)dr["IdPaciente"],
                 Nombre = dr["Nombre"].ToString(),
                 Apellido = dr["Apellido"].ToString(),
@@ -185,7 +218,8 @@ namespace DAL
                 Email = dr["Email"].ToString(),
                 FechaNacimiento = (DateTime)dr["FechaNacimiento"],
                 ObraSocial = dr["ObraSocial"].ToString(),
-                DVH = (int)dr["DVH"]
+                DVH = (int)dr["DVH"],
+                Activo = (bool)dr["Activo"]
             };
         }
 

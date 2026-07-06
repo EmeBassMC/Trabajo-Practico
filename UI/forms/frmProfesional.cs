@@ -41,8 +41,11 @@ namespace UI
 
         public void cargarGrilla()
         {
-            var lista = bllprofesional.GetAll();
+            dataGridView1.DataSource = null;
+            var lista = chkVerEliminados.Checked ? bllprofesional.GetEliminados() : bllprofesional.GetAll();
             dataGridView1.DataSource = lista;
+            if (dataGridView1.Columns["Activo"] != null)
+                dataGridView1.Columns["Activo"].Visible = false;
         }
         public void bloquearCampos()
         {
@@ -183,7 +186,9 @@ namespace UI
                 modoEdicion = true;
                 habilitarCampos();
                 btnGuardar.Enabled = puedeModificar;   
-                btnEliminar.Enabled = puedeEliminar;   
+                btnEliminar.Enabled = puedeEliminar;
+                btnRestaurar.Enabled = chkVerEliminados.Checked && puedeEliminar;
+
             }
         }
 
@@ -195,6 +200,45 @@ namespace UI
         private void lblEspecialidad_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void btnRestaurar_Click(object sender, EventArgs e)
+        {
+            if (idSeleccionado <= 0) return;
+
+            DialogResult confirm = MessageBox.Show(
+                "¿Restaurar este profesional?", "Confirmar restauración", MessageBoxButtons.YesNo);
+
+            if (confirm == DialogResult.Yes)
+            {
+                bllprofesional.Restaurar(idSeleccionado);
+                cargarGrilla();
+                bloquearCampos();
+                limpiarCampos();
+            }
+        }
+
+        private void chkVerEliminados_CheckedChanged(object sender, EventArgs e)
+        {
+            bool viendoEliminados = chkVerEliminados.Checked;
+
+            txtNombre.Enabled = false;
+            txtApellido.Enabled = false;
+            txtDNI.Enabled = false;
+            txtMatricula.Enabled = false;
+            cmbEspecialidad.Enabled = false;
+            dtpFechaNacimiento.Enabled = false;
+            btnGuardar.Enabled = false;
+            btnCancelar.Enabled = false;
+            btnEliminar.Enabled = false;
+
+            btnNuevo.Enabled = !viendoEliminados && puedeAgregar;
+            btnRestaurar.Enabled = false; // se habilita recién al seleccionar una fila
+
+            idSeleccionado = 0;
+            modoEdicion = false;
+
+            cargarGrilla();
         }
 
         private void frmProfesional_FormClosed(object sender, FormClosedEventArgs e)

@@ -18,7 +18,7 @@ namespace BLL
 
                 clsBitacoraBE b = new clsBitacoraBE();
                 b.UsuarioId = clsSesionActual.GetInstancia().IdUsuario;
-                b.Actividad = "Insert Especialidad";
+                b.Actividad = "Alta de Especialidad";
                 b.Informacion = resultado ? "OK - Id: " + especialidad.IdEspecialidad : "ERROR";
                 clsBitacoraBLL.Registrar(b);
                 return resultado;
@@ -42,7 +42,7 @@ namespace BLL
 
                 clsBitacoraBE b = new clsBitacoraBE();
                 b.UsuarioId = clsSesionActual.GetInstancia().IdUsuario;
-                b.Actividad = "Update Especialidad";
+                b.Actividad = "Modificación de Especialidad";
 
                 b.Informacion = resultado ?
                     "ANTES - ID: " + anterior.IdEspecialidad + " Nombre: " + anterior.Nombre +
@@ -55,7 +55,7 @@ namespace BLL
             {
                 string error = ex.ToString();
                 return false;
-            }            
+            }
         }
         public bool Delete(int id)
         {
@@ -69,8 +69,8 @@ namespace BLL
 
                 clsBitacoraBE b = new clsBitacoraBE();
                 b.UsuarioId = clsSesionActual.GetInstancia().IdUsuario;
-                b.Actividad = "Delete Especialidad";
-                b.Informacion = resultado ? "OK - Id: " + id: "ERROR";
+                b.Actividad = "Baja de Especialidad";
+                b.Informacion = resultado ? "OK - Id: " + id : "ERROR";
                 clsBitacoraBLL.Registrar(b);
                 return resultado;
             }
@@ -79,6 +79,34 @@ namespace BLL
                 string error = ex.ToString();
                 return false;
             }
+        }
+        public bool Restaurar(int id)
+        {
+            try
+            {
+                if (id <= 0) return false;
+                clsEspecialidadDAL dal = new clsEspecialidadDAL();
+                bool resultado = dal.Restaurar(id);
+
+                clsBitacoraBE b = new clsBitacoraBE();
+                b.UsuarioId = clsSesionActual.GetInstancia().IdUsuario;
+                b.Actividad = "Restauración de Especialidad";
+                b.Informacion = resultado ? "OK - Id: " + id : "ERROR";
+                clsBitacoraBLL.Registrar(b);
+
+                return resultado;
+            }
+            catch (Exception ex)
+            {
+                string error = ex.ToString();
+                return false;
+            }
+        }
+
+        public List<clsEspecialidadBE> GetEliminadas()
+        {
+            clsEspecialidadDAL dal = new clsEspecialidadDAL();
+            return dal.GetEliminadas();
         }
         public List<clsEspecialidadBE> GetAll()
         {
@@ -93,7 +121,7 @@ namespace BLL
                 return null;
             }
         }
-        public clsEspecialidadBE GetById(int id) 
+        public clsEspecialidadBE GetById(int id)
         {
             try
             {

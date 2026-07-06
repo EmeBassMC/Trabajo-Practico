@@ -31,9 +31,9 @@ namespace UI.forms
 
             btnAlta.Enabled = puedeAlta;
             btnBaja.Enabled = puedeBaja;
+            btnRestaurar.Enabled = false; // arranca deshabilitado: recién sirve viendo eliminados
 
             CargarUsuarios();
-            personalizarGrilla();
             clsGestorIdioma.GetInstancia().Suscribir(this);
             ActualizarIdioma(clsGestorIdioma.GetInstancia().IdiomaActual);
         }
@@ -42,7 +42,7 @@ namespace UI.forms
         {
             var g = clsGestorIdioma.GetInstancia();
 
-            if (string.IsNullOrEmpty(txtUsuario.Text)) 
+            if (string.IsNullOrEmpty(txtUsuario.Text))
             {
                 MessageBox.Show("Ingresa un usuario");
                 return;
@@ -51,13 +51,13 @@ namespace UI.forms
             {
                 MessageBox.Show("Ingresa una clave");
                 return;
-            }                    
+            }
             clsUsuarioBE nuevo = new clsUsuarioBE();
             nuevo.NombreUsuario = txtUsuario.Text;
             nuevo.PasswordHash = txtClave.Text;
 
             bool resultado = usuarioBLL.Registrar(nuevo);
-            if (resultado == true) 
+            if (resultado == true)
             {
                 MessageBox.Show(g.Traducir("msgUsuarioCreado") + nuevo.NombreUsuario);
                 txtUsuario.Text = "";
@@ -89,6 +89,35 @@ namespace UI.forms
             }
         }
 
+        private void btnRestaurar_Click(object sender, EventArgs e)
+        {
+            if (dgvUsuarios.SelectedRows.Count == 0) return;
+
+            int id = Convert.ToInt32(dgvUsuarios.SelectedRows[0].Cells["IdUsuario"].Value);
+
+            DialogResult confirm = MessageBox.Show(
+                "¿Restaurar este usuario? Va a volver a poder loguearse con sus roles anteriores.",
+                "Confirmar restauración",
+                MessageBoxButtons.YesNo);
+
+            if (confirm == DialogResult.Yes)
+            {
+                usuarioBLL.Restaurar(id);
+                CargarUsuarios();
+            }
+        }
+
+        private void chkVerEliminados_CheckedChanged(object sender, EventArgs e)
+        {
+            bool viendoEliminados = chkVerEliminados.Checked;
+
+            btnAlta.Enabled = !viendoEliminados && puedeAlta;
+            btnBaja.Enabled = !viendoEliminados && puedeBaja;
+            btnRestaurar.Enabled = viendoEliminados && puedeBaja;
+
+            CargarUsuarios();
+        }
+
         private void txtUsuario_TextChanged(object sender, EventArgs e)
         {
 
@@ -106,13 +135,17 @@ namespace UI.forms
         public void CargarUsuarios()
         {
             dgvUsuarios.DataSource = null;
-            dgvUsuarios.DataSource = usuarioBLL.GetAll();
+            dgvUsuarios.DataSource = chkVerEliminados.Checked
+                ? usuarioBLL.GetEliminados()
+                : usuarioBLL.GetAll();
+            personalizarGrilla();
         }
         public void personalizarGrilla()
         {
             dgvUsuarios.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvUsuarios.Columns["IdUsuario"].FillWeight = 50;
             dgvUsuarios.Columns["PasswordHash"].Visible = false;
+            dgvUsuarios.Columns["Activo"].Visible = false;
             // Estilo general
             dgvUsuarios.EnableHeadersVisualStyles = false;
             dgvUsuarios.BorderStyle = BorderStyle.None;
@@ -138,6 +171,7 @@ namespace UI.forms
             // Columnas
             dgvUsuarios.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvUsuarios.Columns["PasswordHash"].Visible = false;
+            dgvUsuarios.Columns["Activo"].Visible = false;
             dgvUsuarios.Columns["IdUsuario"].FillWeight = 30;
             dgvUsuarios.Columns["NombreUsuario"].FillWeight = 170;
         }
@@ -146,6 +180,7 @@ namespace UI.forms
         {
             clsGestorIdioma.GetInstancia().Desuscribir(this);
         }
+
         public void ActualizarIdioma(string idioma)
         {
             var g = clsGestorIdioma.GetInstancia();

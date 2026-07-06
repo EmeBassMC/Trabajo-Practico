@@ -100,7 +100,6 @@ namespace DAL
         }
         public bool Delete(int idProfesional)
         {
-            //para borrar el Profesional solo vamos a necesitar su ID que es la FK de la tabla, por ende solo lo buscamos por este
             using (SqlConnection con = clsConexionDAL.GetConnection())
             {
                 con.Open();
@@ -108,7 +107,7 @@ namespace DAL
                 try
                 {
                     SqlCommand cmd = new SqlCommand
-                        ("DELETE FROM Profesional WHERE IdProfesional = @IdProfesional", con, tran);
+                        ("UPDATE Profesional SET Activo = 0 WHERE IdProfesional = @IdProfesional", con, tran);
                     cmd.Parameters.AddWithValue("@IdProfesional", idProfesional);
                     cmd.ExecuteNonQuery();
                     tran.Commit();
@@ -120,6 +119,43 @@ namespace DAL
                     return false;
                 }
             }
+        }
+        public bool Restaurar(int idProfesional)
+        {
+            using (SqlConnection con = clsConexionDAL.GetConnection())
+            {
+                con.Open();
+                SqlTransaction tran = con.BeginTransaction();
+                try
+                {
+                    SqlCommand cmd = new SqlCommand
+                        ("UPDATE Profesional SET Activo = 1 WHERE IdProfesional = @IdProfesional", con, tran);
+                    cmd.Parameters.AddWithValue("@IdProfesional", idProfesional);
+                    cmd.ExecuteNonQuery();
+                    tran.Commit();
+                    return true;
+                }
+                catch
+                {
+                    tran.Rollback();
+                    return false;
+                }
+            }
+        }
+        public List<clsProfesionalBE> GetEliminados()
+        {
+            List<clsProfesionalBE> lista = new List<clsProfesionalBE>();
+            using (SqlConnection con = clsConexionDAL.GetConnection())
+            {
+                con.Open();
+                SqlCommand cmd = new SqlCommand("SELECT * FROM Profesional WHERE Activo = 0", con);
+                SqlDataReader dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    lista.Add(Mapear(dr));
+                }
+            }
+            return lista;
         }
         //metodos de solo lectura para mostrar información de la DB, GetById, GetAll, GetByDNI
         public clsProfesionalBE GetByID(int IdProfesional)
@@ -146,10 +182,8 @@ namespace DAL
             using (SqlConnection con = clsConexionDAL.GetConnection())
             {
                 con.Open();
-                SqlCommand cmd = new SqlCommand("SELECT * FROM Profesional", con);
+                SqlCommand cmd = new SqlCommand("SELECT * FROM Profesional WHERE Activo = 1", con);
                 SqlDataReader dr = cmd.ExecuteReader();
-
-                //while en el drread para traer toda las filas, a diferencia del if en el anterior aca traemos varios datos.
                 while (dr.Read())
                 {
                     listaProfesional.Add(Mapear(dr));
@@ -157,6 +191,7 @@ namespace DAL
                 return listaProfesional;
             }
         }
+
         public clsProfesionalBE GetByDNI(string dni)
         {
             clsProfesionalBE Profesional = null;
@@ -180,16 +215,16 @@ namespace DAL
         {
             return new clsProfesionalBE
             {
-                // El nombre entre [] tiene que coincidir EXACTO con la columna en SQL
                 IdPersona = (int)dr["IdProfesional"],
                 Nombre = dr["Nombre"].ToString(),
                 Apellido = dr["Apellido"].ToString(),
                 DNI = dr["DNI"].ToString(),
                 Telefono = dr["Telefono"].ToString(),
                 FechaNacimiento = dr["FechaNacimiento"] == DBNull.Value ? DateTime.MinValue : (DateTime)dr["FechaNacimiento"],
-                Email = dr["Email"] == DBNull.Value? "" : dr["Email"].ToString(),
+                Email = dr["Email"] == DBNull.Value ? "" : dr["Email"].ToString(),
                 Matricula = dr["Matricula"].ToString(),
-                IdEspecialidad = (int)dr["IdEspecialidad"]
+                IdEspecialidad = (int)dr["IdEspecialidad"],
+                Activo = (bool)dr["Activo"]
             };
         }
 

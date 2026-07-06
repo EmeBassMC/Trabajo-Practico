@@ -1,4 +1,5 @@
-﻿using BLL;
+﻿using BE;
+using BLL;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,6 +15,8 @@ namespace UI.forms
     public partial class frmBitacora : Form, IObservadorIdioma
     {
         clsBitacoraBLL bllBitacora = new clsBitacoraBLL();
+        clsUsuarioBLL usuarioBLL = new clsUsuarioBLL();
+
 
         public frmBitacora()
         {
@@ -23,6 +26,7 @@ namespace UI.forms
         private void frmBitacora_Load(object sender, EventArgs e)
         {
             cargarGrilla();
+            CargarFiltros();
             clsGestorIdioma.GetInstancia().Suscribir(this);
             ActualizarIdioma(clsGestorIdioma.GetInstancia().IdiomaActual);
 
@@ -52,10 +56,41 @@ namespace UI.forms
                 dataGridView1.Columns["Informacion"].HeaderText = g.Traducir("colInformacion");
             }
         }
+        private void CargarFiltros()
+        {
+            List<clsUsuarioBE> usuarios = usuarioBLL.GetAll();
+            List<clsUsuarioBE> listaUsuarios = new List<clsUsuarioBE> {
+                new clsUsuarioBE { IdUsuario = 0, NombreUsuario = "Todos" }
+            };
+            listaUsuarios.AddRange(usuarios);
+            cmbUsuario.DataSource = listaUsuarios;
+            cmbUsuario.DisplayMember = "NombreUsuario";
+            cmbUsuario.ValueMember = "IdUsuario";
+
+            List<string> actividades = new List<string> { "Todas" };
+            actividades.AddRange(bllBitacora.GetActividadesDistintas());
+            cmbActividad.DataSource = actividades;
+        }
 
         private void frmBitacora_FormClosed(object sender, FormClosedEventArgs e)
         {
             clsGestorIdioma.GetInstancia().Desuscribir(this);
+        }
+
+        private void btnFiltrar_Click(object sender, EventArgs e)
+        {
+            clsBitacoraFiltroBE filtro = new clsBitacoraFiltroBE();
+
+            filtro.FechaDesde = dtpDesde.Checked ? dtpDesde.Value : (DateTime?)null;
+            filtro.FechaHasta = dtpHasta.Checked ? dtpHasta.Value : (DateTime?)null;
+
+            int idUsuarioSeleccionado = (int)cmbUsuario.SelectedValue;
+            filtro.UsuarioId = idUsuarioSeleccionado == 0 ? (int?)null : idUsuarioSeleccionado;
+
+            string actividadSeleccionada = cmbActividad.SelectedItem as string;
+            filtro.Actividad = actividadSeleccionada == "Todas" ? null : actividadSeleccionada;
+
+            dataGridView1.DataSource = bllBitacora.GetFiltrado(filtro);
         }
     }
 }

@@ -24,11 +24,12 @@ namespace BLL
                 if (profesional.DNI.Length != 8) return false;
 
                 clsProfesionalDAL dal = new clsProfesionalDAL();
+                profesional.Email = clsEncriptacion.Encriptar(profesional.Email); // ← nuevo
                 bool resultado = dal.Insert(profesional);
 
                 clsBitacoraBE b = new clsBitacoraBE();
                 b.UsuarioId = clsSesionActual.GetInstancia().IdUsuario;
-                b.Actividad = "Insert Profesional";
+                b.Actividad = "Alta de Profesional";
                 b.Informacion = resultado ? "OK - Id: " + profesional.IdPersona : "ERROR";
                 clsBitacoraBLL.Registrar(b);
                 return resultado;
@@ -39,6 +40,7 @@ namespace BLL
                 return false;
             }
         }
+
         public bool Update(clsProfesionalBE profesional)
         {
             try
@@ -53,12 +55,13 @@ namespace BLL
 
                 clsProfesionalDAL dal = new clsProfesionalDAL();
                 clsProfesionalBE anterior = dal.GetByID(profesional.IdPersona);
+                profesional.Email = clsEncriptacion.Encriptar(profesional.Email); // ← nuevo
 
                 bool resultado = dal.Update(profesional);
 
                 clsBitacoraBE b = new clsBitacoraBE();
                 b.UsuarioId = clsSesionActual.GetInstancia().IdUsuario;
-                b.Actividad = "Update Profesional";
+                b.Actividad = "Modificación de Profesional";
                 b.Informacion = resultado ?
            "OK - ANTES: ID:" + anterior.IdPersona + " " + anterior.Nombre + " " + anterior.Apellido + " DNI:" + anterior.DNI + " Mat:" + anterior.Matricula +
            " | DESPUÉS: ID:" + profesional.IdPersona + " " + profesional.Nombre + " " + profesional.Apellido + " DNI:" + profesional.DNI + " Mat:" + profesional.Matricula
@@ -73,6 +76,7 @@ namespace BLL
                 return false;
             }
         }
+
         public bool Delete(int id)
         {
             try
@@ -83,8 +87,8 @@ namespace BLL
 
                 clsBitacoraBE b = new clsBitacoraBE();
                 b.UsuarioId = clsSesionActual.GetInstancia().IdUsuario;
-                b.Actividad = "Delete Profesional";
-                b.Informacion = resultado ? "OK - Id: " + id: "ERROR";
+                b.Actividad = "Baja de Profesional";
+                b.Informacion = resultado ? "OK - Id: " + id : "ERROR";
                 clsBitacoraBLL.Registrar(b);
                 return resultado;
             }
@@ -94,6 +98,34 @@ namespace BLL
                 return false;
             }
         }
+        public bool Restaurar(int id)
+        {
+            try
+            {
+                if (id <= 0) return false;
+                clsProfesionalDAL dal = new clsProfesionalDAL();
+                bool resultado = dal.Restaurar(id);
+
+                clsBitacoraBE b = new clsBitacoraBE();
+                b.UsuarioId = clsSesionActual.GetInstancia().IdUsuario;
+                b.Actividad = "Restauración de Profesional";
+                b.Informacion = resultado ? "OK - Id: " + id : "ERROR";
+                clsBitacoraBLL.Registrar(b);
+
+                return resultado;
+            }
+            catch (Exception ex)
+            {
+                string v = ex.ToString();
+                return false;
+            }
+        }
+
+        public List<clsProfesionalBE> GetEliminados()
+        {
+            clsProfesionalDAL dal = new clsProfesionalDAL();
+            return dal.GetEliminados();
+        }
         #endregion
         #region METODOS DE LECTURA
         public clsProfesionalBE GetById(int id)
@@ -102,7 +134,9 @@ namespace BLL
             {
                 if (id <= 0) return null;
                 clsProfesionalDAL dal = new clsProfesionalDAL();
-                return dal.GetByID(id);
+                clsProfesionalBE p = dal.GetByID(id);
+                if (p != null) p.Email = clsEncriptacion.Desencriptar(p.Email);
+                return p;
             }
             catch (Exception ex)
             {
@@ -115,7 +149,10 @@ namespace BLL
             try
             {
                 clsProfesionalDAL dal = new clsProfesionalDAL();
-                return dal.GetAll();
+                List<clsProfesionalBE> lista = dal.GetAll();
+                foreach (clsProfesionalBE p in lista)
+                    p.Email = clsEncriptacion.Desencriptar(p.Email);
+                return lista;
             }
             catch (Exception ex)
             {
@@ -124,13 +161,16 @@ namespace BLL
                 return null;
             }
         }
+
         public clsProfesionalBE GetByDni(string dni)
         {
             try
             {
                 if (string.IsNullOrEmpty(dni)) return null;
                 clsProfesionalDAL dal = new clsProfesionalDAL();
-                return dal.GetByDNI(dni);
+                clsProfesionalBE p = dal.GetByDNI(dni);
+                if (p != null) p.Email = clsEncriptacion.Desencriptar(p.Email);
+                return p;
             }
             catch (Exception ex)
             {

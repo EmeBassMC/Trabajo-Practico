@@ -122,13 +122,29 @@ namespace UI.forms
                     MessageBox.Show("No podés asignar permisos directamente a Sistema.");
                     return;
                 }
+
+                List<clsRolBE> permisosAntes = bll.GetPermisosPorRol(grupo.IdRol);
+
                 bll.QuitarTodosLosPermisosDeGrupo(grupo.IdRol);
                 foreach (TreeNode raiz in trvPermisos.Nodes)
                     foreach (TreeNode hijo in raiz.Nodes)
                         GuardarChecksRecursivo(hijo, grupo.IdRol);
 
+                List<clsRolBE> permisosDespues = bll.GetPermisosPorRol(grupo.IdRol);
+                bll.RegistrarCambioPermisosGrupo(grupo, permisosAntes, permisosDespues);
+
                 cargarGrupos();
                 CargarArbolPermisos();
+
+                // CargarArbolPermisos reconstruye el árbol de cero (todo destildado),
+                // así que hay que volver a marcar los checks según lo que quedó
+                // realmente guardado en la base para este grupo.
+                List<clsRolBE> permisosActualizados = bll.GetPermisosPorRol(grupo.IdRol);
+                _actualizandoChecks = true;
+                foreach (TreeNode raiz in trvPermisos.Nodes)
+                    MarcarAsignados(raiz, permisosActualizados);
+                _actualizandoChecks = false;
+
                 CargarJerarquiaGrupoSeleccionado(grupo);
             }
             catch (Exception ex)
@@ -192,19 +208,19 @@ namespace UI.forms
         {
             if (lstUsuarios.SelectedItems == null) return;
             clsUsuarioBE usuario = lstUsuarios.SelectedItem as clsUsuarioBE;
-            //debug
-            foreach (TreeNode raiz in trvRolesUsuario.Nodes)
-                foreach (TreeNode hijo in raiz.Nodes)
-                    if (hijo.Checked) MessageBox.Show("Tildado: " + hijo.Text);
-            //borramos todo lo que haya en el usuario
+
+            List<clsRolBE> rolesAntes = bll.GetRolesUsuario(usuario.IdUsuario);
+
             bll.QuitarTodosLosRoles(usuario.IdUsuario);
-            //reinserta los roles seleccionados en la grilla
             foreach (TreeNode raiz in trvRolesUsuario.Nodes)
                 foreach (TreeNode hijo in raiz.Nodes)
                     GuardarRolUsuarioRecursivo(hijo, usuario.IdUsuario);
+
+            List<clsRolBE> rolesDespues = bll.GetRolesUsuario(usuario.IdUsuario);
+            bll.RegistrarCambioRolesUsuario(usuario, rolesAntes, rolesDespues);
+
             MessageBox.Show("Roles guardados correctamente.");
             CargarArbolAsignados(usuario);
-
             CargarUsuarios();
 
         }

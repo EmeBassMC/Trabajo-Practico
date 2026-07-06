@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace BLL
 {
-    public class clsRolBLL 
+    public class clsRolBLL
     {
         #region metodos escritura
         private clsRolDAL dal;
@@ -29,38 +29,74 @@ namespace BLL
         public bool Insert(clsRolBE rol)
         {
             if (string.IsNullOrEmpty(rol.Nombre)) { return false; }
-            return dal.Insert(rol);
+            bool resultado = dal.Insert(rol);
+
+            clsBitacoraBE b = new clsBitacoraBE();
+            b.UsuarioId = clsSesionActual.GetInstancia().IdUsuario;
+            b.Actividad = "Alta de Rol";
+            b.Informacion = resultado ? "OK - " + rol.Nombre : "ERROR";
+            clsBitacoraBLL.Registrar(b);
+
+            return resultado;
         }
         public bool Delete(int id)
         {
-            if (id <= 0 ) { return false; }
-            return dal.Delete(id);
+            if (id <= 0) { return false; }
+            bool resultado = dal.Delete(id);
+
+            clsBitacoraBE b = new clsBitacoraBE();
+            b.UsuarioId = clsSesionActual.GetInstancia().IdUsuario;
+            b.Actividad = "Baja de Rol";
+            b.Informacion = resultado ? "OK - Id: " + id : "ERROR";
+            clsBitacoraBLL.Registrar(b);
+
+            return resultado;
         }
         public bool Update(clsRolBE rol)
         {
             if (rol.IdRol <= 0) return false;
             if (string.IsNullOrEmpty(rol.Nombre)) return false;
-            return dal.Update(rol);
+
+            clsRolBE anterior = dal.GetAll().Find(r => r.IdRol == rol.IdRol);
+            bool resultado = dal.Update(rol);
+
+            clsBitacoraBE b = new clsBitacoraBE();
+            b.UsuarioId = clsSesionActual.GetInstancia().IdUsuario;
+            b.Actividad = "Modificación de Rol";
+            b.Informacion = resultado && anterior != null
+                ? "ANTES: " + anterior.Nombre + " | DESPUÉS: " + rol.Nombre
+                : "ERROR";
+            clsBitacoraBLL.Registrar(b);
+
+            return resultado;
         }
-
-
-
-        public bool CrearianCiclo(int idGrupo, int idPermisoNuevo)
+        public void RegistrarCambioPermisosGrupo(clsRolBE grupo, List<clsRolBE> permisosAntes, List<clsRolBE> permisosDespues)
         {
-            if (idGrupo == idPermisoNuevo) return true; // un grupo no puede contenerse a sí mismo
+            string antesTexto = permisosAntes.Count > 0 ? string.Join(", ", permisosAntes.Select(p => p.Nombre)) : "(ninguno)";
+            string despuesTexto = permisosDespues.Count > 0 ? string.Join(", ", permisosDespues.Select(p => p.Nombre)) : "(ninguno)";
 
-            clsComponenteRol arbol = GetArbol();
-            clsComponenteRol nodoPermiso = BuscarEnArbol(arbol, idPermisoNuevo);
-            if (nodoPermiso == null) return false;
-
-            // Si idGrupo ya es alcanzable DESDE el permiso que quiero agregar,
-            // agregarlo como hijo de idGrupo cerraría el ciclo.
-            return BuscarEnArbol(nodoPermiso, idGrupo) != null;
+            clsBitacoraBE b = new clsBitacoraBE();
+            b.UsuarioId = clsSesionActual.GetInstancia().IdUsuario;
+            b.Actividad = "Modificación de Permisos de Grupo";
+            b.Informacion = "Grupo: " + grupo.Nombre + " | ANTES: " + antesTexto + " | DESPUÉS: " + despuesTexto;
+            clsBitacoraBLL.Registrar(b);
         }
+        public void RegistrarCambioRolesUsuario(clsUsuarioBE usuario, List<clsRolBE> rolesAntes, List<clsRolBE> rolesDespues)
+        {
+            string antesTexto = rolesAntes.Count > 0 ? string.Join(", ", rolesAntes.Select(r => r.Nombre)) : "(ninguno)";
+            string despuesTexto = rolesDespues.Count > 0 ? string.Join(", ", rolesDespues.Select(r => r.Nombre)) : "(ninguno)";
+
+            clsBitacoraBE b = new clsBitacoraBE();
+            b.UsuarioId = clsSesionActual.GetInstancia().IdUsuario;
+            b.Actividad = "Modificación de Roles de Usuario";
+            b.Informacion = "Usuario: " + usuario.NombreUsuario + " | ANTES: " + antesTexto + " | DESPUÉS: " + despuesTexto;
+            clsBitacoraBLL.Registrar(b);
+        }
+
         public bool AsignarARol(int IdUsuario, int IdRol)
         {
             if (IdUsuario <= 0) return false;
-            if (IdRol <= 0) return false;   
+            if (IdRol <= 0) return false;
             return dal.AsignarRolUsuario(IdUsuario, IdRol);
         }
         public bool QuitarRolUsuario(int IdUsuario, int IdRol)
@@ -69,18 +105,18 @@ namespace BLL
             if (IdRol <= 0) return false;
             return dal.QuitarRolUsuario(IdUsuario, IdRol);
         }
-#endregion
+        #endregion
         #region metodos lectura
         public List<clsRolBE> GetRolesUsuario(int IdUsuario)
         {
             if (IdUsuario <= 0) return new List<clsRolBE>();
             return dal.GetRolesPorUsuario(IdUsuario);
         }
-
         public clsComponenteRol BuscarEnArbol(clsComponenteRol nodo, int idBuscado)
         {
             return BuscarEnArbolInterno(nodo, idBuscado, new HashSet<int>());
         }
+
         private clsComponenteRol BuscarEnArbolInterno(clsComponenteRol nodo, int idBuscado, HashSet<int> visitados)
         {
             if (nodo == null) return null;
@@ -145,10 +181,10 @@ namespace BLL
         {
             List<clsRolBE> roles = GetRolesUsuario(IdUsuario);
             clsComponenteRol arbol = GetArbol();
-             
+
             foreach (clsRolBE rol in roles)
             {
-                clsComponenteRol nodo = BuscarEnArbol(arbol,rol.IdRol);
+                clsComponenteRol nodo = BuscarEnArbol(arbol, rol.IdRol);
                 if (nodo != null)
                 {
                     List<string> permisos = nodo.ObtenerPermisos();
@@ -178,12 +214,26 @@ namespace BLL
         {
             return dal.QuitarTodosLosPermisosDeGrupo(idGrupo);
         }
+
+        // Esta la agregaste vos para evitar ciclos al asignar (a contiene a b, b contiene a a) —
+        // si ya la tenés en tu archivo, no la borres, andá directo a comparar el resto.
+        public bool CrearianCiclo(int idGrupo, int idPermisoNuevo)
+        {
+            if (idGrupo == idPermisoNuevo) return true;
+
+            clsComponenteRol arbol = GetArbol();
+            clsComponenteRol nodoPermiso = BuscarEnArbol(arbol, idPermisoNuevo);
+            if (nodoPermiso == null) return false;
+
+            return BuscarEnArbol(nodoPermiso, idGrupo) != null;
+        }
+
         public bool QuitarTodosLosRoles(int idUsuario)
         {
 
             if (idUsuario <= 0) return false;
             clsUsuarioDAL dal = new clsUsuarioDAL();
-            return dal.QuitarRolesUsuario(idUsuario);               
+            return dal.QuitarRolesUsuario(idUsuario);
         }
         #endregion
     }

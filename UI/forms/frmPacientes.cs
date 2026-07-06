@@ -53,8 +53,10 @@ namespace UI
         //metodos del formulario
         public void cargarGrilla()
         {
-            var lista = bllPaciente.GetAll();
+            var lista = chkVerEliminados.Checked ? bllPaciente.GetEliminados() : bllPaciente.GetAll();
             dgvPacientes.DataSource = lista;
+            if (dgvPacientes.Columns["Activo"] != null)
+                dgvPacientes.Columns["Activo"].Visible = false;
         }
         public void bloquearCampos()
         {
@@ -174,6 +176,8 @@ namespace UI
                 habilitarCampos();
                 btnGuardar.Enabled = puedeModificar;
                 btnEliminar.Enabled = puedeEliminar;
+                button1.Enabled = chkVerEliminados.Checked && puedeEliminar;
+
             }
         }
 
@@ -233,6 +237,31 @@ namespace UI
                 dgvPacientes.Columns["ObraSocial"].HeaderText = g.Traducir("colObraSocial");
             }
         }
+
+        private void chkVerEliminados_CheckedChanged(object sender, EventArgs e)
+        {
+            bool viendoEliminados = chkVerEliminados.Checked;
+            btnNuevo.Enabled = !viendoEliminados && puedeAgregar;
+            button1.Enabled = viendoEliminados && puedeEliminar;
+            limpiarCampos();
+            bloquearCampos();
+            cargarGrilla();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (idSeleccionado <= 0) return;
+            DialogResult confirm = MessageBox.Show(
+                "¿Restaurar este paciente?", "Confirmar restauración", MessageBoxButtons.YesNo);
+            if (confirm == DialogResult.Yes)
+            {
+                bllPaciente.Restaurar(idSeleccionado);
+                cargarGrilla();
+                bloquearCampos();
+                limpiarCampos();
+            }
+        }
+
         private void PersonalizarForm()
         {
             this.BackColor = Color.FromArgb(245, 245, 245);

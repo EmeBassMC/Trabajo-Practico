@@ -29,6 +29,9 @@
         private void InitializeComponent()
         {
             this.grpProfesional = new System.Windows.Forms.GroupBox();
+            this.btnRestaurar = new System.Windows.Forms.Button();
+            this.chkVerEliminados = new System.Windows.Forms.CheckBox();
+            this.lblEspecialidad = new System.Windows.Forms.Label();
             this.lblMatricula = new System.Windows.Forms.Label();
             this.txtMatricula = new System.Windows.Forms.TextBox();
             this.cmbEspecialidad = new System.Windows.Forms.ComboBox();
@@ -45,13 +48,14 @@
             this.txtApellido = new System.Windows.Forms.TextBox();
             this.txtNombre = new System.Windows.Forms.TextBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.lblEspecialidad = new System.Windows.Forms.Label();
             this.grpProfesional.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // grpProfesional
             // 
+            this.grpProfesional.Controls.Add(this.btnRestaurar);
+            this.grpProfesional.Controls.Add(this.chkVerEliminados);
             this.grpProfesional.Controls.Add(this.lblEspecialidad);
             this.grpProfesional.Controls.Add(this.lblMatricula);
             this.grpProfesional.Controls.Add(this.txtMatricula);
@@ -75,6 +79,36 @@
             this.grpProfesional.TabStop = false;
             this.grpProfesional.Text = "Profesional";
             this.grpProfesional.Enter += new System.EventHandler(this.grpProfesional_Enter);
+            // 
+            // btnRestaurar
+            // 
+            this.btnRestaurar.Location = new System.Drawing.Point(6, 249);
+            this.btnRestaurar.Name = "btnRestaurar";
+            this.btnRestaurar.Size = new System.Drawing.Size(81, 23);
+            this.btnRestaurar.TabIndex = 25;
+            this.btnRestaurar.Text = "Restaurar";
+            this.btnRestaurar.UseVisualStyleBackColor = true;
+            this.btnRestaurar.Click += new System.EventHandler(this.btnRestaurar_Click);
+            // 
+            // chkVerEliminados
+            // 
+            this.chkVerEliminados.AutoSize = true;
+            this.chkVerEliminados.Location = new System.Drawing.Point(7, 228);
+            this.chkVerEliminados.Name = "chkVerEliminados";
+            this.chkVerEliminados.Size = new System.Drawing.Size(95, 17);
+            this.chkVerEliminados.TabIndex = 24;
+            this.chkVerEliminados.Text = "Ver Eliminados";
+            this.chkVerEliminados.UseVisualStyleBackColor = true;
+            this.chkVerEliminados.CheckedChanged += new System.EventHandler(this.chkVerEliminados_CheckedChanged);
+            // 
+            // lblEspecialidad
+            // 
+            this.lblEspecialidad.AutoSize = true;
+            this.lblEspecialidad.Location = new System.Drawing.Point(13, 140);
+            this.lblEspecialidad.Name = "lblEspecialidad";
+            this.lblEspecialidad.Size = new System.Drawing.Size(67, 13);
+            this.lblEspecialidad.TabIndex = 23;
+            this.lblEspecialidad.Text = "Especialidad";
             // 
             // lblMatricula
             // 
@@ -211,16 +245,7 @@
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.Size = new System.Drawing.Size(407, 278);
             this.dataGridView1.TabIndex = 3;
-            this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
-            // 
-            // lblEspecialidad
-            // 
-            this.lblEspecialidad.AutoSize = true;
-            this.lblEspecialidad.Location = new System.Drawing.Point(13, 140);
-            this.lblEspecialidad.Name = "lblEspecialidad";
-            this.lblEspecialidad.Size = new System.Drawing.Size(67, 13);
-            this.lblEspecialidad.TabIndex = 23;
-            this.lblEspecialidad.Text = "Especialidad";
+            this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
             // frmProfesional
             // 
@@ -260,5 +285,7 @@
         private System.Windows.Forms.ComboBox cmbEspecialidad;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Label lblEspecialidad;
+        private System.Windows.Forms.Button btnRestaurar;
+        private System.Windows.Forms.CheckBox chkVerEliminados;
     }
 }

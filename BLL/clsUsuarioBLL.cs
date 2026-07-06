@@ -10,19 +10,19 @@ namespace BLL
 
         public bool Login(string nombreUsuario, string password)
         {
-        try
-            { 
-            if (string.IsNullOrEmpty(nombreUsuario)) return false;
-            if (string.IsNullOrEmpty(password)) return false;
+            try
+            {
+                if (string.IsNullOrEmpty(nombreUsuario)) return false;
+                if (string.IsNullOrEmpty(password)) return false;
 
-            clsUsuarioBE usuario = dal.GetByUsername(nombreUsuario);
+                clsUsuarioBE usuario = dal.GetByUsername(nombreUsuario);
 
-            if(usuario == null) return false;
+                if (usuario == null) return false;
                 bool resultado = seg.VerificarPassword(password, usuario.PasswordHash);
 
                 clsBitacoraBE b = new clsBitacoraBE();
                 b.UsuarioId = usuario.IdUsuario;
-                b.Actividad = "Login";
+                b.Actividad = "Inicio de Sesión";
                 b.Informacion = resultado ? "OK - " + nombreUsuario : "ERROR - " + nombreUsuario;
                 clsBitacoraBLL.Registrar(b);
 
@@ -47,8 +47,8 @@ namespace BLL
                 bool resultado = dal.Insert(usuario);
                 clsBitacoraBE b = new clsBitacoraBE();
                 b.UsuarioId = clsSesionActual.GetInstancia().IdUsuario;
-                b.Actividad = "Registrar Usuario";
-                b.Informacion = resultado ? "OK - Id: " + usuario.IdUsuario: "ERROR";
+                b.Actividad = "Alta de Usuario";
+                b.Informacion = resultado ? "OK - Id: " + usuario.IdUsuario : "ERROR";
                 clsBitacoraBLL.Registrar(b);
                 return resultado;
             }
@@ -60,28 +60,51 @@ namespace BLL
         }
 
         public bool Eliminar(int id)
-        {           
-                try
-                {
-                    if (id <= 0) return false;
-                    clsUsuarioDAL dal = new clsUsuarioDAL();
-                    dal.QuitarRolesUsuario(id);
-                    bool resultado = dal.Delete(id);
+        {
+            try
+            {
+                if (id <= 0) return false;
+                clsUsuarioDAL dal = new clsUsuarioDAL();
+                bool resultado = dal.Delete(id);
 
-                    clsBitacoraBE b = new clsBitacoraBE();
-                    b.UsuarioId = clsSesionActual.GetInstancia().IdUsuario;
-                    b.Actividad = "Delete Usuario";
-                    b.Informacion = resultado ? "OK - Id: " + id : "ERROR";
-                    clsBitacoraBLL.Registrar(b);
+                clsBitacoraBE b = new clsBitacoraBE();
+                b.UsuarioId = clsSesionActual.GetInstancia().IdUsuario;
+                b.Actividad = "Baja de Usuario";
+                b.Informacion = resultado ? "OK - Id: " + id : "ERROR";
+                clsBitacoraBLL.Registrar(b);
 
-                    return resultado;
-                }
-                catch (Exception ex)
-                {
-                    string v = ex.ToString();
-                    return false;
-                }           
+                return resultado;
+            }
+            catch (Exception ex)
+            {
+                string v = ex.ToString();
+                return false;
+            }
         }
+
+        public bool Restaurar(int id)
+        {
+            try
+            {
+                if (id <= 0) return false;
+                clsUsuarioDAL dal = new clsUsuarioDAL();
+                bool resultado = dal.Restaurar(id);
+
+                clsBitacoraBE b = new clsBitacoraBE();
+                b.UsuarioId = clsSesionActual.GetInstancia().IdUsuario;
+                b.Actividad = "Restauración de Usuario";
+                b.Informacion = resultado ? "OK - Id: " + id : "ERROR";
+                clsBitacoraBLL.Registrar(b);
+
+                return resultado;
+            }
+            catch (Exception ex)
+            {
+                string v = ex.ToString();
+                return false;
+            }
+        }
+
         #region metodos lectura
         public clsUsuarioBE GetByUsername(string username)
         {
@@ -106,6 +129,12 @@ namespace BLL
         {
             clsUsuarioDAL dal = new clsUsuarioDAL();
             return dal.GetAll();
+        }
+
+        public List<clsUsuarioBE> GetEliminados()
+        {
+            clsUsuarioDAL dal = new clsUsuarioDAL();
+            return dal.GetEliminados();
         }
         #endregion
     }

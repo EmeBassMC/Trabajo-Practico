@@ -73,18 +73,37 @@ namespace DAL
                 SqlTransaction tran = con.BeginTransaction();
                 try
                 {
-                    SqlCommand cmd = new SqlCommand(@"DELETE FROM Especialidad WHERE IdEspecialidad = @IdEspecialidad",con, tran);
+                    SqlCommand cmd = new SqlCommand(@"UPDATE Especialidad SET Activo = 0 WHERE IdEspecialidad = @IdEspecialidad", con, tran);
                     cmd.Parameters.AddWithValue("@IdEspecialidad", IdEspecialidad);
                     cmd.ExecuteNonQuery();
                     tran.Commit();
                     return true;
                 }
-                catch 
+                catch
                 {
                     tran.Rollback();
-
                     return false;
-                    
+                }
+            }
+        }
+        public bool Restaurar(int IdEspecialidad)
+        {
+            using (SqlConnection con = clsConexionDAL.GetConnection())
+            {
+                con.Open();
+                SqlTransaction tran = con.BeginTransaction();
+                try
+                {
+                    SqlCommand cmd = new SqlCommand(@"UPDATE Especialidad SET Activo = 1 WHERE IdEspecialidad = @IdEspecialidad", con, tran);
+                    cmd.Parameters.AddWithValue("@IdEspecialidad", IdEspecialidad);
+                    cmd.ExecuteNonQuery();
+                    tran.Commit();
+                    return true;
+                }
+                catch
+                {
+                    tran.Rollback();
+                    return false;
                 }
             }
         }
@@ -113,9 +132,8 @@ namespace DAL
             using (SqlConnection con = clsConexionDAL.GetConnection())
             {
                 con.Open();
-                SqlCommand cmd = new SqlCommand("SELECT * FROM Especialidad",con);
+                SqlCommand cmd = new SqlCommand("SELECT * FROM Especialidad WHERE Activo = 1", con);
                 SqlDataReader dr = cmd.ExecuteReader();
-
                 while (dr.Read())
                 {
                     listaEspecialidades.Add(Mapear(dr));
@@ -123,6 +141,22 @@ namespace DAL
                 return listaEspecialidades;
             }
         }
+        public List<clsEspecialidadBE> GetEliminadas()
+        {
+            List<clsEspecialidadBE> lista = new List<clsEspecialidadBE>();
+            using (SqlConnection con = clsConexionDAL.GetConnection())
+            {
+                con.Open();
+                SqlCommand cmd = new SqlCommand("SELECT * FROM Especialidad WHERE Activo = 0", con);
+                SqlDataReader dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    lista.Add(Mapear(dr));
+                }
+            }
+            return lista;
+        }
+
         #endregion
 
         #region Mapper
@@ -130,9 +164,9 @@ namespace DAL
         {
             return new clsEspecialidadBE
             {
-                
                 IdEspecialidad = (int)dr["IdEspecialidad"],
-                Nombre = dr["Nombre"].ToString()
+                Nombre = dr["Nombre"].ToString(),
+                Activo = (bool)dr["Activo"]
             };
         }
         #endregion

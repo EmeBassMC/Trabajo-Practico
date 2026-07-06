@@ -36,6 +36,8 @@
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.lblNombre = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.chkVerEliminados = new System.Windows.Forms.CheckBox();
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -94,7 +96,7 @@
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.Size = new System.Drawing.Size(320, 220);
             this.dataGridView1.TabIndex = 5;
-            this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
+            this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
             // lblNombre
             // 
@@ -107,6 +109,8 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.chkVerEliminados);
+            this.groupBox1.Controls.Add(this.button1);
             this.groupBox1.Controls.Add(this.dataGridView1);
             this.groupBox1.Controls.Add(this.lblNombre);
             this.groupBox1.Controls.Add(this.txtNombre);
@@ -120,6 +124,27 @@
             this.groupBox1.TabIndex = 7;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Especialidades";
+            // 
+            // chkVerEliminados
+            // 
+            this.chkVerEliminados.AutoSize = true;
+            this.chkVerEliminados.Location = new System.Drawing.Point(217, 363);
+            this.chkVerEliminados.Name = "chkVerEliminados";
+            this.chkVerEliminados.Size = new System.Drawing.Size(95, 17);
+            this.chkVerEliminados.TabIndex = 8;
+            this.chkVerEliminados.Text = "Ver Eliminados";
+            this.chkVerEliminados.UseVisualStyleBackColor = true;
+            this.chkVerEliminados.CheckedChanged += new System.EventHandler(this.chkVerEliminados_CheckedChanged);
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(318, 359);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 7;
+            this.button1.Text = "Restaurar";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // frmEspecialidad
             // 
@@ -148,5 +173,7 @@
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Label lblNombre;
         private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.CheckBox chkVerEliminados;
+        private System.Windows.Forms.Button button1;
     }
 }

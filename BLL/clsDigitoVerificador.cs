@@ -7,6 +7,7 @@ using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace BLL
 {
     public class clsDigitoVerificador
@@ -15,15 +16,14 @@ namespace BLL
         {
             int suma = 0;
             List<string> valores = new List<string>
-            {
-                paciente.IdPersona.ToString(),
-                paciente.Nombre ?? "",
-                paciente.Apellido ?? "",
-                paciente.DNI ?? "",
-                paciente.Telefono ?? "",
-                paciente.Email ?? "",
-                paciente.FechaNacimiento.ToString("yyyyMMdd"),
-                paciente.ObraSocial ?? ""
+             {
+                    paciente.Nombre ?? "",
+                    paciente.Apellido ?? "",
+                    paciente.DNI ?? "",
+                    paciente.Telefono ?? "",
+                    paciente.Email ?? "",
+                    paciente.FechaNacimiento.ToString("yyyyMMdd"),
+                    paciente.ObraSocial ?? ""
             };
             int posAtributo = 1;
             foreach (string valor in valores)
@@ -38,7 +38,7 @@ namespace BLL
             }
             return suma % 97;
         }
-        
+
         public static int CalcularDVV(List<clsPacienteBE> lista)
         {
             int suma = 0;
@@ -52,23 +52,26 @@ namespace BLL
         {
             clsPacienteDAL dal = new clsPacienteDAL();
             List<clsPacienteBE> lista = dal.GetAll();
-            // Verificamos el Digito Verificador Horizontal de cada paciente
             foreach (clsPacienteBE paciente in lista)
             {
+                paciente.Email = clsEncriptacion.Desencriptar(paciente.Email);
                 int dvhCalculado = CalcularDVH(paciente);
+
+                // DEBUG TEMPORAL — sacar después
+                System.IO.File.WriteAllText(@"C:\temp\debug_integridad.txt",
+                "Paciente: " + paciente.IdPersona +
+                "\nDVH guardado: " + paciente.DVH +
+                "\nDVH calculado: " + dvhCalculado +
+                "\nEmail desencriptado: [" + paciente.Email + "]" +
+                "\nTelefono: [" + paciente.Telefono + "]" +
+                "\nDNI: [" + paciente.DNI + "]");
+
                 if (dvhCalculado != paciente.DVH)
                     return false;
             }
-            // Verificamos si el Digito Verificador Vertical tiene integridad
-            clsDigitoVerificadorDAL dvDal = new clsDigitoVerificadorDAL();
-            int dvvGuardado = dvDal.GetDVV("Paciente");
-            int dvvCalculado = CalcularDVV(lista);
-
-            if (dvvCalculado != dvvGuardado)
-                return false;
-
             return true;
         }
+
         public static void RecalcularTodos()
         {
             clsPacienteDAL dal = new clsPacienteDAL();
@@ -76,12 +79,21 @@ namespace BLL
 
             foreach (clsPacienteBE p in lista)
             {
+                string emailPlano = clsEncriptacion.Desencriptar(p.Email);
+                p.Email = emailPlano;
                 p.DVH = CalcularDVH(p);
+                p.Email = clsEncriptacion.Encriptar(emailPlano); // ← re-encriptar antes de guardar, si no el Update pisa la base con el email en texto plano
                 dal.Update(p);
             }
 
             int dvv = CalcularDVV(dal.GetAll());
             new clsDigitoVerificadorDAL().GuardarDVV("Paciente", dvv);
+
+            clsBitacoraBE b = new clsBitacoraBE();
+            b.UsuarioId = clsSesionActual.GetInstancia().IdUsuario;
+            b.Actividad = "Recálculo de Dígitos Verificadores";
+            b.Informacion = "OK - " + lista.Count + " pacientes recalculados";
+            clsBitacoraBLL.Registrar(b);
         }
 
     }

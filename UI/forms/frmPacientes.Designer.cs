@@ -48,6 +48,8 @@
             this.txtDNI = new System.Windows.Forms.TextBox();
             this.txtApellido = new System.Windows.Forms.TextBox();
             this.txtNombre = new System.Windows.Forms.TextBox();
+            this.chkVerEliminados = new System.Windows.Forms.CheckBox();
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPacientes)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -60,7 +62,6 @@
             this.dgvPacientes.Size = new System.Drawing.Size(373, 150);
             this.dgvPacientes.TabIndex = 0;
             this.dgvPacientes.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvPacientes_CellContentClick);
-            this.dgvPacientes.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvPacientes_CellContentClick);
             // 
             // groupBox1
             // 
@@ -111,7 +112,7 @@
             // 
             // btnEliminar
             // 
-            this.btnEliminar.Location = new System.Drawing.Point(116, 272);
+            this.btnEliminar.Location = new System.Drawing.Point(119, 272);
             this.btnEliminar.Name = "btnEliminar";
             this.btnEliminar.Size = new System.Drawing.Size(152, 23);
             this.btnEliminar.TabIndex = 17;
@@ -243,11 +244,34 @@
             this.txtNombre.TabIndex = 0;
             this.txtNombre.TextChanged += new System.EventHandler(this.txtNombre_TextChanged);
             // 
+            // chkVerEliminados
+            // 
+            this.chkVerEliminados.AutoSize = true;
+            this.chkVerEliminados.Location = new System.Drawing.Point(12, 512);
+            this.chkVerEliminados.Name = "chkVerEliminados";
+            this.chkVerEliminados.Size = new System.Drawing.Size(95, 17);
+            this.chkVerEliminados.TabIndex = 2;
+            this.chkVerEliminados.Text = "Ver Eliminados";
+            this.chkVerEliminados.UseVisualStyleBackColor = true;
+            this.chkVerEliminados.CheckedChanged += new System.EventHandler(this.chkVerEliminados_CheckedChanged);
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(113, 508);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 3;
+            this.button1.Text = "Restaurar";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // frmPacientes
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(404, 522);
+            this.ClientSize = new System.Drawing.Size(404, 558);
+            this.Controls.Add(this.button1);
+            this.Controls.Add(this.chkVerEliminados);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.dgvPacientes);
             this.Name = "frmPacientes";
@@ -258,6 +282,7 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -283,5 +308,7 @@
         private System.Windows.Forms.Button btnEliminar;
         private System.Windows.Forms.Button btnGuardar;
         private System.Windows.Forms.Button btnNuevo;
+        private System.Windows.Forms.CheckBox chkVerEliminados;
+        private System.Windows.Forms.Button button1;
     }
 }

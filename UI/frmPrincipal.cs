@@ -187,6 +187,35 @@ namespace UI
             frm.MdiParent = this;
             frm.Show();
         }
+
+        private void sOLOADMINToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!rolBll.TienePermiso(clsSesionActual.GetInstancia().IdUsuario, "Sistema.Mantenimiento"))
+            {
+                MessageBox.Show(clsGestorIdioma.GetInstancia().Traducir("msgSinPermisos"));
+                return;
+            }
+
+            DialogResult confirm = MessageBox.Show(
+                "Esto va a recalcular el DVH/DVV de todos los pacientes a partir de sus datos actuales.\n" +
+                "Usalo solo si sabés lo que estás haciendo (por ejemplo, después de cargar datos iniciales).\n\n" +
+                "¿Continuar?",
+                "Recalcular Dígitos Verificadores",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning);
+
+            if (confirm != DialogResult.Yes) return;
+
+            try
+            {
+                clsDigitoVerificador.RecalcularTodos();
+                MessageBox.Show("Recálculo completado correctamente.");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al recalcular: " + ex.Message);
+            }
+        }
     }
      
 }

@@ -13,13 +13,13 @@ namespace BLL
                 if (turno.IDPaciente <= 0) return false;
                 if (turno.IDProfesional <= 0) return false;
                 if (turno.FechaHora <= DateTime.Now) return false;
-                if(EstaDisponbile(turno.IDProfesional, turno.FechaHora) == false) return false;
+                if (EstaDisponbile(turno.IDProfesional, turno.FechaHora) == false) return false;
 
                 clsTurnosDAL dal = new clsTurnosDAL();
                 bool resultado = dal.Insert(turno);
                 clsBitacoraBE b = new clsBitacoraBE();
                 b.UsuarioId = clsSesionActual.GetInstancia().IdUsuario;
-                b.Actividad = "Insert Turno";
+                b.Actividad = "Alta de Turno";
                 b.Informacion = resultado ? "OK - Id: " + turno.IDTurno : "ERROR";
                 clsBitacoraBLL.Registrar(b);
                 return resultado;
@@ -28,22 +28,22 @@ namespace BLL
             {
                 string a = ex.Message;
                 return false;
-            }              
+            }
         }
         public bool Cancelar(int id)
         {
             try
             {
-                if(id <= 0 ) return false;
+                if (id <= 0) return false;
                 clsTurnosDAL dal = new clsTurnosDAL();
-                clsTurnoBE  turno = dal.GetById(id);
+                clsTurnoBE turno = dal.GetById(id);
                 if (turno == null) return false;
                 if (turno.Estado == EstadoTurnosBE.Cancelado) return false;
                 turno.Estado = EstadoTurnosBE.Cancelado;
                 bool resultado = dal.Update(turno);
                 clsBitacoraBE b = new clsBitacoraBE();
                 b.UsuarioId = clsSesionActual.GetInstancia().IdUsuario;
-                b.Actividad = "Cancelar Turno";
+                b.Actividad = "Cancelación de Turno";
                 b.Informacion = resultado ? "OK - Id: " + turno.IDTurno : "ERROR";
                 clsBitacoraBLL.Registrar(b);
                 return resultado;
@@ -67,7 +67,7 @@ namespace BLL
                 bool resultado = dal.Update(turno);
                 clsBitacoraBE b = new clsBitacoraBE();
                 b.UsuarioId = clsSesionActual.GetInstancia().IdUsuario;
-                b.Actividad = "Confirmar Turno";
+                b.Actividad = "Confirmación de Turno";
                 b.Informacion = resultado ? "OK - Id: " + turno.IDTurno : "ERROR";
                 clsBitacoraBLL.Registrar(b);
                 return resultado;
@@ -93,7 +93,7 @@ namespace BLL
 
                 clsBitacoraBE b = new clsBitacoraBE();
                 b.UsuarioId = clsSesionActual.GetInstancia().IdUsuario;
-                b.Actividad = "Update Turno";
+                b.Actividad = "Modificación de Turno";
                 b.Informacion = resultado ?
                     "ANTES - ID:" + anterior.IDTurno + " Pac:" + anterior.IDPaciente + " Prof:" + anterior.IDProfesional + " Fecha:" + anterior.FechaHora + " Estado:" + anterior.Estado +
                     " | DESPUÉS - ID:" + turno.IDTurno + " Pac:" + turno.IDPaciente + " Prof:" + turno.IDProfesional + " Fecha:" + turno.FechaHora + " Estado:" + turno.Estado
@@ -153,7 +153,7 @@ namespace BLL
                 return null;
             }
         }
-        
+
 
         private bool EstaDisponbile(int IdProfesional, DateTime fechaHora)
         {
@@ -168,4 +168,3 @@ namespace BLL
         #endregion
     }
 }
-
