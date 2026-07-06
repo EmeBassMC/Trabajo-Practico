@@ -21,6 +21,17 @@ namespace BLL
             clsBitacoraDAL dal = new clsBitacoraDAL();
             return dal.GetAll();
         }
+        public List<clsBitacoraBE> GetFiltrado(clsBitacoraFiltroBE filtro)
+        {
+            clsBitacoraDAL dal = new clsBitacoraDAL();
+            return dal.GetFiltrado(filtro);
+        }
+
+        public List<string> GetActividadesDistintas()
+        {
+            clsBitacoraDAL dal = new clsBitacoraDAL();
+            return dal.GetActividadesDistintas();
+        }
     }   
 }
 

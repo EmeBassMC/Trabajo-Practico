@@ -43,9 +43,20 @@ namespace BLL
             return dal.Update(rol);
         }
 
-        
 
 
+        public bool CrearianCiclo(int idGrupo, int idPermisoNuevo)
+        {
+            if (idGrupo == idPermisoNuevo) return true; // un grupo no puede contenerse a sí mismo
+
+            clsComponenteRol arbol = GetArbol();
+            clsComponenteRol nodoPermiso = BuscarEnArbol(arbol, idPermisoNuevo);
+            if (nodoPermiso == null) return false;
+
+            // Si idGrupo ya es alcanzable DESDE el permiso que quiero agregar,
+            // agregarlo como hijo de idGrupo cerraría el ciclo.
+            return BuscarEnArbol(nodoPermiso, idGrupo) != null;
+        }
         public bool AsignarARol(int IdUsuario, int IdRol)
         {
             if (IdUsuario <= 0) return false;
@@ -65,16 +76,24 @@ namespace BLL
             if (IdUsuario <= 0) return new List<clsRolBE>();
             return dal.GetRolesPorUsuario(IdUsuario);
         }
+
         public clsComponenteRol BuscarEnArbol(clsComponenteRol nodo, int idBuscado)
+        {
+            return BuscarEnArbolInterno(nodo, idBuscado, new HashSet<int>());
+        }
+        private clsComponenteRol BuscarEnArbolInterno(clsComponenteRol nodo, int idBuscado, HashSet<int> visitados)
         {
             if (nodo == null) return null;
             if (nodo.IdRol == idBuscado) return nodo;
+
+            if (visitados.Contains(nodo.IdRol)) return null; // ya pasamos por acá: corta el ciclo
+            visitados.Add(nodo.IdRol);
 
             if (nodo is csRolGrupo)
             {
                 foreach (clsComponenteRol hijo in ((csRolGrupo)nodo).Hijos)
                 {
-                    clsComponenteRol resultado = BuscarEnArbol(hijo, idBuscado);
+                    clsComponenteRol resultado = BuscarEnArbolInterno(hijo, idBuscado, visitados);
                     if (resultado != null) return resultado;
                 }
             }
@@ -155,6 +174,10 @@ namespace BLL
             return dal.QuitarPermiso(idRol, idPermiso);
         }
 
+        public bool QuitarTodosLosPermisosDeGrupo(int idGrupo)
+        {
+            return dal.QuitarTodosLosPermisosDeGrupo(idGrupo);
+        }
         public bool QuitarTodosLosRoles(int idUsuario)
         {
 

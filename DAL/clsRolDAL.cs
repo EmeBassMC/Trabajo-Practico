@@ -274,6 +274,24 @@ namespace DAL
                 catch { tran.Rollback(); return false; }
             }
         }
+        public bool QuitarTodosLosPermisosDeGrupo(int idGrupo)
+        {
+            using (SqlConnection con = clsConexionDAL.GetConnection())
+            {
+                con.Open();
+                SqlTransaction tran = con.BeginTransaction();
+                try
+                {
+                    SqlCommand cmd = new SqlCommand(
+                        "DELETE FROM RolPermiso WHERE IdRol = @IdGrupo", con, tran);
+                    cmd.Parameters.AddWithValue("@IdGrupo", idGrupo);
+                    cmd.ExecuteNonQuery();
+                    tran.Commit();
+                    return true;
+                }
+                catch { tran.Rollback(); return false; }
+            }
+        }
         private clsRolBE Mapear(SqlDataReader dr)
         {
             return new clsRolBE

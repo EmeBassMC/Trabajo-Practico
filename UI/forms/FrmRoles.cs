@@ -122,13 +122,14 @@ namespace UI.forms
                     MessageBox.Show("No podés asignar permisos directamente a Sistema.");
                     return;
                 }
-
+                bll.QuitarTodosLosPermisosDeGrupo(grupo.IdRol);
                 foreach (TreeNode raiz in trvPermisos.Nodes)
                     foreach (TreeNode hijo in raiz.Nodes)
                         GuardarChecksRecursivo(hijo, grupo.IdRol);
 
                 cargarGrupos();
                 CargarArbolPermisos();
+                CargarJerarquiaGrupoSeleccionado(grupo);
             }
             catch (Exception ex)
             {
@@ -139,8 +140,13 @@ namespace UI.forms
         private void cargarGrupos()
         {
             List<clsRolBE> todos = bll.GetAll();
+            clsRolBE sistema = todos.Find(r => r.Nombre == "Sistema");
+            List<int> idsAsignables = bll.GetPermisosPorRol(sistema.IdRol).Select(r => r.IdRol).ToList();
+
             lstGrupos.DataSource = null;
-            lstGrupos.DataSource = todos.Where(r => r.EsGrupo && r.Nombre != "Sistema").ToList();
+            lstGrupos.DataSource = todos
+                .Where(r => r.EsGrupo && r.Nombre != "Sistema" && idsAsignables.Contains(r.IdRol))
+                .ToList();
             lstGrupos.DisplayMember = "Nombre";
             lstGrupos.ValueMember = "IdRol";
         }
@@ -271,6 +277,7 @@ namespace UI.forms
             foreach (TreeNode raiz in trvPermisos.Nodes)
                 MarcarAsignados(raiz, permisosAsignados);
             _actualizandoChecks = false;
+            CargarJerarquiaGrupoSeleccionado(grupo);
         }
 
         private void MarcarAsignados(TreeNode nodo, List<clsRolBE> asignados)
@@ -328,41 +335,86 @@ namespace UI.forms
 
         private void AgregarHijosLectura(TreeNode nodoTree, clsComponenteRol componente)
         {
+            AgregarHijosLectura(nodoTree, componente, new HashSet<int> { componente.IdRol });
+        }
+
+        private void AgregarHijosLectura(TreeNode nodoTree, clsComponenteRol componente, HashSet<int> visitados)
+        {
             if (!(componente is csRolGrupo)) return;
             foreach (clsComponenteRol hijo in ((csRolGrupo)componente).Hijos)
             {
+                if (visitados.Contains(hijo.IdRol)) continue;
+                visitados.Add(hijo.IdRol);
+
                 TreeNode nodoHijo = new TreeNode(hijo.Nombre);
-                AgregarHijosLectura(nodoHijo, hijo);
+                AgregarHijosLectura(nodoHijo, hijo, visitados);
                 nodoTree.Nodes.Add(nodoHijo);
             }
         }
 
-        private void AgregarNodosPermiso(TreeNode nodo, csRolGrupo grupo, HashSet<int> ramaActual)
+        private void lstGruposView_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void tabPage1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void AgregarNodosPermiso(TreeNode nodo, csRolGrupo grupo, HashSet<int> visitados)
         {
             foreach (clsComponenteRol hijo in grupo.Hijos)
             {
-                if (ramaActual.Contains(hijo.IdRol)) continue;
+                if (visitados.Contains(hijo.IdRol)) continue;
+                visitados.Add(hijo.IdRol); // global: una vez dibujado, no se repite en otra rama
 
                 TreeNode nuevoNodo = new TreeNode(hijo.Nombre);
                 nuevoNodo.Tag = hijo.IdRol;
 
                 if (hijo is csRolGrupo)
-                {
-                    HashSet<int> nuevaRama = new HashSet<int>(ramaActual);
-                    nuevaRama.Add(hijo.IdRol);
-                    AgregarNodosPermiso(nuevoNodo, (csRolGrupo)hijo, nuevaRama);
-                }
+                    AgregarNodosPermiso(nuevoNodo, (csRolGrupo)hijo, visitados);
 
                 nodo.Nodes.Add(nuevoNodo);
             }
         }
+
+        private void trvPermisos_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+
+        }
+
         private void GuardarChecksRecursivo(TreeNode nodo, int idGrupo)
         {
             int idPermiso = (int)nodo.Tag;
+
             if (idPermiso != idGrupo && nodo.Checked)
+            {
+                if (bll.CrearianCiclo(idGrupo, idPermiso))
+                {
+                    MessageBox.Show("No se puede asignar '" + nodo.Text + "': crearía un ciclo entre los grupos.");
+                    return;
+                }
                 bll.AsignarPermiso(idGrupo, idPermiso);
+                return;
+            }
+
             foreach (TreeNode hijo in nodo.Nodes)
                 GuardarChecksRecursivo(hijo, idGrupo);
+        }
+        private void CargarJerarquiaGrupoSeleccionado(clsRolBE grupo)
+        {
+            trvGruposJerarquia.Nodes.Clear();
+            if (grupo == null) return;
+
+            clsComponenteRol arbol = bll.GetArbol();
+            clsComponenteRol nodo = bll.BuscarEnArbol(arbol, grupo.IdRol);
+            if (nodo == null) return;
+
+            TreeNode nodoRaiz = new TreeNode(nodo.Nombre);
+            AgregarHijosLectura(nodoRaiz, nodo);
+            trvGruposJerarquia.Nodes.Add(nodoRaiz);
+            trvGruposJerarquia.ExpandAll();
         }
     }
 }
