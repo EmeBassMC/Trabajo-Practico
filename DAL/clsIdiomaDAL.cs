@@ -95,12 +95,11 @@ namespace DAL
                 try
                 {
                     SqlCommand cmd = new SqlCommand(
-                        @"INSERT INTO Traduccion (IdIdioma, Clave, Texto)
-                  SELECT @IdNuevo, Clave, ''
-                  FROM Traduccion 
-                  WHERE IdIdioma = 1
-                  AND Clave NOT IN (
-                      SELECT Clave FROM Traduccion WHERE IdIdioma = @IdNuevo
+                        @"INSERT INTO Traduccion (IdIdioma, IdClave, Texto)
+                  SELECT @IdNuevo, tc.IdClave, ''
+                  FROM TraduccionClave tc
+                  WHERE tc.IdClave NOT IN (
+                      SELECT IdClave FROM Traduccion WHERE IdIdioma = @IdNuevo
                   )", con, tran);
                     cmd.Parameters.AddWithValue("@IdNuevo", idIdiomaNuevo);
                     cmd.ExecuteNonQuery();

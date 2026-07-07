@@ -116,9 +116,17 @@ namespace DAL
                 SqlTransaction tran = con.BeginTransaction();
                 try
                 {
+                    // Traer todos los idiomas UNA sola vez, antes del loop
+                    List<int> idsIdiomas = new List<int>();
+                    SqlCommand cmdIdiomas = new SqlCommand("SELECT IdIdioma FROM Idioma", con, tran);
+                    using (SqlDataReader drIdiomas = cmdIdiomas.ExecuteReader())
+                    {
+                        while (drIdiomas.Read())
+                            idsIdiomas.Add((int)drIdiomas["IdIdioma"]);
+                    }
+
                     foreach (KeyValuePair<string, string> kvp in claves)
                     {
-                        // Verificar si la clave existe en TraduccionClave
                         SqlCommand cmdCheck = new SqlCommand(
                             "SELECT COUNT(*) FROM TraduccionClave WHERE Clave = @Clave", con, tran);
                         cmdCheck.Parameters.AddWithValue("@Clave", kvp.Key);
@@ -126,23 +134,26 @@ namespace DAL
 
                         if (existe == 0)
                         {
-                            // Insertar clave nueva y obtener su Id
                             SqlCommand cmdInsertClave = new SqlCommand(
                                 "INSERT INTO TraduccionClave (Clave) VALUES (@Clave); SELECT SCOPE_IDENTITY()", con, tran);
                             cmdInsertClave.Parameters.AddWithValue("@Clave", kvp.Key);
                             int idClave = Convert.ToInt32(cmdInsertClave.ExecuteScalar());
 
-                            // Insertar traducción para idioma 1
-                            SqlCommand cmdInsert = new SqlCommand(
-                                "INSERT INTO Traduccion (IdIdioma, IdClave, Texto) VALUES (1, @IdClave, @Texto)", con, tran);
-                            cmdInsert.Parameters.AddWithValue("@IdClave", idClave);
-                            cmdInsert.Parameters.AddWithValue("@Texto", kvp.Value);
-                            cmdInsert.ExecuteNonQuery();
+                            // Insertar traducción para TODOS los idiomas — el base (1) con el texto detectado, el resto vacío
+                            foreach (int idIdioma in idsIdiomas)
+                            {
+                                string texto = idIdioma == 1 ? kvp.Value : "";
+                                SqlCommand cmdInsert = new SqlCommand(
+                                    "INSERT INTO Traduccion (IdIdioma, IdClave, Texto) VALUES (@IdIdioma, @IdClave, @Texto)", con, tran);
+                                cmdInsert.Parameters.AddWithValue("@IdIdioma", idIdioma);
+                                cmdInsert.Parameters.AddWithValue("@IdClave", idClave);
+                                cmdInsert.Parameters.AddWithValue("@Texto", texto);
+                                cmdInsert.ExecuteNonQuery();
+                            }
                             count++;
                         }
                         else
                         {
-                            // Obtener IdClave existente
                             SqlCommand cmdGetId = new SqlCommand(
                                 "SELECT IdClave FROM TraduccionClave WHERE Clave = @Clave", con, tran);
                             cmdGetId.Parameters.AddWithValue("@Clave", kvp.Key);
