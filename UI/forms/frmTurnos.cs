@@ -84,6 +84,24 @@ namespace UI
 
             if (modoEdicion == false)
             {
+                // Sin esto, si no hay pacientes o profesionales cargados todavía,
+                // SelectedValue es null y el (int) de abajo tira NullReferenceException.
+                if (cmbPaciente.SelectedValue == null)
+                {
+                    MessageBox.Show("Tenés que cargar al menos un Paciente antes de crear un Turno.");
+                    return;
+                }
+                if (cbmProfesional.SelectedValue == null)
+                {
+                    MessageBox.Show("Tenés que cargar al menos un Profesional antes de crear un Turno.");
+                    return;
+                }
+                if (dtpFechaTurno.Value <= DateTime.Now)
+                {
+                    MessageBox.Show("La fecha y hora del turno tiene que ser futura.");
+                    return;
+                }
+
                 clsTurnoBE turno = new clsTurnoBE();
                 turno.IDPaciente = (int)cmbPaciente.SelectedValue;
                 turno.IDProfesional = (int)cbmProfesional.SelectedValue;
@@ -97,7 +115,7 @@ namespace UI
                 }
                 else
                 {
-                    MessageBox.Show(g.Traducir("msgErrorGuardar"));
+                    MessageBox.Show("No se pudo guardar. Puede que el profesional ya tenga un turno en ese horario.");
                 }
             }
             cargarGrilla();
@@ -252,6 +270,11 @@ namespace UI
             cmbEstado.SelectedIndex = 0;
             dtpFechaTurno.Value = DateTime.Now;
             idSeleccionado = 0;
+        }
+
+        private void Turnos_Enter(object sender, EventArgs e)
+        {
+
         }
 
         private void frmTurnos_FormClosed(object sender, FormClosedEventArgs e)

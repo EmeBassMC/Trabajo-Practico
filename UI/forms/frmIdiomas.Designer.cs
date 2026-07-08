@@ -165,6 +165,7 @@
             this.tabTraducciones.TabIndex = 1;
             this.tabTraducciones.Text = "Traducciones";
             this.tabTraducciones.UseVisualStyleBackColor = true;
+            this.tabTraducciones.Click += new System.EventHandler(this.tabTraducciones_Click);
             // 
             // button1
             // 
@@ -212,7 +213,7 @@
             this.dgvTraducciones.Name = "dgvTraducciones";
             this.dgvTraducciones.Size = new System.Drawing.Size(664, 299);
             this.dgvTraducciones.TabIndex = 4;
-            this.dgvTraducciones.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvTraducciones_CellContentClick);
+            this.dgvTraducciones.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvTraducciones_CellContentClick);
             // 
             // cmbIdioma
             // 

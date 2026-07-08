@@ -54,15 +54,13 @@
             // 
             // grpProfesional
             // 
-            this.grpProfesional.Controls.Add(this.btnRestaurar);
-            this.grpProfesional.Controls.Add(this.chkVerEliminados);
             this.grpProfesional.Controls.Add(this.lblEspecialidad);
             this.grpProfesional.Controls.Add(this.lblMatricula);
             this.grpProfesional.Controls.Add(this.txtMatricula);
             this.grpProfesional.Controls.Add(this.cmbEspecialidad);
+            this.grpProfesional.Controls.Add(this.btnEliminar);
             this.grpProfesional.Controls.Add(this.btnNuevo);
             this.grpProfesional.Controls.Add(this.btnGuardar);
-            this.grpProfesional.Controls.Add(this.btnEliminar);
             this.grpProfesional.Controls.Add(this.lblFechaNac);
             this.grpProfesional.Controls.Add(this.lblDNI);
             this.grpProfesional.Controls.Add(this.lblApellido);
@@ -74,7 +72,7 @@
             this.grpProfesional.Controls.Add(this.txtNombre);
             this.grpProfesional.Location = new System.Drawing.Point(2, 12);
             this.grpProfesional.Name = "grpProfesional";
-            this.grpProfesional.Size = new System.Drawing.Size(373, 278);
+            this.grpProfesional.Size = new System.Drawing.Size(587, 228);
             this.grpProfesional.TabIndex = 0;
             this.grpProfesional.TabStop = false;
             this.grpProfesional.Text = "Profesional";
@@ -82,7 +80,7 @@
             // 
             // btnRestaurar
             // 
-            this.btnRestaurar.Location = new System.Drawing.Point(6, 249);
+            this.btnRestaurar.Location = new System.Drawing.Point(107, 509);
             this.btnRestaurar.Name = "btnRestaurar";
             this.btnRestaurar.Size = new System.Drawing.Size(81, 23);
             this.btnRestaurar.TabIndex = 11;
@@ -93,7 +91,7 @@
             // chkVerEliminados
             // 
             this.chkVerEliminados.AutoSize = true;
-            this.chkVerEliminados.Location = new System.Drawing.Point(7, 228);
+            this.chkVerEliminados.Location = new System.Drawing.Point(15, 513);
             this.chkVerEliminados.Name = "chkVerEliminados";
             this.chkVerEliminados.Size = new System.Drawing.Size(95, 17);
             this.chkVerEliminados.TabIndex = 10;
@@ -125,6 +123,7 @@
             this.txtMatricula.Name = "txtMatricula";
             this.txtMatricula.Size = new System.Drawing.Size(100, 20);
             this.txtMatricula.TabIndex = 1;
+            this.txtMatricula.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtMatricula_KeyPress);
             // 
             // cmbEspecialidad
             // 
@@ -136,17 +135,17 @@
             // 
             // btnNuevo
             // 
-            this.btnNuevo.Location = new System.Drawing.Point(122, 198);
+            this.btnNuevo.Location = new System.Drawing.Point(58, 188);
             this.btnNuevo.Name = "btnNuevo";
             this.btnNuevo.Size = new System.Drawing.Size(107, 23);
             this.btnNuevo.TabIndex = 8;
-            this.btnNuevo.Text = "Nuevo";
+            this.btnNuevo.Text = "Habilitar Edicion";
             this.btnNuevo.UseVisualStyleBackColor = true;
             this.btnNuevo.Click += new System.EventHandler(this.btnNuevo_Click);
             // 
             // btnGuardar
             // 
-            this.btnGuardar.Location = new System.Drawing.Point(9, 198);
+            this.btnGuardar.Location = new System.Drawing.Point(474, 17);
             this.btnGuardar.Name = "btnGuardar";
             this.btnGuardar.Size = new System.Drawing.Size(107, 23);
             this.btnGuardar.TabIndex = 7;
@@ -156,9 +155,9 @@
             // 
             // btnEliminar
             // 
-            this.btnEliminar.Location = new System.Drawing.Point(252, 236);
+            this.btnEliminar.Location = new System.Drawing.Point(474, 43);
             this.btnEliminar.Name = "btnEliminar";
-            this.btnEliminar.Size = new System.Drawing.Size(115, 23);
+            this.btnEliminar.Size = new System.Drawing.Size(107, 23);
             this.btnEliminar.TabIndex = 12;
             this.btnEliminar.Text = "Eliminar";
             this.btnEliminar.UseVisualStyleBackColor = true;
@@ -202,7 +201,7 @@
             // 
             // btnCancelar
             // 
-            this.btnCancelar.Location = new System.Drawing.Point(235, 198);
+            this.btnCancelar.Location = new System.Drawing.Point(474, 72);
             this.btnCancelar.Name = "btnCancelar";
             this.btnCancelar.Size = new System.Drawing.Size(107, 23);
             this.btnCancelar.TabIndex = 9;
@@ -223,6 +222,8 @@
             this.txtDNI.Name = "txtDNI";
             this.txtDNI.Size = new System.Drawing.Size(99, 20);
             this.txtDNI.TabIndex = 4;
+            this.txtDNI.TextChanged += new System.EventHandler(this.txtDNI_TextChanged);
+            this.txtDNI.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtDNI_KeyPress);
             // 
             // txtApellido
             // 
@@ -230,6 +231,8 @@
             this.txtApellido.Name = "txtApellido";
             this.txtApellido.Size = new System.Drawing.Size(99, 20);
             this.txtApellido.TabIndex = 3;
+            this.txtApellido.TextChanged += new System.EventHandler(this.txtApellido_TextChanged);
+            this.txtApellido.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtApellido_KeyPress);
             // 
             // txtNombre
             // 
@@ -237,13 +240,15 @@
             this.txtNombre.Name = "txtNombre";
             this.txtNombre.Size = new System.Drawing.Size(99, 20);
             this.txtNombre.TabIndex = 2;
+            this.txtNombre.TextChanged += new System.EventHandler(this.txtNombre_TextChanged);
+            this.txtNombre.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtNombre_KeyPress);
             // 
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(381, 12);
+            this.dataGridView1.Location = new System.Drawing.Point(2, 246);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(407, 278);
+            this.dataGridView1.Size = new System.Drawing.Size(587, 257);
             this.dataGridView1.TabIndex = 1;
             this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
@@ -251,7 +256,9 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 399);
+            this.ClientSize = new System.Drawing.Size(597, 544);
+            this.Controls.Add(this.btnRestaurar);
+            this.Controls.Add(this.chkVerEliminados);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.grpProfesional);
             this.Name = "frmProfesional";
@@ -262,6 +269,7 @@
             this.grpProfesional.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 

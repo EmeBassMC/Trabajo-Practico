@@ -82,6 +82,7 @@
             this.Turnos.TabIndex = 0;
             this.Turnos.TabStop = false;
             this.Turnos.Text = "Turnos";
+            this.Turnos.Enter += new System.EventHandler(this.Turnos_Enter);
             // 
             // label2
             // 
@@ -220,7 +221,7 @@
             this.dgvTurnos.Name = "dgvTurnos";
             this.dgvTurnos.Size = new System.Drawing.Size(778, 179);
             this.dgvTurnos.TabIndex = 1;
-            this.dgvTurnos.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvTurnos_CellContentClick);
+            this.dgvTurnos.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvTurnos_CellContentClick);
             // 
             // frmTurnos
             // 

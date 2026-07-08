@@ -151,7 +151,6 @@ namespace UI
             rolesToolStripMenuItem.Text = g.Traducir("mnuRoles");
             usuariosToolStripMenuItem.Text = g.Traducir("mnuUsuarios");
             bitacoraToolStripMenuItem.Text = g.Traducir("mnuBitacora");
-            consultasToolStripMenuItem.Text = g.Traducir("mnuConsultas");
         }
 
         private void frmPrincipal_FormClosed(object sender, FormClosedEventArgs e)
@@ -164,16 +163,22 @@ namespace UI
 
         }
 
-        private void cmbIdiomaPrincipal_Click(object sender, EventArgs e)
-        {
-            if (cmbIdiomaPrincipal.SelectedItem == null) return;
-            clsGestorIdioma.GetInstancia().CambiarIdioma(cmbIdiomaPrincipal.SelectedItem.ToString());
-        }
-
         private void cmbIdiomaPrincipal_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (cmbIdiomaPrincipal.SelectedItem == null) return;
-            clsGestorIdioma.GetInstancia().CambiarIdioma(cmbIdiomaPrincipal.SelectedItem.ToString());
+
+            string codigo = cmbIdiomaPrincipal.SelectedItem.ToString();
+            clsGestorIdioma.GetInstancia().CambiarIdioma(codigo);
+
+            if (codigo != "en" && clsGestorIdioma.GetInstancia().TieneClavesSinTraducir())
+            {
+                MessageBox.Show(
+                    "Este idioma todavía no tiene todas las traducciones cargadas. " +
+                    "Los textos faltantes se van a mostrar en inglés.",
+                    "Idioma incompleto",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+            }
         }
 
         private void idiomasToolStripMenuItem_Click(object sender, EventArgs e)

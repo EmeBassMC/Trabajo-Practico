@@ -41,7 +41,7 @@
             this.dgvHistorial.Name = "dgvHistorial";
             this.dgvHistorial.Size = new System.Drawing.Size(776, 176);
             this.dgvHistorial.TabIndex = 0;
-            this.dgvHistorial.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvHistorial_CellContentClick);
+            this.dgvHistorial.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvHistorial_CellContentClick);
             // 
             // btnRestaurar
             // 

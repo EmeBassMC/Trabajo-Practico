@@ -56,7 +56,7 @@ namespace UI
         {
             var lista = chkVerEliminados.Checked ? bllPaciente.GetEliminados() : bllPaciente.GetAll();
             dgvPacientes.DataSource = lista;
-            if (dgvPacientes.Columns["DVH"] != null)          // quitamos el view de DVH
+            if (dgvPacientes.Columns["DVH"] != null)          
                 dgvPacientes.Columns["DVH"].Visible = false;
             if (dgvPacientes.Columns["Activo"] != null)
                 dgvPacientes.Columns["Activo"].Visible = false;
@@ -103,8 +103,18 @@ namespace UI
 
         private void btnGuardar_Click(object sender, EventArgs e)
         {
-            var g = clsGestorIdioma.GetInstancia(); // agregar al inicio
+            var g = clsGestorIdioma.GetInstancia();
 
+            if (!txtDNI.Text.All(char.IsDigit))
+            {
+                MessageBox.Show("El DNI debe contener solo números.");
+                return;
+            }
+            if (!txtTelefono.Text.All(char.IsDigit))
+            {
+                MessageBox.Show("El telefono debe contener solo números.");
+                return;
+            }
             if (modoEdicion == false)
             {
                 clsPacienteBE paciente = new clsPacienteBE();
@@ -279,6 +289,30 @@ namespace UI
         private void groupBox1_Enter(object sender, EventArgs e)
         {
 
+        }
+
+        private void txtTelefono_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
+            {
+                e.Handled = true; // bloquea el caracter
+            }
+        }
+
+        private void txtNombre_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsLetter(e.KeyChar) && !char.IsControl(e.KeyChar) && e.KeyChar != ' ')
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void txtApellido_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsLetter(e.KeyChar) && !char.IsControl(e.KeyChar) && e.KeyChar != ' ')
+            {
+                e.Handled = true;
+            }
         }
 
         private void PersonalizarForm()

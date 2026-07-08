@@ -339,5 +339,10 @@ namespace UI.forms
             }
             catch (Exception ex) { MessageBox.Show("Error: " + ex.Message); }
         }
+
+        private void tabTraducciones_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

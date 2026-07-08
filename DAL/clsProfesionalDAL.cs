@@ -142,47 +142,17 @@ namespace DAL
                 }
             }
         }
-        public List<clsProfesionalBE> GetEliminados()
-        {
-            List<clsProfesionalBE> lista = new List<clsProfesionalBE>();
-            using (SqlConnection con = clsConexionDAL.GetConnection())
-            {
-                con.Open();
-                SqlCommand cmd = new SqlCommand("SELECT * FROM Profesional WHERE Activo = 0", con);
-                SqlDataReader dr = cmd.ExecuteReader();
-                while (dr.Read())
-                {
-                    lista.Add(Mapear(dr));
-                }
-            }
-            return lista;
-        }
-        //metodos de solo lectura para mostrar información de la DB, GetById, GetAll, GetByDNI
-        public clsProfesionalBE GetByID(int IdProfesional)
-        {
-            clsProfesionalBE Profesional = null; //si el Profesional esta vacio va a devolver siempre null
-            using (SqlConnection con = clsConexionDAL.GetConnection())
-            {
-                con.Open();
-                SqlCommand cmd = new SqlCommand(
-                    "SELECT * FROM Profesional WHERE IdProfesional = @IdProfesional", con);
-                cmd.Parameters.AddWithValue("@IdProfesional", IdProfesional);
-                SqlDataReader dr = cmd.ExecuteReader();
-                //hacemos un if para pasar el dr.read porque la idea es que nos devuelva una sola fila
-                if (dr.Read())
-                {
-                    Profesional = Mapear(dr);
-                }
-                return Profesional;
-            }
-        }
         public List<clsProfesionalBE> GetAll()
         {
             List<clsProfesionalBE> listaProfesional = new List<clsProfesionalBE>();
             using (SqlConnection con = clsConexionDAL.GetConnection())
             {
                 con.Open();
-                SqlCommand cmd = new SqlCommand("SELECT * FROM Profesional WHERE Activo = 1", con);
+                SqlCommand cmd = new SqlCommand(
+                    @"SELECT p.*, e.Nombre AS NombreEspecialidad
+              FROM Profesional p
+              INNER JOIN Especialidad e ON e.IdEspecialidad = p.IdEspecialidad
+              WHERE p.Activo = 1", con);
                 SqlDataReader dr = cmd.ExecuteReader();
                 while (dr.Read())
                 {
@@ -192,24 +162,64 @@ namespace DAL
             }
         }
 
-        public clsProfesionalBE GetByDNI(string dni)
+        public List<clsProfesionalBE> GetEliminados()
         {
-            clsProfesionalBE Profesional = null;
-
+            List<clsProfesionalBE> lista = new List<clsProfesionalBE>();
             using (SqlConnection con = clsConexionDAL.GetConnection())
             {
                 con.Open();
                 SqlCommand cmd = new SqlCommand(
-                    "SELECT * FROM Profesional WHERE DNI = @DNI", con);
-                cmd.Parameters.AddWithValue("@DNI", dni);
+                    @"SELECT p.*, e.Nombre AS NombreEspecialidad
+              FROM Profesional p
+              INNER JOIN Especialidad e ON e.IdEspecialidad = p.IdEspecialidad
+              WHERE p.Activo = 0", con);
+                SqlDataReader dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    lista.Add(Mapear(dr));
+                }
+            }
+            return lista;
+        }
 
+        public clsProfesionalBE GetByID(int id)
+        {
+            using (SqlConnection con = clsConexionDAL.GetConnection())
+            {
+                con.Open();
+                SqlCommand cmd = new SqlCommand(
+                    @"SELECT p.*, e.Nombre AS NombreEspecialidad
+              FROM Profesional p
+              INNER JOIN Especialidad e ON e.IdEspecialidad = p.IdEspecialidad
+              WHERE p.IdProfesional = @Id", con);
+                cmd.Parameters.AddWithValue("@Id", id);
                 SqlDataReader dr = cmd.ExecuteReader();
                 if (dr.Read())
                 {
-                    Profesional = Mapear(dr);
+                    return Mapear(dr);
                 }
             }
-            return Profesional;
+            return null;
+        }
+
+        public clsProfesionalBE GetByDNI(string dni)
+        {
+            using (SqlConnection con = clsConexionDAL.GetConnection())
+            {
+                con.Open();
+                SqlCommand cmd = new SqlCommand(
+                    @"SELECT p.*, e.Nombre AS NombreEspecialidad
+              FROM Profesional p
+              INNER JOIN Especialidad e ON e.IdEspecialidad = p.IdEspecialidad
+              WHERE p.DNI = @DNI", con);
+                cmd.Parameters.AddWithValue("@DNI", dni);
+                SqlDataReader dr = cmd.ExecuteReader();
+                if (dr.Read())
+                {
+                    return Mapear(dr);
+                }
+            }
+            return null;
         }
         private clsProfesionalBE Mapear(SqlDataReader dr)
         {
@@ -224,7 +234,8 @@ namespace DAL
                 Email = dr["Email"] == DBNull.Value ? "" : dr["Email"].ToString(),
                 Matricula = dr["Matricula"].ToString(),
                 IdEspecialidad = (int)dr["IdEspecialidad"],
-                Activo = (bool)dr["Activo"]
+                Activo = (bool)dr["Activo"],
+                NombreEspecialidad = dr["NombreEspecialidad"].ToString()  
             };
         }
 
