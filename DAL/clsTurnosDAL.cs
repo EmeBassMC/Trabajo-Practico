@@ -75,29 +75,30 @@ namespace DAL
                 }
             }
         }
-        public bool Delete(int idTurno)
-        {
-            using (SqlConnection con = clsConexionDAL.GetConnection())
-            {
-                con.Open();
-                SqlTransaction tran = con.BeginTransaction();
-                try
-                {
-                    SqlCommand cmd = new SqlCommand(
-                        "DELETE FROM Turno WHERE IdTurno = @IdTurno", con, tran);
-                    cmd.Parameters.AddWithValue("@IdTurno", idTurno);
+        //se deja comentado porque nose utiliza borrado fisico solo logico con deshabilitacion en el sistema
+        //public bool Delete(int idTurno)
+        //{
+        //    using (SqlConnection con = clsConexionDAL.GetConnection())
+        //    {
+        //        con.Open();
+        //        SqlTransaction tran = con.BeginTransaction();
+        //        try
+        //        {
+        //            SqlCommand cmd = new SqlCommand(
+        //                "DELETE FROM Turno WHERE IdTurno = @IdTurno", con, tran);
+        //            cmd.Parameters.AddWithValue("@IdTurno", idTurno);
 
-                    cmd.ExecuteNonQuery();
-                    tran.Commit();
-                    return true;
-                }
-                catch
-                {
-                    tran.Rollback();
-                    return false;
-                }
-            }
-        }
+        //            cmd.ExecuteNonQuery();
+        //            tran.Commit();
+        //            return true;
+        //        }
+        //        catch
+        //        {
+        //            tran.Rollback();
+        //            return false;
+        //        }
+        //    }
+        //}
         #endregion
         #region metodos de lectura
         public clsTurnoBE GetById(int idTurno)

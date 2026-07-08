@@ -57,15 +57,6 @@ namespace BLL
                 paciente.Email = clsEncriptacion.Desencriptar(paciente.Email);
                 int dvhCalculado = CalcularDVH(paciente);
 
-                // DEBUG TEMPORAL — sacar después
-                System.IO.File.WriteAllText(@"C:\temp\debug_integridad.txt",
-                "Paciente: " + paciente.IdPersona +
-                "\nDVH guardado: " + paciente.DVH +
-                "\nDVH calculado: " + dvhCalculado +
-                "\nEmail desencriptado: [" + paciente.Email + "]" +
-                "\nTelefono: [" + paciente.Telefono + "]" +
-                "\nDNI: [" + paciente.DNI + "]");
-
                 if (dvhCalculado != paciente.DVH)
                     return false;
             }
