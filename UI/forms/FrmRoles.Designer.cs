@@ -19,6 +19,7 @@
         {
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.trvGruposJerarquia = new System.Windows.Forms.TreeView();
             this.trvPermisos = new System.Windows.Forms.TreeView();
             this.lblPermisos = new System.Windows.Forms.Label();
             this.lblGrupos = new System.Windows.Forms.Label();
@@ -35,7 +36,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.btnGuardarUsuario = new System.Windows.Forms.Button();
             this.lstUsuarios = new System.Windows.Forms.ListBox();
-            this.trvGruposJerarquia = new System.Windows.Forms.TreeView();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -72,13 +72,20 @@
             this.tabPage1.UseVisualStyleBackColor = true;
             this.tabPage1.Click += new System.EventHandler(this.tabPage1_Click);
             // 
+            // trvGruposJerarquia
+            // 
+            this.trvGruposJerarquia.Location = new System.Drawing.Point(337, 57);
+            this.trvGruposJerarquia.Name = "trvGruposJerarquia";
+            this.trvGruposJerarquia.Size = new System.Drawing.Size(373, 423);
+            this.trvGruposJerarquia.TabIndex = 6;
+            // 
             // trvPermisos
             // 
             this.trvPermisos.CheckBoxes = true;
             this.trvPermisos.Location = new System.Drawing.Point(716, 27);
             this.trvPermisos.Name = "trvPermisos";
             this.trvPermisos.Size = new System.Drawing.Size(353, 591);
-            this.trvPermisos.TabIndex = 16;
+            this.trvPermisos.TabIndex = 8;
             this.trvPermisos.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.trvPermisos_AfterCheck);
             this.trvPermisos.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.trvPermisos_AfterSelect);
             // 
@@ -88,7 +95,7 @@
             this.lblPermisos.Location = new System.Drawing.Point(713, 11);
             this.lblPermisos.Name = "lblPermisos";
             this.lblPermisos.Size = new System.Drawing.Size(149, 13);
-            this.lblPermisos.TabIndex = 17;
+            this.lblPermisos.TabIndex = 7;
             this.lblPermisos.Text = "Arbol de permisos en cascada";
             // 
             // lblGrupos
@@ -97,7 +104,7 @@
             this.lblGrupos.Location = new System.Drawing.Point(3, 6);
             this.lblGrupos.Name = "lblGrupos";
             this.lblGrupos.Size = new System.Drawing.Size(41, 13);
-            this.lblGrupos.TabIndex = 18;
+            this.lblGrupos.TabIndex = 0;
             this.lblGrupos.Text = "Grupos";
             // 
             // txtNombre
@@ -105,14 +112,14 @@
             this.txtNombre.Location = new System.Drawing.Point(418, 29);
             this.txtNombre.Name = "txtNombre";
             this.txtNombre.Size = new System.Drawing.Size(76, 20);
-            this.txtNombre.TabIndex = 13;
+            this.txtNombre.TabIndex = 3;
             // 
             // btnActualizarAsignacion
             // 
             this.btnActualizarAsignacion.Location = new System.Drawing.Point(581, 29);
             this.btnActualizarAsignacion.Name = "btnActualizarAsignacion";
             this.btnActualizarAsignacion.Size = new System.Drawing.Size(75, 23);
-            this.btnActualizarAsignacion.TabIndex = 12;
+            this.btnActualizarAsignacion.TabIndex = 5;
             this.btnActualizarAsignacion.Text = "Actualizar";
             this.btnActualizarAsignacion.UseVisualStyleBackColor = true;
             this.btnActualizarAsignacion.Click += new System.EventHandler(this.btnGuardarAsignacion_Click);
@@ -122,7 +129,7 @@
             this.btnEliminarGrupo.Location = new System.Drawing.Point(500, 29);
             this.btnEliminarGrupo.Name = "btnEliminarGrupo";
             this.btnEliminarGrupo.Size = new System.Drawing.Size(75, 23);
-            this.btnEliminarGrupo.TabIndex = 11;
+            this.btnEliminarGrupo.TabIndex = 4;
             this.btnEliminarGrupo.Text = "Eliminar";
             this.btnEliminarGrupo.UseVisualStyleBackColor = true;
             this.btnEliminarGrupo.Click += new System.EventHandler(this.btnEliminarGrupo_Click);
@@ -132,7 +139,7 @@
             this.btnCrearGrupo.Location = new System.Drawing.Point(337, 27);
             this.btnCrearGrupo.Name = "btnCrearGrupo";
             this.btnCrearGrupo.Size = new System.Drawing.Size(75, 23);
-            this.btnCrearGrupo.TabIndex = 10;
+            this.btnCrearGrupo.TabIndex = 2;
             this.btnCrearGrupo.Text = "Crear";
             this.btnCrearGrupo.UseVisualStyleBackColor = true;
             this.btnCrearGrupo.Click += new System.EventHandler(this.btnCrearGrupo_Click);
@@ -143,7 +150,7 @@
             this.lstGrupos.Location = new System.Drawing.Point(6, 27);
             this.lstGrupos.Name = "lstGrupos";
             this.lstGrupos.Size = new System.Drawing.Size(316, 576);
-            this.lstGrupos.TabIndex = 7;
+            this.lstGrupos.TabIndex = 1;
             this.lstGrupos.SelectedIndexChanged += new System.EventHandler(this.lstGrupos_SelectedIndexChanged);
             // 
             // tabPage2
@@ -169,14 +176,14 @@
             this.trvRolesUsuario.Location = new System.Drawing.Point(723, 29);
             this.trvRolesUsuario.Name = "trvRolesUsuario";
             this.trvRolesUsuario.Size = new System.Drawing.Size(320, 589);
-            this.trvRolesUsuario.TabIndex = 17;
+            this.trvRolesUsuario.TabIndex = 6;
             // 
             // trvRolesAsignados
             // 
             this.trvRolesAsignados.Location = new System.Drawing.Point(330, 60);
             this.trvRolesAsignados.Name = "trvRolesAsignados";
             this.trvRolesAsignados.Size = new System.Drawing.Size(387, 268);
-            this.trvRolesAsignados.TabIndex = 18;
+            this.trvRolesAsignados.TabIndex = 5;
             // 
             // lblRolesAsignados
             // 
@@ -184,7 +191,7 @@
             this.lblRolesAsignados.Location = new System.Drawing.Point(327, 44);
             this.lblRolesAsignados.Name = "lblRolesAsignados";
             this.lblRolesAsignados.Size = new System.Drawing.Size(91, 13);
-            this.lblRolesAsignados.TabIndex = 19;
+            this.lblRolesAsignados.TabIndex = 4;
             this.lblRolesAsignados.Text = "Roles del usuario:";
             // 
             // label2
@@ -193,7 +200,7 @@
             this.label2.Location = new System.Drawing.Point(428, 11);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(131, 13);
-            this.label2.TabIndex = 20;
+            this.label2.TabIndex = 3;
             this.label2.Text = "Roles asignado al usuario:";
             // 
             // label1
@@ -202,7 +209,7 @@
             this.label1.Location = new System.Drawing.Point(9, 9);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(48, 13);
-            this.label1.TabIndex = 21;
+            this.label1.TabIndex = 0;
             this.label1.Text = "Usuarios";
             // 
             // btnGuardarUsuario
@@ -221,15 +228,8 @@
             this.lstUsuarios.Location = new System.Drawing.Point(8, 25);
             this.lstUsuarios.Name = "lstUsuarios";
             this.lstUsuarios.Size = new System.Drawing.Size(313, 589);
-            this.lstUsuarios.TabIndex = 0;
+            this.lstUsuarios.TabIndex = 1;
             this.lstUsuarios.SelectedIndexChanged += new System.EventHandler(this.lstUsuarios_SelectedIndexChanged);
-            // 
-            // trvGruposJerarquia
-            // 
-            this.trvGruposJerarquia.Location = new System.Drawing.Point(337, 57);
-            this.trvGruposJerarquia.Name = "trvGruposJerarquia";
-            this.trvGruposJerarquia.Size = new System.Drawing.Size(373, 423);
-            this.trvGruposJerarquia.TabIndex = 19;
             // 
             // Form1
             // 

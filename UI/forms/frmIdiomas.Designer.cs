@@ -84,7 +84,7 @@
             this.btnEliminar.Location = new System.Drawing.Point(226, 88);
             this.btnEliminar.Name = "btnEliminar";
             this.btnEliminar.Size = new System.Drawing.Size(88, 26);
-            this.btnEliminar.TabIndex = 15;
+            this.btnEliminar.TabIndex = 4;
             this.btnEliminar.Text = "Baja";
             this.btnEliminar.UseVisualStyleBackColor = true;
             this.btnEliminar.Click += new System.EventHandler(this.btnEliminar_Click);
@@ -94,7 +94,7 @@
             this.btnEditar.Location = new System.Drawing.Point(132, 88);
             this.btnEditar.Name = "btnEditar";
             this.btnEditar.Size = new System.Drawing.Size(88, 26);
-            this.btnEditar.TabIndex = 14;
+            this.btnEditar.TabIndex = 3;
             this.btnEditar.Text = "Modificion";
             this.btnEditar.UseVisualStyleBackColor = true;
             this.btnEditar.Click += new System.EventHandler(this.btnEditar_Click);
@@ -104,7 +104,7 @@
             this.btnAgregar.Location = new System.Drawing.Point(38, 88);
             this.btnAgregar.Name = "btnAgregar";
             this.btnAgregar.Size = new System.Drawing.Size(88, 26);
-            this.btnAgregar.TabIndex = 13;
+            this.btnAgregar.TabIndex = 2;
             this.btnAgregar.Text = "Alta";
             this.btnAgregar.UseVisualStyleBackColor = true;
             this.btnAgregar.Click += new System.EventHandler(this.btnAgregar_Click);
@@ -115,7 +115,7 @@
             this.lblNombre.Location = new System.Drawing.Point(35, 52);
             this.lblNombre.Name = "lblNombre";
             this.lblNombre.Size = new System.Drawing.Size(44, 13);
-            this.lblNombre.TabIndex = 12;
+            this.lblNombre.TabIndex = 7;
             this.lblNombre.Text = "Nombre";
             // 
             // lblCodigo
@@ -124,7 +124,7 @@
             this.lblCodigo.Location = new System.Drawing.Point(35, 26);
             this.lblCodigo.Name = "lblCodigo";
             this.lblCodigo.Size = new System.Drawing.Size(40, 13);
-            this.lblCodigo.TabIndex = 11;
+            this.lblCodigo.TabIndex = 6;
             this.lblCodigo.Text = "Codigo";
             // 
             // txtNombre
@@ -132,14 +132,14 @@
             this.txtNombre.Location = new System.Drawing.Point(85, 49);
             this.txtNombre.Name = "txtNombre";
             this.txtNombre.Size = new System.Drawing.Size(100, 20);
-            this.txtNombre.TabIndex = 10;
+            this.txtNombre.TabIndex = 1;
             // 
             // txtCodigo
             // 
             this.txtCodigo.Location = new System.Drawing.Point(85, 20);
             this.txtCodigo.Name = "txtCodigo";
             this.txtCodigo.Size = new System.Drawing.Size(100, 20);
-            this.txtCodigo.TabIndex = 9;
+            this.txtCodigo.TabIndex = 0;
             // 
             // lstIdiomas
             // 
@@ -147,7 +147,7 @@
             this.lstIdiomas.Location = new System.Drawing.Point(349, 26);
             this.lstIdiomas.Name = "lstIdiomas";
             this.lstIdiomas.Size = new System.Drawing.Size(289, 381);
-            this.lstIdiomas.TabIndex = 8;
+            this.lstIdiomas.TabIndex = 5;
             this.lstIdiomas.Click += new System.EventHandler(this.lstIdiomas_SelectedIndexChanged);
             // 
             // tabTraducciones
@@ -171,7 +171,7 @@
             this.button1.Location = new System.Drawing.Point(566, 104);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(107, 23);
-            this.button1.TabIndex = 18;
+            this.button1.TabIndex = 3;
             this.button1.Text = "Exportar Idiomas";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
@@ -181,7 +181,7 @@
             this.btnEscanearForms.Location = new System.Drawing.Point(598, 6);
             this.btnEscanearForms.Name = "btnEscanearForms";
             this.btnEscanearForms.Size = new System.Drawing.Size(75, 23);
-            this.btnEscanearForms.TabIndex = 17;
+            this.btnEscanearForms.TabIndex = 2;
             this.btnEscanearForms.Text = "Escanear";
             this.btnEscanearForms.UseVisualStyleBackColor = true;
             this.btnEscanearForms.Click += new System.EventHandler(this.btnEscanearForms_Click);
@@ -200,7 +200,7 @@
             this.btnGuardarTraduccion.Location = new System.Drawing.Point(63, 37);
             this.btnGuardarTraduccion.Name = "btnGuardarTraduccion";
             this.btnGuardarTraduccion.Size = new System.Drawing.Size(107, 23);
-            this.btnGuardarTraduccion.TabIndex = 5;
+            this.btnGuardarTraduccion.TabIndex = 1;
             this.btnGuardarTraduccion.Text = "Actualizar Idioma";
             this.btnGuardarTraduccion.UseVisualStyleBackColor = true;
             this.btnGuardarTraduccion.Click += new System.EventHandler(this.btnGuardarTraduccion_Click);
@@ -211,7 +211,7 @@
             this.dgvTraducciones.Location = new System.Drawing.Point(9, 133);
             this.dgvTraducciones.Name = "dgvTraducciones";
             this.dgvTraducciones.Size = new System.Drawing.Size(664, 299);
-            this.dgvTraducciones.TabIndex = 1;
+            this.dgvTraducciones.TabIndex = 4;
             this.dgvTraducciones.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvTraducciones_CellContentClick);
             // 
             // cmbIdioma

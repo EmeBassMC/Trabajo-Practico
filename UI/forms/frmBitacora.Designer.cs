@@ -48,14 +48,14 @@
             this.dataGridView1.Location = new System.Drawing.Point(8, 183);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.Size = new System.Drawing.Size(762, 296);
-            this.dataGridView1.TabIndex = 0;
+            this.dataGridView1.TabIndex = 6;
             // 
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(12, 12);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(77, 27);
-            this.button1.TabIndex = 1;
+            this.button1.TabIndex = 0;
             this.button1.Text = "Actualizar";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
@@ -67,7 +67,7 @@
             this.dtpDesde.Name = "dtpDesde";
             this.dtpDesde.ShowCheckBox = true;
             this.dtpDesde.Size = new System.Drawing.Size(99, 20);
-            this.dtpDesde.TabIndex = 2;
+            this.dtpDesde.TabIndex = 1;
             // 
             // dtpHasta
             // 
@@ -76,7 +76,7 @@
             this.dtpHasta.Name = "dtpHasta";
             this.dtpHasta.ShowCheckBox = true;
             this.dtpHasta.Size = new System.Drawing.Size(99, 20);
-            this.dtpHasta.TabIndex = 3;
+            this.dtpHasta.TabIndex = 2;
             // 
             // lblDesde
             // 
@@ -102,7 +102,7 @@
             this.cmbUsuario.Location = new System.Drawing.Point(672, 64);
             this.cmbUsuario.Name = "cmbUsuario";
             this.cmbUsuario.Size = new System.Drawing.Size(98, 21);
-            this.cmbUsuario.TabIndex = 6;
+            this.cmbUsuario.TabIndex = 3;
             // 
             // lblUsuario
             // 
@@ -128,14 +128,14 @@
             this.cmbActividad.Location = new System.Drawing.Point(672, 91);
             this.cmbActividad.Name = "cmbActividad";
             this.cmbActividad.Size = new System.Drawing.Size(98, 21);
-            this.cmbActividad.TabIndex = 9;
+            this.cmbActividad.TabIndex = 4;
             // 
             // btnFiltrar
             // 
             this.btnFiltrar.Location = new System.Drawing.Point(681, 118);
             this.btnFiltrar.Name = "btnFiltrar";
             this.btnFiltrar.Size = new System.Drawing.Size(75, 23);
-            this.btnFiltrar.TabIndex = 10;
+            this.btnFiltrar.TabIndex = 5;
             this.btnFiltrar.Text = "Filtrar";
             this.btnFiltrar.UseVisualStyleBackColor = true;
             this.btnFiltrar.Click += new System.EventHandler(this.btnFiltrar_Click);

@@ -32,6 +32,18 @@ namespace BLL
             clsBitacoraDAL dal = new clsBitacoraDAL();
             return dal.GetActividadesDistintas();
         }
+        public static void RegistrarError(string origen, Exception ex)
+        {
+            try
+            {
+                clsBitacoraBE b = new clsBitacoraBE();
+                b.UsuarioId = clsSesionActual.GetInstancia().IdUsuario;
+                b.Actividad = "Error del Sistema";
+                b.Informacion = origen + " - " + ex.Message;
+                Registrar(b);
+            }
+            catch { }
+        }
     }   
 }
 

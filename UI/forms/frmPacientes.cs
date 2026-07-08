@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using UI.forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace UI
@@ -55,6 +56,8 @@ namespace UI
         {
             var lista = chkVerEliminados.Checked ? bllPaciente.GetEliminados() : bllPaciente.GetAll();
             dgvPacientes.DataSource = lista;
+            if (dgvPacientes.Columns["DVH"] != null)          // quitamos el view de DVH
+                dgvPacientes.Columns["DVH"].Visible = false;
             if (dgvPacientes.Columns["Activo"] != null)
                 dgvPacientes.Columns["Activo"].Visible = false;
         }
@@ -260,6 +263,22 @@ namespace UI
                 bloquearCampos();
                 limpiarCampos();
             }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            if (idSeleccionado <= 0)
+            {
+                MessageBox.Show("Seleccioná un paciente primero.");
+                return;
+            }
+            frmHistorialCambios frm = new frmHistorialCambios(idSeleccionado);
+            frm.ShowDialog();
+        }
+
+        private void groupBox1_Enter(object sender, EventArgs e)
+        {
+
         }
 
         private void PersonalizarForm()

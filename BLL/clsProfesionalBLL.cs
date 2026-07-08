@@ -36,7 +36,7 @@ namespace BLL
             }
             catch (Exception ex)
             {
-                string v = ex.ToString();
+                clsBitacoraBLL.RegistrarError("clsProfesionalBLL", ex);
                 return false;
             }
         }
@@ -72,7 +72,7 @@ namespace BLL
             catch (Exception ex)
             {
 
-                string v = ex.ToString();
+                clsBitacoraBLL.RegistrarError("clsProfesionalBLL", ex);
                 return false;
             }
         }
@@ -94,7 +94,7 @@ namespace BLL
             }
             catch (Exception ex)
             {
-                string v = ex.ToString();
+                clsBitacoraBLL.RegistrarError("clsProfesionalBLL", ex);
                 return false;
             }
         }
@@ -116,7 +116,7 @@ namespace BLL
             }
             catch (Exception ex)
             {
-                string v = ex.ToString();
+                clsBitacoraBLL.RegistrarError("clsProfesionalBLL", ex);
                 return false;
             }
         }
@@ -140,7 +140,7 @@ namespace BLL
             }
             catch (Exception ex)
             {
-                string v = ex.ToString();
+                clsBitacoraBLL.RegistrarError("clsProfesionalBLL", ex);
                 return null;
             }
         }
@@ -157,7 +157,7 @@ namespace BLL
             catch (Exception ex)
             {
 
-                string v = ex.ToString();
+                clsBitacoraBLL.RegistrarError("clsProfesionalBLL", ex);
                 return null;
             }
         }
@@ -174,7 +174,7 @@ namespace BLL
             }
             catch (Exception ex)
             {
-                string msg = ex.ToString();
+                clsBitacoraBLL.RegistrarError("clsProfesionalBLL", ex);
                 return null;
             }
         }

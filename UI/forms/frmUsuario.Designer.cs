@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             this.grpUsuarios = new System.Windows.Forms.GroupBox();
+            this.btnRestaurar = new System.Windows.Forms.Button();
+            this.chkVerEliminados = new System.Windows.Forms.CheckBox();
             this.btnAlta = new System.Windows.Forms.Button();
             this.btnBaja = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
@@ -36,8 +38,6 @@
             this.txtClave = new System.Windows.Forms.TextBox();
             this.txtUsuario = new System.Windows.Forms.TextBox();
             this.dgvUsuarios = new System.Windows.Forms.DataGridView();
-            this.chkVerEliminados = new System.Windows.Forms.CheckBox();
-            this.btnRestaurar = new System.Windows.Forms.Button();
             this.grpUsuarios.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvUsuarios)).BeginInit();
             this.SuspendLayout();
@@ -56,16 +56,37 @@
             this.grpUsuarios.Location = new System.Drawing.Point(12, 12);
             this.grpUsuarios.Name = "grpUsuarios";
             this.grpUsuarios.Size = new System.Drawing.Size(721, 231);
-            this.grpUsuarios.TabIndex = 7;
+            this.grpUsuarios.TabIndex = 0;
             this.grpUsuarios.TabStop = false;
             this.grpUsuarios.Text = "Usuarios";
+            // 
+            // btnRestaurar
+            // 
+            this.btnRestaurar.Location = new System.Drawing.Point(15, 202);
+            this.btnRestaurar.Name = "btnRestaurar";
+            this.btnRestaurar.Size = new System.Drawing.Size(75, 23);
+            this.btnRestaurar.TabIndex = 6;
+            this.btnRestaurar.Text = "Restaurar";
+            this.btnRestaurar.UseVisualStyleBackColor = true;
+            this.btnRestaurar.Click += new System.EventHandler(this.btnRestaurar_Click);
+            // 
+            // chkVerEliminados
+            // 
+            this.chkVerEliminados.AutoSize = true;
+            this.chkVerEliminados.Location = new System.Drawing.Point(6, 179);
+            this.chkVerEliminados.Name = "chkVerEliminados";
+            this.chkVerEliminados.Size = new System.Drawing.Size(94, 17);
+            this.chkVerEliminados.TabIndex = 5;
+            this.chkVerEliminados.Text = "Ver eliminados";
+            this.chkVerEliminados.UseVisualStyleBackColor = true;
+            this.chkVerEliminados.CheckedChanged += new System.EventHandler(this.chkVerEliminados_CheckedChanged);
             // 
             // btnAlta
             // 
             this.btnAlta.Location = new System.Drawing.Point(15, 80);
             this.btnAlta.Name = "btnAlta";
             this.btnAlta.Size = new System.Drawing.Size(75, 23);
-            this.btnAlta.TabIndex = 13;
+            this.btnAlta.TabIndex = 3;
             this.btnAlta.Text = "Alta";
             this.btnAlta.UseVisualStyleBackColor = true;
             this.btnAlta.Click += new System.EventHandler(this.btnAlta_Click);
@@ -75,7 +96,7 @@
             this.btnBaja.Location = new System.Drawing.Point(96, 80);
             this.btnBaja.Name = "btnBaja";
             this.btnBaja.Size = new System.Drawing.Size(75, 23);
-            this.btnBaja.TabIndex = 12;
+            this.btnBaja.TabIndex = 4;
             this.btnBaja.Text = "Baja";
             this.btnBaja.UseVisualStyleBackColor = true;
             this.btnBaja.Click += new System.EventHandler(this.btnBaja_Click);
@@ -104,7 +125,7 @@
             this.txtClave.Name = "txtClave";
             this.txtClave.PasswordChar = '*';
             this.txtClave.Size = new System.Drawing.Size(100, 20);
-            this.txtClave.TabIndex = 9;
+            this.txtClave.TabIndex = 2;
             this.txtClave.TextChanged += new System.EventHandler(this.txtClave_TextChanged);
             // 
             // txtUsuario
@@ -112,7 +133,7 @@
             this.txtUsuario.Location = new System.Drawing.Point(71, 28);
             this.txtUsuario.Name = "txtUsuario";
             this.txtUsuario.Size = new System.Drawing.Size(100, 20);
-            this.txtUsuario.TabIndex = 8;
+            this.txtUsuario.TabIndex = 1;
             this.txtUsuario.TextChanged += new System.EventHandler(this.txtUsuario_TextChanged);
             // 
             // dgvUsuarios
@@ -124,27 +145,6 @@
             this.dgvUsuarios.Size = new System.Drawing.Size(514, 205);
             this.dgvUsuarios.TabIndex = 7;
             this.dgvUsuarios.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvUsuarios_CellContentClick);
-            // 
-            // chkVerEliminados
-            // 
-            this.chkVerEliminados.AutoSize = true;
-            this.chkVerEliminados.Location = new System.Drawing.Point(6, 179);
-            this.chkVerEliminados.Name = "chkVerEliminados";
-            this.chkVerEliminados.Size = new System.Drawing.Size(94, 17);
-            this.chkVerEliminados.TabIndex = 14;
-            this.chkVerEliminados.Text = "Ver eliminados";
-            this.chkVerEliminados.UseVisualStyleBackColor = true;
-            this.chkVerEliminados.CheckedChanged += new System.EventHandler(this.chkVerEliminados_CheckedChanged);
-            // 
-            // btnRestaurar
-            // 
-            this.btnRestaurar.Location = new System.Drawing.Point(15, 202);
-            this.btnRestaurar.Name = "btnRestaurar";
-            this.btnRestaurar.Size = new System.Drawing.Size(75, 23);
-            this.btnRestaurar.TabIndex = 15;
-            this.btnRestaurar.Text = "Restaurar";
-            this.btnRestaurar.UseVisualStyleBackColor = true;
-            this.btnRestaurar.Click += new System.EventHandler(this.btnRestaurar_Click);
             // 
             // frmUsuario
             // 

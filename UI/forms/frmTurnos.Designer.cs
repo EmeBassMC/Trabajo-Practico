@@ -79,7 +79,7 @@
             this.Turnos.Location = new System.Drawing.Point(12, 12);
             this.Turnos.Name = "Turnos";
             this.Turnos.Size = new System.Drawing.Size(776, 241);
-            this.Turnos.TabIndex = 3;
+            this.Turnos.TabIndex = 0;
             this.Turnos.TabStop = false;
             this.Turnos.Text = "Turnos";
             // 
@@ -97,15 +97,15 @@
             this.txtObservaciones.Location = new System.Drawing.Point(90, 141);
             this.txtObservaciones.Name = "txtObservaciones";
             this.txtObservaciones.Size = new System.Drawing.Size(96, 20);
-            this.txtObservaciones.TabIndex = 27;
+            this.txtObservaciones.TabIndex = 5;
             this.txtObservaciones.TextChanged += new System.EventHandler(this.txtObservaciones_TextChanged);
             // 
             // btnCancelarForm
             // 
-            this.btnCancelarForm.Location = new System.Drawing.Point(169, 206);
+            this.btnCancelarForm.Location = new System.Drawing.Point(122, 177);
             this.btnCancelarForm.Name = "btnCancelarForm";
             this.btnCancelarForm.Size = new System.Drawing.Size(115, 23);
-            this.btnCancelarForm.TabIndex = 26;
+            this.btnCancelarForm.TabIndex = 7;
             this.btnCancelarForm.Text = "Cancelar Form";
             this.btnCancelarForm.UseVisualStyleBackColor = true;
             this.btnCancelarForm.Click += new System.EventHandler(this.btnCancelarForm_Click);
@@ -116,7 +116,7 @@
             this.cbmProfesional.Location = new System.Drawing.Point(90, 55);
             this.cbmProfesional.Name = "cbmProfesional";
             this.cbmProfesional.Size = new System.Drawing.Size(96, 21);
-            this.cbmProfesional.TabIndex = 25;
+            this.cbmProfesional.TabIndex = 2;
             this.cbmProfesional.SelectedIndexChanged += new System.EventHandler(this.cbmProfesional_SelectedIndexChanged);
             // 
             // cmbPaciente
@@ -125,7 +125,7 @@
             this.cmbPaciente.Location = new System.Drawing.Point(90, 28);
             this.cmbPaciente.Name = "cmbPaciente";
             this.cmbPaciente.Size = new System.Drawing.Size(96, 21);
-            this.cmbPaciente.TabIndex = 24;
+            this.cmbPaciente.TabIndex = 1;
             this.cmbPaciente.SelectedIndexChanged += new System.EventHandler(this.cmbPaciente_SelectedIndexChanged);
             // 
             // label1
@@ -143,36 +143,36 @@
             this.cmbEstado.Location = new System.Drawing.Point(90, 82);
             this.cmbEstado.Name = "cmbEstado";
             this.cmbEstado.Size = new System.Drawing.Size(96, 21);
-            this.cmbEstado.TabIndex = 20;
+            this.cmbEstado.TabIndex = 3;
             this.cmbEstado.SelectedIndexChanged += new System.EventHandler(this.cmbEstado_SelectedIndexChanged);
             // 
             // btnNuevo
             // 
-            this.btnNuevo.Location = new System.Drawing.Point(1, 177);
+            this.btnNuevo.Location = new System.Drawing.Point(9, 177);
             this.btnNuevo.Name = "btnNuevo";
             this.btnNuevo.Size = new System.Drawing.Size(107, 23);
-            this.btnNuevo.TabIndex = 19;
-            this.btnNuevo.Text = "Nuevo";
+            this.btnNuevo.TabIndex = 6;
+            this.btnNuevo.Text = "Crear";
             this.btnNuevo.UseVisualStyleBackColor = true;
             this.btnNuevo.Click += new System.EventHandler(this.btnNuevo_Click);
             // 
             // btnGuardar
             // 
-            this.btnGuardar.Location = new System.Drawing.Point(114, 177);
+            this.btnGuardar.Location = new System.Drawing.Point(203, 31);
             this.btnGuardar.Name = "btnGuardar";
             this.btnGuardar.Size = new System.Drawing.Size(107, 23);
-            this.btnGuardar.TabIndex = 18;
-            this.btnGuardar.Text = "Guardar";
+            this.btnGuardar.TabIndex = 8;
+            this.btnGuardar.Text = "Crear turno";
             this.btnGuardar.UseVisualStyleBackColor = true;
             this.btnGuardar.Click += new System.EventHandler(this.btnGuardar_Click);
             // 
             // btnConfirmar
             // 
-            this.btnConfirmar.Location = new System.Drawing.Point(48, 206);
+            this.btnConfirmar.Location = new System.Drawing.Point(203, 62);
             this.btnConfirmar.Name = "btnConfirmar";
-            this.btnConfirmar.Size = new System.Drawing.Size(115, 23);
-            this.btnConfirmar.TabIndex = 17;
-            this.btnConfirmar.Text = "Confirmar";
+            this.btnConfirmar.Size = new System.Drawing.Size(107, 23);
+            this.btnConfirmar.TabIndex = 9;
+            this.btnConfirmar.Text = "Confirmar Turno";
             this.btnConfirmar.UseVisualStyleBackColor = true;
             this.btnConfirmar.Click += new System.EventHandler(this.btnConfirmar_Click);
             // 
@@ -196,11 +196,11 @@
             // 
             // btnCancelar
             // 
-            this.btnCancelar.Location = new System.Drawing.Point(227, 177);
+            this.btnCancelar.Location = new System.Drawing.Point(203, 91);
             this.btnCancelar.Name = "btnCancelar";
             this.btnCancelar.Size = new System.Drawing.Size(107, 23);
-            this.btnCancelar.TabIndex = 9;
-            this.btnCancelar.Text = "Cancelar";
+            this.btnCancelar.TabIndex = 10;
+            this.btnCancelar.Text = "Cancelar Turno";
             this.btnCancelar.UseVisualStyleBackColor = true;
             this.btnCancelar.Click += new System.EventHandler(this.btnCancelar_Click);
             // 
@@ -210,7 +210,7 @@
             this.dtpFechaTurno.Location = new System.Drawing.Point(90, 112);
             this.dtpFechaTurno.Name = "dtpFechaTurno";
             this.dtpFechaTurno.Size = new System.Drawing.Size(96, 20);
-            this.dtpFechaTurno.TabIndex = 6;
+            this.dtpFechaTurno.TabIndex = 4;
             this.dtpFechaTurno.ValueChanged += new System.EventHandler(this.dtpFechaTurno_ValueChanged);
             // 
             // dgvTurnos
@@ -219,7 +219,7 @@
             this.dgvTurnos.Location = new System.Drawing.Point(10, 259);
             this.dgvTurnos.Name = "dgvTurnos";
             this.dgvTurnos.Size = new System.Drawing.Size(778, 179);
-            this.dgvTurnos.TabIndex = 4;
+            this.dgvTurnos.TabIndex = 1;
             this.dgvTurnos.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvTurnos_CellContentClick);
             // 
             // frmTurnos

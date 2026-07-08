@@ -39,7 +39,7 @@ namespace BLL
             }
             catch (Exception ex)
             {
-                string v = ex.ToString();
+                clsBitacoraBLL.RegistrarError("clsPacienteBLL", ex);
                 return false;
             }
         }
@@ -54,8 +54,9 @@ namespace BLL
 
                 clsPacienteDAL dal = new clsPacienteDAL();
                 clsPacienteBE pacienteAnterior = dal.GetByID(pacienteUpdate.IdPersona);
+                new clsControlCambiosBLL().RegistrarCambioPaciente(pacienteAnterior);   // guardamos el paciente anterior para un restore si hace falta
                 pacienteUpdate.DVH = clsDigitoVerificador.CalcularDVH(pacienteUpdate);
-                pacienteUpdate.Email = clsEncriptacion.Encriptar(pacienteUpdate.Email); // ← nuevo
+                pacienteUpdate.Email = clsEncriptacion.Encriptar(pacienteUpdate.Email); // ← generamos el paciente nuevo
 
                 bool resultado = dal.Update(pacienteUpdate);
 
@@ -76,7 +77,7 @@ namespace BLL
             }
             catch (Exception ex)
             {
-                string v = ex.ToString();
+                clsBitacoraBLL.RegistrarError("clsPacienteBLL", ex);
                 return false;
             }
         }
@@ -98,7 +99,7 @@ namespace BLL
             }
             catch (Exception ex)
             {
-                string v = ex.ToString();
+                clsBitacoraBLL.RegistrarError("clsPacienteBLL", ex);
                 return false;
             }
         }
@@ -120,7 +121,7 @@ namespace BLL
             }
             catch (Exception ex)
             {
-                string v = ex.ToString();
+                clsBitacoraBLL.RegistrarError("clsPacienteBLL", ex);
                 return false;
             }
         }
@@ -145,7 +146,7 @@ namespace BLL
             }
             catch (Exception ex)
             {
-                string v = ex.ToString();
+                clsBitacoraBLL.RegistrarError("clsPacienteBLL", ex);
                 return null;
             }
         }
@@ -161,7 +162,7 @@ namespace BLL
             }
             catch (Exception ex)
             {
-                string v = ex.ToString();
+                clsBitacoraBLL.RegistrarError("clsPacienteBLL", ex);
                 return null;
             }
         }
@@ -177,7 +178,7 @@ namespace BLL
                     }
                     catch (Exception ex)
                     {
-                        string msg = ex.ToString();
+                        clsBitacoraBLL.RegistrarError("clsPacienteBLL", ex);
                         return null;
                     }
                 }

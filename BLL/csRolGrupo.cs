@@ -20,12 +20,12 @@ namespace BLL
             _hijos = new List<clsComponenteRol>();
         }
 
-        public void Agregar(clsComponenteRol componente)
+        public override void Agregar(clsComponenteRol componente)
         {
             _hijos.Add(componente);
         }
 
-        public void Quitar(clsComponenteRol componente)
+        public override void Quitar(clsComponenteRol componente)
         {
             _hijos.Remove(componente);
         }

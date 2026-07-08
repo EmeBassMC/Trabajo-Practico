@@ -16,6 +16,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "data", "data", "{02EA681E-C
 		sqlscript = sqlscript
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PruebasUnitarias", "PruebasUnitarias\PruebasUnitarias.csproj", "{AFCC3E22-825D-43C0-936A-50F537BCD2A0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -38,6 +40,10 @@ Global
 		{8189631E-2AD8-47E6-AEED-AC91DCDEF3B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8189631E-2AD8-47E6-AEED-AC91DCDEF3B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8189631E-2AD8-47E6-AEED-AC91DCDEF3B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AFCC3E22-825D-43C0-936A-50F537BCD2A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AFCC3E22-825D-43C0-936A-50F537BCD2A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AFCC3E22-825D-43C0-936A-50F537BCD2A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AFCC3E22-825D-43C0-936A-50F537BCD2A0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

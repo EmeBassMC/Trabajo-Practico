@@ -47,14 +47,14 @@
             this.txtNombre.Location = new System.Drawing.Point(77, 20);
             this.txtNombre.Name = "txtNombre";
             this.txtNombre.Size = new System.Drawing.Size(100, 20);
-            this.txtNombre.TabIndex = 0;
+            this.txtNombre.TabIndex = 1;
             // 
             // btnNuevo
             // 
             this.btnNuevo.Location = new System.Drawing.Point(21, 64);
             this.btnNuevo.Name = "btnNuevo";
             this.btnNuevo.Size = new System.Drawing.Size(75, 23);
-            this.btnNuevo.TabIndex = 1;
+            this.btnNuevo.TabIndex = 2;
             this.btnNuevo.Text = "Nuevo";
             this.btnNuevo.UseVisualStyleBackColor = true;
             this.btnNuevo.Click += new System.EventHandler(this.btnNuevo_Click);
@@ -64,7 +64,7 @@
             this.btnGuardar.Location = new System.Drawing.Point(102, 64);
             this.btnGuardar.Name = "btnGuardar";
             this.btnGuardar.Size = new System.Drawing.Size(75, 23);
-            this.btnGuardar.TabIndex = 2;
+            this.btnGuardar.TabIndex = 3;
             this.btnGuardar.Text = "Guardar";
             this.btnGuardar.UseVisualStyleBackColor = true;
             this.btnGuardar.Click += new System.EventHandler(this.btnGuardar_Click);
@@ -74,7 +74,7 @@
             this.btnEliminar.Location = new System.Drawing.Point(183, 64);
             this.btnEliminar.Name = "btnEliminar";
             this.btnEliminar.Size = new System.Drawing.Size(75, 23);
-            this.btnEliminar.TabIndex = 3;
+            this.btnEliminar.TabIndex = 4;
             this.btnEliminar.Text = "Eliminar";
             this.btnEliminar.UseVisualStyleBackColor = true;
             this.btnEliminar.Click += new System.EventHandler(this.btnEliminar_Click);
@@ -84,7 +84,7 @@
             this.btnCancelar.Location = new System.Drawing.Point(264, 64);
             this.btnCancelar.Name = "btnCancelar";
             this.btnCancelar.Size = new System.Drawing.Size(75, 23);
-            this.btnCancelar.TabIndex = 4;
+            this.btnCancelar.TabIndex = 5;
             this.btnCancelar.Text = "Cancelar";
             this.btnCancelar.UseVisualStyleBackColor = true;
             this.btnCancelar.Click += new System.EventHandler(this.btnCancelar_Click);
@@ -95,7 +95,7 @@
             this.dataGridView1.Location = new System.Drawing.Point(18, 121);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.Size = new System.Drawing.Size(320, 220);
-            this.dataGridView1.TabIndex = 5;
+            this.dataGridView1.TabIndex = 6;
             this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
             // lblNombre
@@ -121,7 +121,7 @@
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(399, 388);
-            this.groupBox1.TabIndex = 7;
+            this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Especialidades";
             // 
@@ -131,7 +131,7 @@
             this.chkVerEliminados.Location = new System.Drawing.Point(217, 363);
             this.chkVerEliminados.Name = "chkVerEliminados";
             this.chkVerEliminados.Size = new System.Drawing.Size(95, 17);
-            this.chkVerEliminados.TabIndex = 8;
+            this.chkVerEliminados.TabIndex = 7;
             this.chkVerEliminados.Text = "Ver Eliminados";
             this.chkVerEliminados.UseVisualStyleBackColor = true;
             this.chkVerEliminados.CheckedChanged += new System.EventHandler(this.chkVerEliminados_CheckedChanged);
@@ -141,7 +141,7 @@
             this.button1.Location = new System.Drawing.Point(318, 359);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 7;
+            this.button1.TabIndex = 8;
             this.button1.Text = "Restaurar";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);

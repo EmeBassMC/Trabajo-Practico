@@ -31,7 +31,7 @@ namespace BLL
             }
             catch (Exception ex)
             {
-                string a = ex.Message;
+                clsBitacoraBLL.RegistrarError("clsUsuarioBLL", ex);
                 return false;
             }
         }
@@ -54,7 +54,7 @@ namespace BLL
             }
             catch (Exception ex)
             {
-                string a = ex.Message;
+                clsBitacoraBLL.RegistrarError("clsUsuarioBLL", ex);
                 return false;
             }
         }
@@ -77,7 +77,7 @@ namespace BLL
             }
             catch (Exception ex)
             {
-                string v = ex.ToString();
+                clsBitacoraBLL.RegistrarError("clsUsuarioBLL", ex);
                 return false;
             }
         }
@@ -100,7 +100,7 @@ namespace BLL
             }
             catch (Exception ex)
             {
-                string v = ex.ToString();
+                clsBitacoraBLL.RegistrarError("clsUsuarioBLL", ex);
                 return false;
             }
         }
