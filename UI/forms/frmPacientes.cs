@@ -1,4 +1,5 @@
-﻿using BE;
+﻿
+using BE;
 using BLL;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using UI.forms;
+using UI.Utilidades;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace UI
@@ -56,7 +58,7 @@ namespace UI
         {
             var lista = chkVerEliminados.Checked ? bllPaciente.GetEliminados() : bllPaciente.GetAll();
             dgvPacientes.DataSource = lista;
-            if (dgvPacientes.Columns["DVH"] != null)          
+            if (dgvPacientes.Columns["DVH"] != null)
                 dgvPacientes.Columns["DVH"].Visible = false;
             if (dgvPacientes.Columns["Activo"] != null)
                 dgvPacientes.Columns["Activo"].Visible = false;
@@ -189,7 +191,7 @@ namespace UI
                 habilitarCampos();
                 btnGuardar.Enabled = puedeModificar;
                 btnEliminar.Enabled = puedeEliminar;
-                button1.Enabled = chkVerEliminados.Checked && puedeEliminar;
+                btnRestaurar.Enabled = chkVerEliminados.Checked && puedeEliminar;
 
             }
         }
@@ -211,9 +213,10 @@ namespace UI
 
             cargarGrilla();
             bloquearCampos();
-            PersonalizarForm();
+            clsEstiloUI.PersonalizarForm(this);
             clsGestorIdioma.GetInstancia().Suscribir(this);
             ActualizarIdioma(clsGestorIdioma.GetInstancia().IdiomaActual);
+            clsEstiloUI.EstilizarGrilla(dgvPacientes);
         }
 
         private void frmPacientes_FormClosed(object sender, FormClosedEventArgs e)
@@ -236,6 +239,9 @@ namespace UI
             btnNuevo.Text = g.Traducir("btnNuevo");
             btnEliminar.Text = g.Traducir("btnEliminar");
             btnCancelar.Text = g.Traducir("btnCancelar");
+            btnHistorial.Text = g.Traducir("btnHistorial");
+            btnRestaurar.Text = g.Traducir("btnRestaurar");
+            lblPacientesRegistrados.Text = g.Traducir("lblPacientesRegistrados");
             this.Text = g.Traducir("titlePacientes");
 
             if (dgvPacientes.Columns.Count > 0)
@@ -255,7 +261,7 @@ namespace UI
         {
             bool viendoEliminados = chkVerEliminados.Checked;
             btnNuevo.Enabled = !viendoEliminados && puedeAgregar;
-            button1.Enabled = viendoEliminados && puedeEliminar;
+            btnRestaurar.Enabled = viendoEliminados && puedeEliminar;
             limpiarCampos();
             bloquearCampos();
             cargarGrilla();
@@ -284,6 +290,9 @@ namespace UI
             }
             frmHistorialCambios frm = new frmHistorialCambios(idSeleccionado);
             frm.ShowDialog();
+            cargarGrilla();
+            bloquearCampos();
+            limpiarCampos();
         }
 
         private void groupBox1_Enter(object sender, EventArgs e)
@@ -313,43 +322,6 @@ namespace UI
             {
                 e.Handled = true;
             }
-        }
-
-        private void PersonalizarForm()
-        {
-            this.BackColor = Color.FromArgb(245, 245, 245);
-            foreach (Control c in this.Controls)
-                PersonalizarFormRecursivo(c);
-        }
-
-        private void PersonalizarFormRecursivo(Control control)
-        {
-            if (control is System.Windows.Forms.Button btn)
-            {
-                btn.BackColor = Color.FromArgb(45, 62, 80);
-                btn.ForeColor = Color.White;
-                btn.FlatStyle = FlatStyle.Flat;
-                btn.FlatAppearance.BorderSize = 0;
-                btn.Font = new Font("Segoe UI", 9, FontStyle.Bold);
-                btn.Cursor = Cursors.Hand;
-            }
-            if (control is GroupBox gb)
-            {
-                gb.Font = new Font("Segoe UI", 9, FontStyle.Bold);
-                gb.ForeColor = Color.FromArgb(45, 62, 80);
-            }
-            if (control is Label lbl)
-            {
-                lbl.Font = new Font("Segoe UI", 9);
-                lbl.ForeColor = Color.FromArgb(50, 50, 50);
-            }
-            if (control is System.Windows.Forms.TextBox txt)
-            {
-                txt.BorderStyle = BorderStyle.FixedSingle;
-                txt.Font = new Font("Segoe UI", 9);
-            }
-            foreach (Control child in control.Controls)
-                PersonalizarFormRecursivo(child);
-        }
+        }      
     }
 }

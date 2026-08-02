@@ -45,6 +45,7 @@
             this.btnGuardarTraduccion = new System.Windows.Forms.Button();
             this.dgvTraducciones = new System.Windows.Forms.DataGridView();
             this.cmbIdioma = new System.Windows.Forms.ComboBox();
+            this.chkOcultarSinUso = new System.Windows.Forms.CheckBox();
             this.tabMenu.SuspendLayout();
             this.tabIdiomas.SuspendLayout();
             this.tabTraducciones.SuspendLayout();
@@ -152,6 +153,7 @@
             // 
             // tabTraducciones
             // 
+            this.tabTraducciones.Controls.Add(this.chkOcultarSinUso);
             this.tabTraducciones.Controls.Add(this.button1);
             this.tabTraducciones.Controls.Add(this.btnEscanearForms);
             this.tabTraducciones.Controls.Add(this.lblSeleccionarIdioma);
@@ -224,6 +226,17 @@
             this.cmbIdioma.TabIndex = 0;
             this.cmbIdioma.SelectedIndexChanged += new System.EventHandler(this.cmbIdioma_SelectedIndexChanged);
             // 
+            // chkOcultarSinUso
+            // 
+            this.chkOcultarSinUso.AutoSize = true;
+            this.chkOcultarSinUso.Location = new System.Drawing.Point(9, 109);
+            this.chkOcultarSinUso.Name = "chkOcultarSinUso";
+            this.chkOcultarSinUso.Size = new System.Drawing.Size(112, 17);
+            this.chkOcultarSinUso.TabIndex = 10;
+            this.chkOcultarSinUso.Text = "Ocultar no usados";
+            this.chkOcultarSinUso.UseVisualStyleBackColor = true;
+            this.chkOcultarSinUso.CheckedChanged += new System.EventHandler(this.chkOcultarSinUso_CheckedChanged);
+            // 
             // frmIdiomas
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -264,5 +277,6 @@
         private System.Windows.Forms.Label lblSeleccionarIdioma;
         private System.Windows.Forms.Button btnEscanearForms;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.CheckBox chkOcultarSinUso;
     }
 }

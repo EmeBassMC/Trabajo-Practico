@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using UI.Utilidades;
 
 namespace UI
 {
@@ -37,6 +38,8 @@ namespace UI
             bloquearCampos();
             clsGestorIdioma.GetInstancia().Suscribir(this);
             ActualizarIdioma(clsGestorIdioma.GetInstancia().IdiomaActual);
+            clsEstiloUI.PersonalizarForm(this);
+            clsEstiloUI.EstilizarGrilla(dataGridView1);
         }
 
         public void cargarGrilla()
@@ -112,56 +115,49 @@ namespace UI
                 MessageBox.Show("El profesional debe ser mayor de 21 años.");
                 return;
             }
-            
             if (modoEdicion == false)
             {
+                clsProfesionalBE profesional = new clsProfesionalBE();
 
+                //tiramos los valores de email y telefono a null ya que no aplican a esto.
+                profesional.Email = null;
+                profesional.Telefono = null;
+                profesional.Nombre = txtNombre.Text;
+                profesional.Apellido = txtApellido.Text;
+                profesional.DNI = txtDNI.Text;
+                profesional.Matricula = txtMatricula.Text;
+                profesional.IdEspecialidad = (int)cmbEspecialidad.SelectedValue;
+                profesional.FechaNacimiento = dtpFechaNacimiento.Value;
 
-                if (modoEdicion == false)
-                {
-                    clsProfesionalBE profesional = new clsProfesionalBE();
-
-                    //tiramos los valores de email y telefono a null ya que no aplican a esto.
-                    profesional.Email = null;
-                    profesional.Telefono = null;
-                    profesional.Nombre = txtNombre.Text;
-                    profesional.Apellido = txtApellido.Text;
-                    profesional.DNI = txtDNI.Text;
-                    profesional.Matricula = txtMatricula.Text;
-                    profesional.IdEspecialidad = (int)cmbEspecialidad.SelectedValue;
-                    profesional.FechaNacimiento = dtpFechaNacimiento.Value;
-
-                    bool resultado = bllprofesional.Insert(profesional);
-                    if (resultado == true)
-                        MessageBox.Show(g.Traducir("msgGuardadoExito"));
-                    else
-                        MessageBox.Show(g.Traducir("msgErrorGuardar"));
-                }
-                else if (modoEdicion == true)
-                {
-                    clsProfesionalBE profesional = new clsProfesionalBE();
-                    //tiramos los valores de email y telefono a null ya que no aplican a esto.
-                    profesional.Email = null;
-                    profesional.Telefono = null;
-                    profesional.Nombre = txtNombre.Text;
-                    profesional.Apellido = txtApellido.Text;
-                    profesional.DNI = txtDNI.Text;
-                    profesional.Matricula = txtMatricula.Text;
-                    profesional.IdEspecialidad = (int)cmbEspecialidad.SelectedValue;
-                    profesional.FechaNacimiento = dtpFechaNacimiento.Value;
-                    profesional.IdPersona = idSeleccionado;
-                    bool resultado = bllprofesional.Update(profesional);
-                    if (resultado == true)
-                        MessageBox.Show(g.Traducir("msgActualizadoExito"));
-                    else
-                        MessageBox.Show(g.Traducir("msgErrorActualizar"));
-                }
-                cargarGrilla();
-                bloquearCampos();
-                limpiarCampos();
+                bool resultado = bllprofesional.Insert(profesional);
+                if (resultado == true)
+                    MessageBox.Show(g.Traducir("msgGuardadoExito"));
+                else
+                    MessageBox.Show(g.Traducir("msgErrorGuardar"));
             }
+            else if (modoEdicion == true)
+            {
+                clsProfesionalBE profesional = new clsProfesionalBE();
+                //tiramos los valores de email y telefono a null ya que no aplican a esto.
+                profesional.Email = null;
+                profesional.Telefono = null;
+                profesional.Nombre = txtNombre.Text;
+                profesional.Apellido = txtApellido.Text;
+                profesional.DNI = txtDNI.Text;
+                profesional.Matricula = txtMatricula.Text;
+                profesional.IdEspecialidad = (int)cmbEspecialidad.SelectedValue;
+                profesional.FechaNacimiento = dtpFechaNacimiento.Value;
+                profesional.IdPersona = idSeleccionado;
+                bool resultado = bllprofesional.Update(profesional);
+                if (resultado == true)
+                    MessageBox.Show(g.Traducir("msgActualizadoExito"));
+                else
+                    MessageBox.Show(g.Traducir("msgErrorActualizar"));
+            }
+            cargarGrilla();
+            bloquearCampos();
+            limpiarCampos();
         }
-
         private void btnNuevo_Click(object sender, EventArgs e)
         {
             modoEdicion = false;
@@ -358,6 +354,28 @@ namespace UI
                 dataGridView1.Columns["NombreEspecialidad"].HeaderText = g.Traducir("colEspecialidad");
 
             }
+        }
+        private void EstilizarGrilla(DataGridView grilla)
+        {
+            grilla.EnableHeadersVisualStyles = false;
+            grilla.BorderStyle = BorderStyle.None;
+            grilla.BackgroundColor = Color.White;
+            grilla.GridColor = Color.FromArgb(225, 225, 225);
+            grilla.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+
+            grilla.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(45, 62, 80);
+            grilla.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            grilla.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 9, FontStyle.Bold);
+            grilla.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            grilla.ColumnHeadersHeight = 32;
+
+            grilla.DefaultCellStyle.Font = new Font("Segoe UI", 9);
+            grilla.DefaultCellStyle.SelectionBackColor = Color.FromArgb(93, 135, 173);
+            grilla.DefaultCellStyle.SelectionForeColor = Color.White;
+            grilla.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(240, 244, 248);
+
+            grilla.RowTemplate.Height = 26;
+            grilla.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
     }
 }

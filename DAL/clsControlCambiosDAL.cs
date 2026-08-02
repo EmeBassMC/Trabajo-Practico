@@ -38,7 +38,7 @@ namespace DAL
             {
                 con.Open();
                 SqlCommand cmd = new SqlCommand(
-                    "SELECT * FROM ControlCambios WHERE Tabla = @Tabla AND IdRegistro = @IdRegistro ORDER BY FechaCambio DESC", con);
+                    "SELECT * FROM ControlCambios WHERE Tabla = @Tabla AND IdRegistro = @IdRegistro AND Restaurado = 0 ORDER BY FechaCambio DESC, IdControlCambio DESC", con);
                 cmd.Parameters.AddWithValue("@Tabla", tabla);
                 cmd.Parameters.AddWithValue("@IdRegistro", idRegistro);
                 SqlDataReader dr = cmd.ExecuteReader();
@@ -70,6 +70,29 @@ namespace DAL
                 {
                     SqlCommand cmd = new SqlCommand("UPDATE ControlCambios SET Restaurado = 1 WHERE IdControlCambio = @Id", con, tran);
                     cmd.Parameters.AddWithValue("@Id", id);
+                    cmd.ExecuteNonQuery();
+                    tran.Commit();
+                    return true;
+                }
+                catch { tran.Rollback(); return false; }
+            }
+        }
+
+        // Marca como restaurados TODOS los cambios pendientes de un objeto (no solo el elegido).
+        // Al restaurar, se resuelve toda la cola de cambios pendientes de ese registro,
+        // así los "anteriores" no siguen figurando en la lista.
+        public bool MarcarTodosRestaurados(string tabla, int idRegistro)
+        {
+            using (SqlConnection con = clsConexionDAL.GetConnection())
+            {
+                con.Open();
+                SqlTransaction tran = con.BeginTransaction();
+                try
+                {
+                    SqlCommand cmd = new SqlCommand(
+                        "UPDATE ControlCambios SET Restaurado = 1 WHERE Tabla = @Tabla AND IdRegistro = @IdRegistro AND Restaurado = 0", con, tran);
+                    cmd.Parameters.AddWithValue("@Tabla", tabla);
+                    cmd.Parameters.AddWithValue("@IdRegistro", idRegistro);
                     cmd.ExecuteNonQuery();
                     tran.Commit();
                     return true;

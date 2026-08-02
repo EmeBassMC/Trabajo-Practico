@@ -12,24 +12,24 @@ namespace DAL
         {
             Dictionary<string, string> dic = new Dictionary<string, string>();
 
-                using (SqlConnection con = clsConexionDAL.GetConnection())
-                {
+            using (SqlConnection con = clsConexionDAL.GetConnection())
+            {
                 con.Open();
-                    SqlCommand cmd = new SqlCommand(
-                        @"SELECT tc.Clave, t.Texto 
+                SqlCommand cmd = new SqlCommand(
+                    @"SELECT tc.Clave, t.Texto 
                           FROM Traduccion t 
                           JOIN Idioma i ON t.IdIdioma = i.IdIdioma
                           JOIN TraduccionClave tc ON t.IdClave = tc.IdClave
                           WHERE i.Codigo = @Codigo", con);
-                    cmd.Parameters.AddWithValue("@Codigo", codigo);
-                    SqlDataReader dr = cmd.ExecuteReader();
-                    while (dr.Read())
-                    {
-                        string clave = dr["Clave"].ToString();
-                        if (!dic.ContainsKey(clave))
-                            dic.Add(clave, dr["Texto"].ToString());
-                    }
-                }            
+                cmd.Parameters.AddWithValue("@Codigo", codigo);
+                SqlDataReader dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    string clave = dr["Clave"].ToString();
+                    if (!dic.ContainsKey(clave))
+                        dic.Add(clave, dr["Texto"].ToString());
+                }
+            }
             return dic;
         }
 
@@ -41,7 +41,7 @@ namespace DAL
             {
                 con.Open();
                 SqlCommand cmd = new SqlCommand(@"
-                    SELECT t.IdTraduccion, t.IdIdioma, t.Texto, t.IdClave, tc.Clave 
+                    SELECT t.IdTraduccion, t.IdIdioma, t.Texto, t.IdClave, tc.Clave, tc.Formulario 
                     FROM Traduccion t
                     JOIN TraduccionClave tc ON t.IdClave = tc.IdCLAVE
                     WHERE t.IdIdioma = @IdIdioma
@@ -107,7 +107,7 @@ namespace DAL
                 catch { tran.Rollback(); return false; }
             }
         }
-        public int EscanearYGenerarClaves(Dictionary<string, string> claves)
+        public int EscanearYGenerarClaves(Dictionary<string, string> claves, Dictionary<string, string> formularios)
         {
             int count = 0;
             using (SqlConnection con = clsConexionDAL.GetConnection())
@@ -127,6 +127,8 @@ namespace DAL
 
                     foreach (KeyValuePair<string, string> kvp in claves)
                     {
+                        string formulario = (formularios != null && formularios.ContainsKey(kvp.Key)) ? formularios[kvp.Key] : null;
+
                         SqlCommand cmdCheck = new SqlCommand(
                             "SELECT COUNT(*) FROM TraduccionClave WHERE Clave = @Clave", con, tran);
                         cmdCheck.Parameters.AddWithValue("@Clave", kvp.Key);
@@ -135,8 +137,9 @@ namespace DAL
                         if (existe == 0)
                         {
                             SqlCommand cmdInsertClave = new SqlCommand(
-                                "INSERT INTO TraduccionClave (Clave) VALUES (@Clave); SELECT SCOPE_IDENTITY()", con, tran);
+                                "INSERT INTO TraduccionClave (Clave, Formulario) VALUES (@Clave, @Formulario); SELECT SCOPE_IDENTITY()", con, tran);
                             cmdInsertClave.Parameters.AddWithValue("@Clave", kvp.Key);
+                            cmdInsertClave.Parameters.AddWithValue("@Formulario", (object)formulario ?? DBNull.Value);
                             int idClave = Convert.ToInt32(cmdInsertClave.ExecuteScalar());
 
                             // Insertar traducción para TODOS los idiomas — el base (1) con el texto detectado, el resto vacío
@@ -158,6 +161,16 @@ namespace DAL
                                 "SELECT IdClave FROM TraduccionClave WHERE Clave = @Clave", con, tran);
                             cmdGetId.Parameters.AddWithValue("@Clave", kvp.Key);
                             int idClave = Convert.ToInt32(cmdGetId.ExecuteScalar());
+
+                            // Completar Formulario si todavía no estaba cargado, sin pisar lo que ya hubiera
+                            if (!string.IsNullOrEmpty(formulario))
+                            {
+                                SqlCommand cmdUpdateForm = new SqlCommand(
+                                    "UPDATE TraduccionClave SET Formulario = @Formulario WHERE IdClave = @IdClave AND (Formulario IS NULL OR Formulario = '')", con, tran);
+                                cmdUpdateForm.Parameters.AddWithValue("@Formulario", formulario);
+                                cmdUpdateForm.Parameters.AddWithValue("@IdClave", idClave);
+                                cmdUpdateForm.ExecuteNonQuery();
+                            }
 
                             if (!string.IsNullOrEmpty(kvp.Value) && kvp.Value != kvp.Key)
                             {
@@ -187,7 +200,8 @@ namespace DAL
                 IdIdioma = (int)dr["IdIdioma"],
                 Clave = dr["Clave"].ToString(),
                 IdClave = (int)dr["IdClave"],
-                Texto = dr["Texto"].ToString()
+                Texto = dr["Texto"].ToString(),
+                Formulario = dr["Formulario"] == DBNull.Value ? "" : dr["Formulario"].ToString()
             };
         }
     }

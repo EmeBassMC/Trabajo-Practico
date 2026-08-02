@@ -50,7 +50,7 @@ namespace BLL
 
                 if (resultado)
                 {
-                    dal.MarcarRestaurado(idControlCambio);
+                    dal.MarcarTodosRestaurados(cambio.Tabla, cambio.IdRegistro);
 
                     List<clsPacienteBE> todos = pacienteDal.GetAll();
                     int dvv = clsDigitoVerificador.CalcularDVV(todos);
@@ -74,22 +74,30 @@ namespace BLL
         public List<clsCambioResumenBE> GetHistorialPacienteResumen(int idPaciente)
         {
             clsControlCambiosDAL dal = new clsControlCambiosDAL();
-            List<clsControlCambioBE> historial = dal.GetHistorial("Paciente", idPaciente);
+            List<clsControlCambioBE> historial = dal.GetHistorial("Paciente", idPaciente); // orden: más nuevo primero
 
             clsPacienteDAL pacienteDal = new clsPacienteDAL();
             clsPacienteBE actual = pacienteDal.GetByID(idPaciente); // estado actual, en vivo, no guardado
 
             List<clsCambioResumenBE> resultado = new List<clsCambioResumenBE>();
-            foreach (clsControlCambioBE c in historial)
+            for (int i = 0; i < historial.Count; i++)
             {
+                clsControlCambioBE c = historial[i];
                 clsPacienteBE antes = clsSerializador.Deserializar<clsPacienteBE>(c.DatosAnteriores);
+
+                // El "después" de este cambio puntual es el estado actual si es el más reciente,
+                // o el snapshot "antes" del cambio inmediatamente más nuevo (el anterior en la lista).
+                // Antes esto siempre comparaba contra "actual", mezclando el efecto de varias ediciones en una sola fila.
+                clsPacienteBE despues = (i == 0)
+                    ? actual
+                    : clsSerializador.Deserializar<clsPacienteBE>(historial[i - 1].DatosAnteriores);
 
                 resultado.Add(new clsCambioResumenBE
                 {
                     IdControlCambio = c.IdControlCambio,
                     FechaCambio = c.FechaCambio,
                     UsuarioId = c.UsuarioId,
-                    Resumen = ArmarResumenCambios(antes, actual),
+                    Resumen = ArmarResumenCambios(antes, despues),
                     Restaurado = c.Restaurado
                 });
             }

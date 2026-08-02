@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using UI.Utilidades;
 
 namespace UI.forms
 {
@@ -196,6 +197,12 @@ namespace UI.forms
             CargarIdiomas();
             clsGestorIdioma.GetInstancia().Suscribir(this);
             ActualizarIdioma(clsGestorIdioma.GetInstancia().IdiomaActual);
+            PersonalizarForm();
+        }
+        private void PersonalizarForm()
+        {
+            clsEstiloUI.PersonalizarForm(this);
+            clsEstiloUI.EstilizarGrilla(dgvTraducciones);
         }
 
         private void frmIdiomas_FormClosed(object sender, FormClosedEventArgs e)
@@ -214,13 +221,39 @@ namespace UI.forms
             dgvTraducciones.DataSource = null;
             dgvTraducciones.DataSource = bllTraduccion.GetByIdioma(idIdioma);
             dgvTraducciones.Columns["IdIdioma"].Visible = false;
-            dgvTraducciones.Columns["IdClave"].Visible = false;  // ← AGREGAR
-            dgvTraducciones.Columns["IdTraduccion"].Visible = false;  // ← AGREGAR
+            dgvTraducciones.Columns["IdClave"].Visible = false;  
+            dgvTraducciones.Columns["IdTraduccion"].Visible = false;  
+            dgvTraducciones.Columns["Formulario"].HeaderText = "Formulario";
+            dgvTraducciones.Columns["Formulario"].ReadOnly = true;
+            dgvTraducciones.Columns["Formulario"].DisplayIndex = 1; // justo después de Clave
+            AplicarFiltroSinUso();
+        }
+
+        // Oculta las filas cuyo Formulario quedó marcado "(sin uso)" no las lee ningún control, así que estorban al buscar qué traducir.
+        private void AplicarFiltroSinUso()
+        {
+            dgvTraducciones.CurrentCell = null;
+            foreach (DataGridViewRow fila in dgvTraducciones.Rows)
+            {
+                object valorFormulario = fila.Cells["Formulario"].Value;
+                bool esSinUso = valorFormulario != null && valorFormulario.ToString() == "(sin uso)";
+                fila.Visible = !(chkOcultarSinUso.Checked && esSinUso);
+            }
+        }
+
+        private void chkOcultarSinUso_CheckedChanged(object sender, EventArgs e)
+        {
+            AplicarFiltroSinUso();
         }
         private void btnGuardarTraduccion_Click(object sender, EventArgs e)
         {
             try
             {
+                // Si hay una celda en edición (escribiste y todavía no saliste de ella con
+                // Tab/clic afuera), el DataGridView no bajó el texto nuevo al objeto todavía.
+                // Sin este EndEdit, se guardaría el valor viejo.
+                dgvTraducciones.EndEdit();
+
                 if (dgvTraducciones.CurrentRow == null) return;
 
                 clsTraduccionBE t = dgvTraducciones.CurrentRow.DataBoundItem as clsTraduccionBE;
@@ -249,6 +282,7 @@ namespace UI.forms
             try
             {
                 Dictionary<string, string> claves = new Dictionary<string, string>();
+                Dictionary<string, string> formularios = new Dictionary<string, string>();
 
                 var assembly = System.Reflection.Assembly.GetAssembly(typeof(frmIdiomas));
                 var tiposForm = assembly.GetTypes()
@@ -259,13 +293,13 @@ namespace UI.forms
                     try
                     {
                         Form instancia = (Form)Activator.CreateInstance(tipo);
-                        ExtraerClaves(instancia.Controls, claves);
+                        ExtraerClaves(instancia.Controls, claves, tipo.Name, formularios);
                         instancia.Dispose();
                     }
                     catch { }
                 }
 
-                int insertados = bllTraduccion.EscanearYGenerarClaves(claves);
+                int insertados = bllTraduccion.EscanearYGenerarClaves(claves, formularios);
                 MessageBox.Show("Se generaron " + insertados + " claves nuevas.");
 
                 if (cmbIdioma.SelectedItem != null)
@@ -274,7 +308,15 @@ namespace UI.forms
             catch (Exception ex) { MessageBox.Show("Error: " + ex.Message); }
         }
 
-        private void ExtraerClaves(Control.ControlCollection controles, Dictionary<string, string> claves)
+        private void RegistrarFormulario(string clave, string nombreFormulario, Dictionary<string, string> formularios)
+        {
+            if (!formularios.ContainsKey(clave))
+                formularios[clave] = nombreFormulario;
+            else if (!formularios[clave].Split(',').Select(s => s.Trim()).Contains(nombreFormulario))
+                formularios[clave] += ", " + nombreFormulario;
+        }
+
+        private void ExtraerClaves(Control.ControlCollection controles, Dictionary<string, string> claves, string nombreFormulario, Dictionary<string, string> formularios)
         {
             foreach (Control c in controles)
             {
@@ -285,20 +327,22 @@ namespace UI.forms
                         string texto = string.IsNullOrEmpty(c.Text) ? c.Name : c.Text;
                         claves.Add(c.Name, texto);
                     }
+                    if (!string.IsNullOrEmpty(c.Name))
+                        RegistrarFormulario(c.Name, nombreFormulario, formularios);
                 }
 
                 // para MenuStrip extraer los items
                 if (c is MenuStrip)
                 {
-                    ExtraerItemsMenu(((MenuStrip)c).Items, claves);
+                    ExtraerItemsMenu(((MenuStrip)c).Items, claves, nombreFormulario, formularios);
                 }
 
                 if (c.Controls.Count > 0)
-                    ExtraerClaves(c.Controls, claves);
+                    ExtraerClaves(c.Controls, claves, nombreFormulario, formularios);
             }
         }
 
-        private void ExtraerItemsMenu(System.Windows.Forms.ToolStripItemCollection items, Dictionary<string, string> claves)
+        private void ExtraerItemsMenu(System.Windows.Forms.ToolStripItemCollection items, Dictionary<string, string> claves, string nombreFormulario, Dictionary<string, string> formularios)
         {
             foreach (ToolStripItem item in items)
             {
@@ -307,8 +351,10 @@ namespace UI.forms
                     string texto = string.IsNullOrEmpty(item.Text) ? item.Name : item.Text;
                     claves.Add(item.Name, texto);
                 }
+                if (!string.IsNullOrEmpty(item.Name))
+                    RegistrarFormulario(item.Name, nombreFormulario, formularios);
                 if (item is ToolStripMenuItem)
-                    ExtraerItemsMenu(((ToolStripMenuItem)item).DropDownItems, claves);
+                    ExtraerItemsMenu(((ToolStripMenuItem)item).DropDownItems, claves, nombreFormulario, formularios);
             }
         }
 

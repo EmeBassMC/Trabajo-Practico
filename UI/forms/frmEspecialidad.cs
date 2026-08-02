@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using UI.Utilidades;
 
 namespace UI
 {
@@ -36,6 +37,9 @@ namespace UI
             bloquearCampos();
             clsGestorIdioma.GetInstancia().Suscribir(this);
             ActualizarIdioma(clsGestorIdioma.GetInstancia().IdiomaActual);
+            clsEstiloUI.PersonalizarForm(this);
+            clsEstiloUI.EstilizarGrilla(dataGridView1);
+
         }
 
 
@@ -201,6 +205,28 @@ namespace UI
             btnEliminar.Text = g.Traducir("btnEliminar");
             btnCancelar.Text = g.Traducir("btnCancelar");
             this.Text = g.Traducir("titleEspecialidades");
+        }
+        private void EstilizarGrilla(DataGridView grilla)
+        {
+            grilla.EnableHeadersVisualStyles = false;
+            grilla.BorderStyle = BorderStyle.None;
+            grilla.BackgroundColor = Color.White;
+            grilla.GridColor = Color.FromArgb(225, 225, 225);
+            grilla.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+
+            grilla.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(45, 62, 80);
+            grilla.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            grilla.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 9, FontStyle.Bold);
+            grilla.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            grilla.ColumnHeadersHeight = 32;
+
+            grilla.DefaultCellStyle.Font = new Font("Segoe UI", 9);
+            grilla.DefaultCellStyle.SelectionBackColor = Color.FromArgb(93, 135, 173);
+            grilla.DefaultCellStyle.SelectionForeColor = Color.White;
+            grilla.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(240, 244, 248);
+
+            grilla.RowTemplate.Height = 26;
+            grilla.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
     }
 }

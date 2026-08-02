@@ -53,7 +53,7 @@
             // lblEspecialidades
             // 
             lblEspecialidades.AutoSize = true;
-            lblEspecialidades.Location = new System.Drawing.Point(22, 91);
+            lblEspecialidades.Location = new System.Drawing.Point(15, 91);
             lblEspecialidades.Name = "lblEspecialidades";
             lblEspecialidades.Size = new System.Drawing.Size(40, 13);
             lblEspecialidades.TabIndex = 23;
@@ -87,7 +87,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 144);
+            this.label2.Location = new System.Drawing.Point(1, 144);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(78, 13);
             this.label2.TabIndex = 28;
@@ -132,7 +132,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(22, 31);
+            this.label1.Location = new System.Drawing.Point(15, 31);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(49, 13);
             this.label1.TabIndex = 22;
@@ -180,7 +180,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(5, 115);
+            this.label7.Location = new System.Drawing.Point(2, 118);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(79, 13);
             this.label7.TabIndex = 16;
@@ -189,7 +189,7 @@
             // lblNombreProfesional
             // 
             this.lblNombreProfesional.AutoSize = true;
-            this.lblNombreProfesional.Location = new System.Drawing.Point(21, 60);
+            this.lblNombreProfesional.Location = new System.Drawing.Point(14, 60);
             this.lblNombreProfesional.Name = "lblNombreProfesional";
             this.lblNombreProfesional.Size = new System.Drawing.Size(59, 13);
             this.lblNombreProfesional.TabIndex = 10;

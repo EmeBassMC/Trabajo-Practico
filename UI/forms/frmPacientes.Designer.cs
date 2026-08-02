@@ -49,7 +49,7 @@
             this.txtApellido = new System.Windows.Forms.TextBox();
             this.txtNombre = new System.Windows.Forms.TextBox();
             this.chkVerEliminados = new System.Windows.Forms.CheckBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btnRestaurar = new System.Windows.Forms.Button();
             this.btnHistorial = new System.Windows.Forms.Button();
             this.lblPacientesRegistrados = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPacientes)).BeginInit();
@@ -126,7 +126,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(2, 185);
+            this.label7.Location = new System.Drawing.Point(1, 185);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(106, 13);
             this.label7.TabIndex = 16;
@@ -135,7 +135,7 @@
             // lblObraSocial
             // 
             this.lblObraSocial.AutoSize = true;
-            this.lblObraSocial.Location = new System.Drawing.Point(44, 158);
+            this.lblObraSocial.Location = new System.Drawing.Point(30, 158);
             this.lblObraSocial.Name = "lblObraSocial";
             this.lblObraSocial.Size = new System.Drawing.Size(62, 13);
             this.lblObraSocial.TabIndex = 15;
@@ -144,7 +144,7 @@
             // lblEmail
             // 
             this.lblEmail.AutoSize = true;
-            this.lblEmail.Location = new System.Drawing.Point(74, 132);
+            this.lblEmail.Location = new System.Drawing.Point(48, 132);
             this.lblEmail.Name = "lblEmail";
             this.lblEmail.Size = new System.Drawing.Size(32, 13);
             this.lblEmail.TabIndex = 14;
@@ -153,7 +153,7 @@
             // lblDNI
             // 
             this.lblDNI.AutoSize = true;
-            this.lblDNI.Location = new System.Drawing.Point(80, 78);
+            this.lblDNI.Location = new System.Drawing.Point(48, 79);
             this.lblDNI.Name = "lblDNI";
             this.lblDNI.Size = new System.Drawing.Size(26, 13);
             this.lblDNI.TabIndex = 13;
@@ -162,7 +162,7 @@
             // lblTelefono
             // 
             this.lblTelefono.AutoSize = true;
-            this.lblTelefono.Location = new System.Drawing.Point(59, 105);
+            this.lblTelefono.Location = new System.Drawing.Point(45, 105);
             this.lblTelefono.Name = "lblTelefono";
             this.lblTelefono.Size = new System.Drawing.Size(49, 13);
             this.lblTelefono.TabIndex = 12;
@@ -171,7 +171,7 @@
             // lblApellido
             // 
             this.lblApellido.AutoSize = true;
-            this.lblApellido.Location = new System.Drawing.Point(62, 51);
+            this.lblApellido.Location = new System.Drawing.Point(48, 51);
             this.lblApellido.Name = "lblApellido";
             this.lblApellido.Size = new System.Drawing.Size(44, 13);
             this.lblApellido.TabIndex = 11;
@@ -180,7 +180,7 @@
             // lblNombre
             // 
             this.lblNombre.AutoSize = true;
-            this.lblNombre.Location = new System.Drawing.Point(62, 25);
+            this.lblNombre.Location = new System.Drawing.Point(48, 25);
             this.lblNombre.Name = "lblNombre";
             this.lblNombre.Size = new System.Drawing.Size(44, 13);
             this.lblNombre.TabIndex = 10;
@@ -261,15 +261,15 @@
             this.chkVerEliminados.UseVisualStyleBackColor = true;
             this.chkVerEliminados.CheckedChanged += new System.EventHandler(this.chkVerEliminados_CheckedChanged);
             // 
-            // button1
+            // btnRestaurar
             // 
-            this.button1.Location = new System.Drawing.Point(208, 409);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 3;
-            this.button1.Text = "Restaurar";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btnRestaurar.Location = new System.Drawing.Point(208, 409);
+            this.btnRestaurar.Name = "btnRestaurar";
+            this.btnRestaurar.Size = new System.Drawing.Size(75, 23);
+            this.btnRestaurar.TabIndex = 3;
+            this.btnRestaurar.Text = "Restaurar";
+            this.btnRestaurar.UseVisualStyleBackColor = true;
+            this.btnRestaurar.Click += new System.EventHandler(this.button1_Click);
             // 
             // btnHistorial
             // 
@@ -297,7 +297,7 @@
             this.ClientSize = new System.Drawing.Size(404, 448);
             this.Controls.Add(this.lblPacientesRegistrados);
             this.Controls.Add(this.btnHistorial);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btnRestaurar);
             this.Controls.Add(this.chkVerEliminados);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.dgvPacientes);
@@ -336,7 +336,7 @@
         private System.Windows.Forms.Button btnGuardar;
         private System.Windows.Forms.Button btnNuevo;
         private System.Windows.Forms.CheckBox chkVerEliminados;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnRestaurar;
         private System.Windows.Forms.Button btnHistorial;
         private System.Windows.Forms.Label lblPacientesRegistrados;
     }

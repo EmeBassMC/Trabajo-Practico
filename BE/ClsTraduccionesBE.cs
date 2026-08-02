@@ -13,5 +13,7 @@ namespace BE
         public string Clave { get; set; }
         public int IdClave { get; set; }
         public string Texto { get; set; }
+        public string Formulario { get; set; }
+
     }
 }

@@ -29,15 +29,13 @@
         private void InitializeComponent()
         {
             this.grpProfesional = new System.Windows.Forms.GroupBox();
-            this.btnRestaurar = new System.Windows.Forms.Button();
-            this.chkVerEliminados = new System.Windows.Forms.CheckBox();
             this.lblEspecialidad = new System.Windows.Forms.Label();
             this.lblMatricula = new System.Windows.Forms.Label();
             this.txtMatricula = new System.Windows.Forms.TextBox();
             this.cmbEspecialidad = new System.Windows.Forms.ComboBox();
+            this.btnEliminar = new System.Windows.Forms.Button();
             this.btnNuevo = new System.Windows.Forms.Button();
             this.btnGuardar = new System.Windows.Forms.Button();
-            this.btnEliminar = new System.Windows.Forms.Button();
             this.lblFechaNac = new System.Windows.Forms.Label();
             this.lblDNI = new System.Windows.Forms.Label();
             this.lblApellido = new System.Windows.Forms.Label();
@@ -47,6 +45,8 @@
             this.txtDNI = new System.Windows.Forms.TextBox();
             this.txtApellido = new System.Windows.Forms.TextBox();
             this.txtNombre = new System.Windows.Forms.TextBox();
+            this.btnRestaurar = new System.Windows.Forms.Button();
+            this.chkVerEliminados = new System.Windows.Forms.CheckBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.grpProfesional.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -78,31 +78,10 @@
             this.grpProfesional.Text = "Profesional";
             this.grpProfesional.Enter += new System.EventHandler(this.grpProfesional_Enter);
             // 
-            // btnRestaurar
-            // 
-            this.btnRestaurar.Location = new System.Drawing.Point(107, 509);
-            this.btnRestaurar.Name = "btnRestaurar";
-            this.btnRestaurar.Size = new System.Drawing.Size(81, 23);
-            this.btnRestaurar.TabIndex = 11;
-            this.btnRestaurar.Text = "Restaurar";
-            this.btnRestaurar.UseVisualStyleBackColor = true;
-            this.btnRestaurar.Click += new System.EventHandler(this.btnRestaurar_Click);
-            // 
-            // chkVerEliminados
-            // 
-            this.chkVerEliminados.AutoSize = true;
-            this.chkVerEliminados.Location = new System.Drawing.Point(15, 513);
-            this.chkVerEliminados.Name = "chkVerEliminados";
-            this.chkVerEliminados.Size = new System.Drawing.Size(95, 17);
-            this.chkVerEliminados.TabIndex = 10;
-            this.chkVerEliminados.Text = "Ver Eliminados";
-            this.chkVerEliminados.UseVisualStyleBackColor = true;
-            this.chkVerEliminados.CheckedChanged += new System.EventHandler(this.chkVerEliminados_CheckedChanged);
-            // 
             // lblEspecialidad
             // 
             this.lblEspecialidad.AutoSize = true;
-            this.lblEspecialidad.Location = new System.Drawing.Point(13, 140);
+            this.lblEspecialidad.Location = new System.Drawing.Point(6, 141);
             this.lblEspecialidad.Name = "lblEspecialidad";
             this.lblEspecialidad.Size = new System.Drawing.Size(67, 13);
             this.lblEspecialidad.TabIndex = 23;
@@ -133,6 +112,16 @@
             this.cmbEspecialidad.Size = new System.Drawing.Size(96, 21);
             this.cmbEspecialidad.TabIndex = 5;
             // 
+            // btnEliminar
+            // 
+            this.btnEliminar.Location = new System.Drawing.Point(474, 43);
+            this.btnEliminar.Name = "btnEliminar";
+            this.btnEliminar.Size = new System.Drawing.Size(107, 23);
+            this.btnEliminar.TabIndex = 12;
+            this.btnEliminar.Text = "Eliminar";
+            this.btnEliminar.UseVisualStyleBackColor = true;
+            this.btnEliminar.Click += new System.EventHandler(this.btnEliminar_Click);
+            // 
             // btnNuevo
             // 
             this.btnNuevo.Location = new System.Drawing.Point(58, 188);
@@ -153,20 +142,10 @@
             this.btnGuardar.UseVisualStyleBackColor = true;
             this.btnGuardar.Click += new System.EventHandler(this.btnGuardar_Click);
             // 
-            // btnEliminar
-            // 
-            this.btnEliminar.Location = new System.Drawing.Point(474, 43);
-            this.btnEliminar.Name = "btnEliminar";
-            this.btnEliminar.Size = new System.Drawing.Size(107, 23);
-            this.btnEliminar.TabIndex = 12;
-            this.btnEliminar.Text = "Eliminar";
-            this.btnEliminar.UseVisualStyleBackColor = true;
-            this.btnEliminar.Click += new System.EventHandler(this.btnEliminar_Click);
-            // 
             // lblFechaNac
             // 
             this.lblFechaNac.AutoSize = true;
-            this.lblFechaNac.Location = new System.Drawing.Point(10, 168);
+            this.lblFechaNac.Location = new System.Drawing.Point(6, 169);
             this.lblFechaNac.Name = "lblFechaNac";
             this.lblFechaNac.Size = new System.Drawing.Size(106, 13);
             this.lblFechaNac.TabIndex = 16;
@@ -175,7 +154,7 @@
             // lblDNI
             // 
             this.lblDNI.AutoSize = true;
-            this.lblDNI.Location = new System.Drawing.Point(15, 109);
+            this.lblDNI.Location = new System.Drawing.Point(6, 109);
             this.lblDNI.Name = "lblDNI";
             this.lblDNI.Size = new System.Drawing.Size(26, 13);
             this.lblDNI.TabIndex = 13;
@@ -242,6 +221,27 @@
             this.txtNombre.TabIndex = 2;
             this.txtNombre.TextChanged += new System.EventHandler(this.txtNombre_TextChanged);
             this.txtNombre.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtNombre_KeyPress);
+            // 
+            // btnRestaurar
+            // 
+            this.btnRestaurar.Location = new System.Drawing.Point(107, 509);
+            this.btnRestaurar.Name = "btnRestaurar";
+            this.btnRestaurar.Size = new System.Drawing.Size(81, 23);
+            this.btnRestaurar.TabIndex = 11;
+            this.btnRestaurar.Text = "Restaurar";
+            this.btnRestaurar.UseVisualStyleBackColor = true;
+            this.btnRestaurar.Click += new System.EventHandler(this.btnRestaurar_Click);
+            // 
+            // chkVerEliminados
+            // 
+            this.chkVerEliminados.AutoSize = true;
+            this.chkVerEliminados.Location = new System.Drawing.Point(15, 513);
+            this.chkVerEliminados.Name = "chkVerEliminados";
+            this.chkVerEliminados.Size = new System.Drawing.Size(95, 17);
+            this.chkVerEliminados.TabIndex = 10;
+            this.chkVerEliminados.Text = "Ver Eliminados";
+            this.chkVerEliminados.UseVisualStyleBackColor = true;
+            this.chkVerEliminados.CheckedChanged += new System.EventHandler(this.chkVerEliminados_CheckedChanged);
             // 
             // dataGridView1
             // 

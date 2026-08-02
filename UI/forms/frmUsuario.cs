@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using UI.Utilidades;
 
 namespace UI.forms
 {
@@ -32,10 +33,13 @@ namespace UI.forms
             btnAlta.Enabled = puedeAlta;
             btnBaja.Enabled = puedeBaja;
             btnRestaurar.Enabled = false; // arranca deshabilitado: recién sirve viendo eliminados
-
+            dgvUsuarios.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvUsuarios.MultiSelect = false;
             CargarUsuarios();
             clsGestorIdioma.GetInstancia().Suscribir(this);
             ActualizarIdioma(clsGestorIdioma.GetInstancia().IdiomaActual);
+            clsEstiloUI.PersonalizarForm(this);
+            personalizarGrilla();
         }
 
         private void btnAlta_Click(object sender, EventArgs e)
@@ -174,6 +178,8 @@ namespace UI.forms
             dgvUsuarios.Columns["Activo"].Visible = false;
             dgvUsuarios.Columns["IdUsuario"].FillWeight = 30;
             dgvUsuarios.Columns["NombreUsuario"].FillWeight = 170;
+            clsEstiloUI.EstilizarGrilla(dgvUsuarios);
+
         }
 
         private void frmUsuario_FormClosed(object sender, FormClosedEventArgs e)

@@ -10,6 +10,7 @@ using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using UI.Utilidades;
 
 namespace UI.forms
 {
@@ -257,14 +258,15 @@ namespace UI.forms
 
             btnCrearGrupo.Enabled = puedeCrear;
             btnEliminarGrupo.Enabled = puedeEliminar;
-            btnActualizarAsignacion.Enabled = puedeAsignar;  // asignar permisos a grupos
-            btnGuardarUsuario.Enabled = puedeAsignar;     // asignar roles a usuarios
+            btnActualizarAsignacion.Enabled = puedeAsignar;
+            btnGuardarUsuario.Enabled = puedeAsignar;
 
             cargarGrupos();
-            CargarArbolPermisos();           
+            CargarArbolPermisos();
             CargarUsuarios();
             clsGestorIdioma.GetInstancia().Suscribir(this);
             ActualizarIdioma(clsGestorIdioma.GetInstancia().IdiomaActual);
+            clsEstiloUI.PersonalizarForm(this);  
         }
         private void trvPermisos_AfterCheck(object sender, TreeViewEventArgs e)
         {
@@ -324,7 +326,8 @@ namespace UI.forms
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
+            clsEstiloUI.PersonalizarForm(this);
+           
         }
         private void CargarArbolAsignados(clsUsuarioBE usuario)
         {

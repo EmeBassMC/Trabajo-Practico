@@ -31,10 +31,10 @@ namespace BLL
             if (idTraduccion <= 0) return false;
             return dal.Delete(idTraduccion);
         }
-        public int EscanearYGenerarClaves(Dictionary<string, string> claves)
+        public int EscanearYGenerarClaves(Dictionary<string, string> claves, Dictionary<string, string> formularios)
         {
             if (claves == null || claves.Count == 0) return 0;
-            return dal.EscanearYGenerarClaves(claves);
+            return dal.EscanearYGenerarClaves(claves, formularios);
         }
     }
 }
