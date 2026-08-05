@@ -42,6 +42,9 @@
             this.sOLOADMINToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.salirToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cmbIdiomaPrincipal = new System.Windows.Forms.ToolStripComboBox();
+            this.calcularDVHToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.crearBackupDBToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.restaurarDBToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -77,49 +80,49 @@
             // pacientesToolStripMenuItem
             // 
             this.pacientesToolStripMenuItem.Name = "pacientesToolStripMenuItem";
-            this.pacientesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.pacientesToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
             this.pacientesToolStripMenuItem.Text = "Pacientes";
             this.pacientesToolStripMenuItem.Click += new System.EventHandler(this.turnosToolStripMenuItem_Click);
             // 
             // especialidadesToolStripMenuItem
             // 
             this.especialidadesToolStripMenuItem.Name = "especialidadesToolStripMenuItem";
-            this.especialidadesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.especialidadesToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
             this.especialidadesToolStripMenuItem.Text = "Especialidades";
             this.especialidadesToolStripMenuItem.Click += new System.EventHandler(this.especialidadesToolStripMenuItem_Click);
             // 
             // profesionalesToolStripMenuItem
             // 
             this.profesionalesToolStripMenuItem.Name = "profesionalesToolStripMenuItem";
-            this.profesionalesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.profesionalesToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
             this.profesionalesToolStripMenuItem.Text = "Profesionales";
             this.profesionalesToolStripMenuItem.Click += new System.EventHandler(this.profesionalesToolStripMenuItem_Click);
             // 
             // aBMToolStripMenuItem
             // 
             this.aBMToolStripMenuItem.Name = "aBMToolStripMenuItem";
-            this.aBMToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.aBMToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
             this.aBMToolStripMenuItem.Text = "Turnos";
             this.aBMToolStripMenuItem.Click += new System.EventHandler(this.aBMToolStripMenuItem_Click);
             // 
             // rolesToolStripMenuItem
             // 
             this.rolesToolStripMenuItem.Name = "rolesToolStripMenuItem";
-            this.rolesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.rolesToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
             this.rolesToolStripMenuItem.Text = "Roles";
             this.rolesToolStripMenuItem.Click += new System.EventHandler(this.rolesToolStripMenuItem_Click);
             // 
             // usuariosToolStripMenuItem
             // 
             this.usuariosToolStripMenuItem.Name = "usuariosToolStripMenuItem";
-            this.usuariosToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.usuariosToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
             this.usuariosToolStripMenuItem.Text = "Usuarios";
             this.usuariosToolStripMenuItem.Click += new System.EventHandler(this.usuariosToolStripMenuItem_Click);
             // 
             // idiomasToolStripMenuItem
             // 
             this.idiomasToolStripMenuItem.Name = "idiomasToolStripMenuItem";
-            this.idiomasToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.idiomasToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
             this.idiomasToolStripMenuItem.Text = "Idiomas";
             this.idiomasToolStripMenuItem.Click += new System.EventHandler(this.idiomasToolStripMenuItem_Click);
             // 
@@ -141,10 +144,13 @@
             // 
             // sOLOADMINToolStripMenuItem
             // 
+            this.sOLOADMINToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.calcularDVHToolStripMenuItem,
+            this.crearBackupDBToolStripMenuItem,
+            this.restaurarDBToolStripMenuItem});
             this.sOLOADMINToolStripMenuItem.Name = "sOLOADMINToolStripMenuItem";
             this.sOLOADMINToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.sOLOADMINToolStripMenuItem.Text = "SOLO ADMIN";
-            this.sOLOADMINToolStripMenuItem.Click += new System.EventHandler(this.sOLOADMINToolStripMenuItem_Click);
             // 
             // salirToolStripMenuItem
             // 
@@ -158,6 +164,27 @@
             this.cmbIdiomaPrincipal.Name = "cmbIdiomaPrincipal";
             this.cmbIdiomaPrincipal.Size = new System.Drawing.Size(121, 23);
             this.cmbIdiomaPrincipal.SelectedIndexChanged += new System.EventHandler(this.cmbIdiomaPrincipal_SelectedIndexChanged);
+            // 
+            // calcularDVHToolStripMenuItem
+            // 
+            this.calcularDVHToolStripMenuItem.Name = "calcularDVHToolStripMenuItem";
+            this.calcularDVHToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.calcularDVHToolStripMenuItem.Text = "Calcular DVH";
+            this.calcularDVHToolStripMenuItem.Click += new System.EventHandler(this.calcularDVHToolStripMenuItem_Click);
+            // 
+            // crearBackupDBToolStripMenuItem
+            // 
+            this.crearBackupDBToolStripMenuItem.Name = "crearBackupDBToolStripMenuItem";
+            this.crearBackupDBToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.crearBackupDBToolStripMenuItem.Text = "Crear BackupDB";
+            this.crearBackupDBToolStripMenuItem.Click += new System.EventHandler(this.crearBackupDBToolStripMenuItem_Click);
+            // 
+            // restaurarDBToolStripMenuItem
+            // 
+            this.restaurarDBToolStripMenuItem.Name = "restaurarDBToolStripMenuItem";
+            this.restaurarDBToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.restaurarDBToolStripMenuItem.Text = "Restaurar DB";
+            this.restaurarDBToolStripMenuItem.Click += new System.EventHandler(this.restaurarDBToolStripMenuItem_Click);
             // 
             // frmPrincipal
             // 
@@ -194,5 +221,8 @@
         private System.Windows.Forms.ToolStripComboBox cmbIdiomaPrincipal;
         private System.Windows.Forms.ToolStripMenuItem idiomasToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem sOLOADMINToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem calcularDVHToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem crearBackupDBToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem restaurarDBToolStripMenuItem;
     }
 }

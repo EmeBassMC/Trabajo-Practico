@@ -19,6 +19,10 @@ namespace BLL
             return _instancia;
         }
 
+        public static void CerrarSesion()
+        {
+            _instancia = null;
+        }
         public int IdUsuario { get; set; }
         public string NombreUsuario { get; set; }
     }

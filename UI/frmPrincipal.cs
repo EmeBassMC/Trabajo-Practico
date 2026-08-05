@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using UI.forms;
+using UI.Utilidades;
 
 namespace UI
 {
@@ -98,6 +99,19 @@ namespace UI
             clsGestorIdioma.GetInstancia().Suscribir(this);
             CargarComboIdiomas();
             ActualizarIdioma(clsGestorIdioma.GetInstancia().IdiomaActual);
+
+            clsEstiloUI.EstilizarMenu(menuStrip1);
+
+            foreach (Control c in this.Controls)
+            {
+                if (c is MdiClient mdi)
+                    mdi.BackColor = Color.FromArgb(230, 233, 237);
+            }
+            this.Icon = clsEstiloUI.IconoApp;
+            clsEstiloUI.AplicarBarraOscura(this);
+            this.WindowState = FormWindowState.Maximized;
+            this.Text = "TurnoSync — Usuario: " + clsSesionActual.GetInstancia().NombreUsuario;
+            AplicarPermisosMenu();
         }
         private void CargarComboIdiomas()
         {
@@ -118,7 +132,10 @@ namespace UI
 
         private void salirToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            clsSesionActual.CerrarSesion();
             this.Close();
+            frmLogin Logeo = new frmLogin();
+            Logeo.ShowDialog();
         }
 
         private void inicioToolStripMenuItem_Click(object sender, EventArgs e)
@@ -152,7 +169,41 @@ namespace UI
             usuariosToolStripMenuItem.Text = g.Traducir("mnuUsuarios");
             bitacoraToolStripMenuItem.Text = g.Traducir("mnuBitacora");
         }
+        private void AplicarPermisosMenu()
+        {
+            int idUsuario = clsSesionActual.GetInstancia().IdUsuario;
 
+            // Gestiones
+            pacientesToolStripMenuItem.Available = rolBll.TienePermiso(idUsuario, "Pacientes.Ver");
+            especialidadesToolStripMenuItem.Available = rolBll.TienePermiso(idUsuario, "Especialidades.Ver");
+            profesionalesToolStripMenuItem.Available = rolBll.TienePermiso(idUsuario, "Profesionales.Ver");
+            aBMToolStripMenuItem.Available = rolBll.TienePermiso(idUsuario, "Turnos.Ver");
+            rolesToolStripMenuItem.Available = rolBll.TienePermiso(idUsuario, "Roles.Ver");
+            usuariosToolStripMenuItem.Available = rolBll.TienePermiso(idUsuario, "Usuarios.Ver");
+            idiomasToolStripMenuItem.Available = rolBll.TienePermiso(idUsuario, "Idiomas.Ver");
+
+            // Informes
+            bitacoraToolStripMenuItem.Available = rolBll.TienePermiso(idUsuario, "Bitacora.Ver");
+
+            bool esAdmin = rolBll.TienePermiso(idUsuario, "Sistema.Mantenimiento");
+            calcularDVHToolStripMenuItem.Available = esAdmin;
+            crearBackupDBToolStripMenuItem.Available = esAdmin;
+            restaurarDBToolStripMenuItem.Available = esAdmin;
+            sOLOADMINToolStripMenuItem.Available = esAdmin;
+
+            // Si un menu padre se queda sin ningun hijo disponible, se oculta tambien
+            inicioToolStripMenuItem.Available =
+                pacientesToolStripMenuItem.Available
+                || especialidadesToolStripMenuItem.Available
+                || profesionalesToolStripMenuItem.Available
+                || aBMToolStripMenuItem.Available
+                || rolesToolStripMenuItem.Available
+                || usuariosToolStripMenuItem.Available
+                || idiomasToolStripMenuItem.Available;
+
+            informesToolStripMenuItem.Available =
+                bitacoraToolStripMenuItem.Available || sOLOADMINToolStripMenuItem.Available;
+        }
         private void frmPrincipal_FormClosed(object sender, FormClosedEventArgs e)
         {
             clsGestorIdioma.GetInstancia().Desuscribir(this);
@@ -195,6 +246,11 @@ namespace UI
 
         private void sOLOADMINToolStripMenuItem_Click(object sender, EventArgs e)
         {
+
+        }
+
+        private void calcularDVHToolStripMenuItem_Click(object sender, EventArgs e)
+        {
             if (!rolBll.TienePermiso(clsSesionActual.GetInstancia().IdUsuario, "Sistema.Mantenimiento"))
             {
                 MessageBox.Show(clsGestorIdioma.GetInstancia().Traducir("msgSinPermisos"));
@@ -219,6 +275,76 @@ namespace UI
             catch (Exception ex)
             {
                 MessageBox.Show("Error al recalcular: " + ex.Message);
+            }
+        }
+
+        private void crearBackupDBToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!rolBll.TienePermiso(clsSesionActual.GetInstancia().IdUsuario, "Sistema.Mantenimiento"))
+            {
+                MessageBox.Show(clsGestorIdioma.GetInstancia().Traducir("msgSinPermisos"));
+                return;
+            }
+
+            using (SaveFileDialog dialogo = new SaveFileDialog())
+            {
+                dialogo.Filter = "Backup de SQL Server (*.bak)|*.bak";
+                dialogo.Title = "Guardar backup de TurnoSync";
+                dialogo.FileName = "TurnoSync_" + DateTime.Now.ToString("yyyyMMdd_HHmm") + ".bak";
+
+                if (dialogo.ShowDialog() != DialogResult.OK) return;
+
+                try
+                {
+                    clsBackupBLL backupBll = new clsBackupBLL();
+                    backupBll.HacerBackup(dialogo.FileName);
+                    MessageBox.Show("Backup creado correctamente en:\n" + dialogo.FileName,
+                        "Backup completado", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("No se pudo crear el backup:\n" + ex.Message,
+                        "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void restaurarDBToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!rolBll.TienePermiso(clsSesionActual.GetInstancia().IdUsuario, "Sistema.Mantenimiento"))
+            {
+                MessageBox.Show(clsGestorIdioma.GetInstancia().Traducir("msgSinPermisos"));
+                return;
+            }
+
+            using (OpenFileDialog dialogo = new OpenFileDialog())
+            {
+                dialogo.Filter = "Backup de SQL Server (*.bak)|*.bak";
+                dialogo.Title = "Seleccionar backup a restaurar";
+
+                if (dialogo.ShowDialog() != DialogResult.OK) return;
+
+                DialogResult confirm = MessageBox.Show(
+                    "Esto va a REEMPLAZAR por completo la base de datos actual con el contenido de:\n" + dialogo.FileName +
+                    "\n\nTodo lo que se haya cargado después de ese backup se pierde. Además, la sesión actual se va a cerrar.\n\n¿Continuar?",
+                    "Restaurar Backup", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+                if (confirm != DialogResult.Yes) return;
+
+                try
+                {
+                    clsBackupBLL backupBll = new clsBackupBLL();
+                    backupBll.RestaurarBackup(dialogo.FileName);
+                    MessageBox.Show("Base de datos restaurada correctamente. El sistema va a cerrar la sesión.",
+                        "Restauración completada", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    this.Close();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("No se pudo restaurar el backup:\n" + ex.Message,
+                        "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
     }

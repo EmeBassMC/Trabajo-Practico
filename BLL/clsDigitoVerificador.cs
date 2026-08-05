@@ -6,8 +6,6 @@ using System.Linq;
 using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
-
-
 namespace BLL
 {
     public class clsDigitoVerificador
@@ -38,7 +36,6 @@ namespace BLL
             }
             return suma % 97;
         }
-
         public static int CalcularDVV(List<clsPacienteBE> lista)
         {
             int suma = 0;
@@ -48,26 +45,35 @@ namespace BLL
             }
             return suma % 97;
         }
+
+        // Trae TODOS los pacientes, activos e inactivos (dados de baja logica).
+        // GetAll() solo trae los activos (WHERE Activo=1), y si la integridad
+        // solo mirara esa lista, alguien podria manipular por fuera un paciente
+        // ya eliminado sin que el sistema se entere nunca.
+        private static List<clsPacienteBE> ObtenerTodosIncluyendoInactivos(clsPacienteDAL dal)
+        {
+            List<clsPacienteBE> lista = dal.GetAll();
+            lista.AddRange(dal.GetEliminados());
+            return lista;
+        }
+
         public static bool VerificarIntegridad()
         {
             clsPacienteDAL dal = new clsPacienteDAL();
-            List<clsPacienteBE> lista = dal.GetAll();
+            List<clsPacienteBE> lista = ObtenerTodosIncluyendoInactivos(dal);
             foreach (clsPacienteBE paciente in lista)
             {
                 paciente.Email = clsEncriptacion.Desencriptar(paciente.Email);
                 int dvhCalculado = CalcularDVH(paciente);
-
                 if (dvhCalculado != paciente.DVH)
                     return false;
             }
             return true;
         }
-
         public static void RecalcularTodos()
         {
             clsPacienteDAL dal = new clsPacienteDAL();
-            List<clsPacienteBE> lista = dal.GetAll();
-
+            List<clsPacienteBE> lista = ObtenerTodosIncluyendoInactivos(dal);
             foreach (clsPacienteBE p in lista)
             {
                 string emailPlano = clsEncriptacion.Desencriptar(p.Email);
@@ -76,16 +82,13 @@ namespace BLL
                 p.Email = clsEncriptacion.Encriptar(emailPlano); // ← re-encriptar antes de guardar, si no el Update pisa la base con el email en texto plano
                 dal.Update(p);
             }
-
-            int dvv = CalcularDVV(dal.GetAll());
+            int dvv = CalcularDVV(ObtenerTodosIncluyendoInactivos(dal));
             new clsDigitoVerificadorDAL().GuardarDVV("Paciente", dvv);
-
             clsBitacoraBE b = new clsBitacoraBE();
             b.UsuarioId = clsSesionActual.GetInstancia().IdUsuario;
             b.Actividad = "Recálculo de Dígitos Verificadores";
             b.Informacion = "OK - " + lista.Count + " pacientes recalculados";
             clsBitacoraBLL.Registrar(b);
         }
-
     }
 }

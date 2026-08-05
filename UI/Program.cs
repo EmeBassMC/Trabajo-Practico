@@ -19,16 +19,11 @@ namespace UI
             Application.SetCompatibleTextRenderingDefault(false);
 
             bool integridadOk = BLL.clsDigitoVerificador.VerificarIntegridad();
-            if (!integridadOk)
-            {
-                MessageBox.Show(
-                    "Se detectaron inconsistencias en la base de datos.\nContacte al administrador.",
-                    "Error de Integridad",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
-                return;
-            }
-            frmLogin login = new frmLogin();
+
+            // Antes esto cortaba la app entera con return si integridadOk era false,
+            // dejando afuera hasta al propio administrador. Ahora siempre se muestra
+            // el login, y es frmLogin quien decide si te deja pasar o no segun tu permiso.
+            frmLogin login = new frmLogin(integridadOk);
             login.ShowDialog();
 
             if (clsSesionActual.GetInstancia().IdUsuario > 0)

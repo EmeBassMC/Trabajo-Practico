@@ -146,40 +146,12 @@ namespace UI.forms
         }
         public void personalizarGrilla()
         {
-            dgvUsuarios.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgvUsuarios.Columns["IdUsuario"].FillWeight = 50;
-            dgvUsuarios.Columns["PasswordHash"].Visible = false;
-            dgvUsuarios.Columns["Activo"].Visible = false;
-            // Estilo general
-            dgvUsuarios.EnableHeadersVisualStyles = false;
-            dgvUsuarios.BorderStyle = BorderStyle.None;
-            dgvUsuarios.GridColor = Color.FromArgb(220, 220, 220);
-            dgvUsuarios.BackgroundColor = Color.White;
-
-            // Header
-            dgvUsuarios.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(45, 62, 80);
-            dgvUsuarios.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
-            dgvUsuarios.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 9, FontStyle.Bold);
-            dgvUsuarios.ColumnHeadersHeight = 35;
-
-            // Filas
-            dgvUsuarios.DefaultCellStyle.BackColor = Color.White;
-            dgvUsuarios.DefaultCellStyle.ForeColor = Color.FromArgb(50, 50, 50);
-            dgvUsuarios.DefaultCellStyle.Font = new Font("Segoe UI", 9);
-            dgvUsuarios.DefaultCellStyle.SelectionBackColor = Color.FromArgb(52, 152, 219);
-            dgvUsuarios.DefaultCellStyle.SelectionForeColor = Color.White;
-            dgvUsuarios.RowsDefaultCellStyle.BackColor = Color.White;
-            dgvUsuarios.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(245, 245, 245);
-            dgvUsuarios.RowTemplate.Height = 30;
-
-            // Columnas
-            dgvUsuarios.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvUsuarios.Columns["PasswordHash"].Visible = false;
             dgvUsuarios.Columns["Activo"].Visible = false;
             dgvUsuarios.Columns["IdUsuario"].FillWeight = 30;
             dgvUsuarios.Columns["NombreUsuario"].FillWeight = 170;
-            clsEstiloUI.EstilizarGrilla(dgvUsuarios);
 
+            clsEstiloUI.EstilizarGrilla(dgvUsuarios);
         }
 
         private void frmUsuario_FormClosed(object sender, FormClosedEventArgs e)

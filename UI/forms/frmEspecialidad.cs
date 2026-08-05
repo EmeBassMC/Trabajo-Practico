@@ -196,8 +196,10 @@ namespace UI
         }
         public void ActualizarIdioma(string idioma)
         {
-            var g = clsGestorIdioma.GetInstancia();
 
+            var g = clsGestorIdioma.GetInstancia();
+            lblNombre.Text = g.Traducir("lblNombre");
+            clsEstiloUI.AlinearJuntoAEtiqueta(lblNombre, txtNombre);
             groupBox1.Text = g.Traducir("grpEspecialidades");
             lblNombre.Text = g.Traducir("lblNombre");
             btnNuevo.Text = g.Traducir("btnNuevo");

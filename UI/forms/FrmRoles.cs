@@ -267,6 +267,7 @@ namespace UI.forms
             clsGestorIdioma.GetInstancia().Suscribir(this);
             ActualizarIdioma(clsGestorIdioma.GetInstancia().IdiomaActual);
             clsEstiloUI.PersonalizarForm(this);  
+
         }
         private void trvPermisos_AfterCheck(object sender, TreeViewEventArgs e)
         {
@@ -322,12 +323,6 @@ namespace UI.forms
             btnActualizarAsignacion.Text = g.Traducir("btnActualizar");
             btnGuardarUsuario.Text = g.Traducir("btnGuardar");
             this.Text = g.Traducir("titleRoles");
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            clsEstiloUI.PersonalizarForm(this);
-           
         }
         private void CargarArbolAsignados(clsUsuarioBE usuario)
         {
@@ -402,6 +397,8 @@ namespace UI.forms
         {
 
         }
+
+
 
         private void GuardarChecksRecursivo(TreeNode nodo, int idGrupo)
         {

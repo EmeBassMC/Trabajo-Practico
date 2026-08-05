@@ -203,6 +203,7 @@ namespace UI.forms
         {
             clsEstiloUI.PersonalizarForm(this);
             clsEstiloUI.EstilizarGrilla(dgvTraducciones);
+
         }
 
         private void frmIdiomas_FormClosed(object sender, FormClosedEventArgs e)
