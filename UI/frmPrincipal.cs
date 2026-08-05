@@ -1,4 +1,5 @@
-﻿using BLL;
+﻿using BE;
+using BLL;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -132,10 +133,24 @@ namespace UI
 
         private void salirToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            DialogResult confirm = MessageBox.Show(
+                 "¿Cerrar la sesión actual?",
+                 "Cerrar sesión",
+                 MessageBoxButtons.YesNo,
+                 MessageBoxIcon.Question);
+
+            if (confirm != DialogResult.Yes) return;
+
+            clsBitacoraBE b = new clsBitacoraBE
+            {
+                UsuarioId = clsSesionActual.GetInstancia().IdUsuario,
+                Actividad = "Cierre de Sesion",
+                Informacion = "OK - " + clsSesionActual.GetInstancia().NombreUsuario
+            };
+            clsBitacoraBLL.Registrar(b);
+
             clsSesionActual.CerrarSesion();
             this.Close();
-            frmLogin Logeo = new frmLogin();
-            Logeo.ShowDialog();
         }
 
         private void inicioToolStripMenuItem_Click(object sender, EventArgs e)

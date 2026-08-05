@@ -20,14 +20,26 @@ namespace UI
 
             bool integridadOk = BLL.clsDigitoVerificador.VerificarIntegridad();
 
-            // Antes esto cortaba la app entera con return si integridadOk era false,
-            // dejando afuera hasta al propio administrador. Ahora siempre se muestra
-            // el login, y es frmLogin quien decide si te deja pasar o no segun tu permiso.
-            frmLogin login = new frmLogin(integridadOk);
-            login.ShowDialog();
+            bool seguirMostrandoLogin = true;
+            while (seguirMostrandoLogin)
+            {
+                frmLogin login = new frmLogin(integridadOk);
+                login.ShowDialog();
 
-            if (clsSesionActual.GetInstancia().IdUsuario > 0)
-                Application.Run(new frmPrincipal());
+                if (clsSesionActual.GetInstancia().IdUsuario > 0)
+                {
+                    Application.Run(new frmPrincipal());
+
+                    // Al volver aca, frmPrincipal ya se cerro.
+                    // Si la sesion quedo en 0, fue un Logout desde "Salir" -> volvemos a mostrar el login.
+                    // Si la sesion sigue con datos, se cerro la ventana con la X -> se termina la app.
+                    seguirMostrandoLogin = clsSesionActual.GetInstancia().IdUsuario == 0;
+                }
+                else
+                {
+                    seguirMostrandoLogin = false; // cancelo o cerro el login sin loguearse: se termina la app
+                }
+            }
         }
     }
 }
